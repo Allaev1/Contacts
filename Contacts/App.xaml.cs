@@ -18,6 +18,8 @@ using Template10.Common;
 using Contacts.Services.ContactsRepositoryService;
 using GalaSoft.MvvmLight.Ioc;
 using System.Threading.Tasks;
+using Contacts.ViewModels;
+using Template10.Services.NavigationService;
 
 namespace Contacts
 {
@@ -34,14 +36,23 @@ namespace Contacts
         {
             this.InitializeComponent();
         }
-                
+
         public override Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
             SimpleIoc.Default.Register<IContactRepositoryService, ContactRepositoryServiceFake>();
+            SimpleIoc.Default.Register<MasterDetailPageViewModel>();
 
-            NavigationService.Navigate(typeof(MainPage));
+            NavigationService.Navigate(typeof(MasterDetailPage));
 
             return Task.CompletedTask;
+        }
+
+        public override INavigable ResolveForPage(Page page, NavigationService navigationService)
+        {
+            if (page is MasterDetailPage)
+                return SimpleIoc.Default.GetInstance<MasterDetailPageViewModel>();
+            else
+                return base.ResolveForPage(page, navigationService);
         }
     }
 }

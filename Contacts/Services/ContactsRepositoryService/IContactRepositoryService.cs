@@ -10,7 +10,7 @@ namespace Contacts.Services.ContactsRepositoryService
     /// <summary>
     /// Methods that support action above list of contacts and contact itself 
     /// </summary>
-    interface IContactRepositoryService
+    public interface IContactRepositoryService
     {
         List<Contact> GetAll();
     }
