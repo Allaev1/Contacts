@@ -15,6 +15,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Template10.Common;
+using Contacts.Services.ContactsRepositoryService;
+using GalaSoft.MvvmLight.Ioc;
 using System.Threading.Tasks;
 
 namespace Contacts
@@ -35,6 +37,8 @@ namespace Contacts
                 
         public override Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
+            SimpleIoc.Default.Register<IContactRepositoryService, ContactRepositoryServiceFake>();
+
             NavigationService.Navigate(typeof(MainPage));
 
             return Task.CompletedTask;

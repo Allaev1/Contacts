@@ -11,6 +11,7 @@ namespace Contacts.Models
         public string FirstName;
         public string LastName;
         public string Email;
-        public Uri Image;
+        public string Notes;
+        public Uri PathToImage;
     }
 }
