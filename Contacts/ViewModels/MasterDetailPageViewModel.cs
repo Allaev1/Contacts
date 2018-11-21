@@ -14,6 +14,7 @@ namespace Contacts.ViewModels
         #region Fields
         IContactRepositoryService _contactRepository;
         List<Contact> _contacts;
+        Contact _contact;
         #endregion
 
         #region Contructors
@@ -29,6 +30,12 @@ namespace Contacts.ViewModels
         {
             get { return _contacts; }
             set { Set(ref _contacts, value); }
+        }
+
+        public Contact SelectedContact
+        {
+            get { return _contact; }
+            set { Set(ref _contact, value); }
         }
         #endregion
     }

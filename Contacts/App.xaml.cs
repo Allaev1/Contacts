@@ -20,6 +20,7 @@ using GalaSoft.MvvmLight.Ioc;
 using System.Threading.Tasks;
 using Contacts.ViewModels;
 using Template10.Services.NavigationService;
+using Contacts.Views;
 
 namespace Contacts
 {
