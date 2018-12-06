@@ -18,11 +18,11 @@ namespace Contacts.ViewModels
         #endregion
 
         #region Contructors
-        public MasterDetailPageViewModel(IContactRepositoryService contactRepository)
-        {
-            _contactRepository = contactRepository;
-            _contacts = contactRepository.GetAll();
-        }
+        //public MasterDetailPageViewModel(IContactRepositoryService contactRepository)
+        //{
+        //    _contactRepository = contactRepository;
+        //    _contacts = contactRepository.GetAll();
+        //}
         #endregion
 
         #region Bindable properties

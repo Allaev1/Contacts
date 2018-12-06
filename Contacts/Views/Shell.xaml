@@ -8,10 +8,11 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <NavigationView>
+    <NavigationView x:Name="MyNavView" SelectionChanged="{x:Bind ViewModel.OnSelectionChanged}">
         <NavigationView.MenuItems>
-            <NavigationViewItem Icon="Home"/>
-            <NavigationViewItem Icon="Contact2"/>
+            <NavigationViewItem Icon="Contact" Content="Contact" Tag="MasterDetailPage"/>
+            <NavigationViewItem Icon="Favorite" Content="Favorites" Tag="StartPage"/>
         </NavigationView.MenuItems>
+        <Frame x:Name="RootFrame"/>
     </NavigationView>
 </Page>
