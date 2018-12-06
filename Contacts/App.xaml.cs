@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using Contacts.Views;
 using GalaSoft.MvvmLight.Ioc;
 using Contacts.ViewModels;
+using Contacts.Services.ContactsRepositoryService;
 
 namespace Contacts
 {
@@ -60,6 +61,7 @@ namespace Contacts
         /// <returns></returns>
         public override Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
+            SimpleIoc.Default.Register<IContactRepositoryService, ContactRepositoryServiceFake>();
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<MasterDetailPageViewModel>();
 
