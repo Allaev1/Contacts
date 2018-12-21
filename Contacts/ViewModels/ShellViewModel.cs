@@ -30,9 +30,6 @@ namespace Contacts.ViewModels
                 case "MasterDetailPage":
                     navigationService.Navigate(typeof(MasterDetailPage));
                     break;
-                case "StartPage":
-                    navigationService.Navigate(typeof(StartPage));
-                    break;
             }
         }
     }
