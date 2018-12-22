@@ -10,7 +10,8 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <uwpkit:MasterDetailsView ItemsSource="{x:Bind ViewModel.Contacts}">
+    <uwpkit:MasterDetailsView ItemsSource="{x:Bind ViewModel.Contacts}"
+                              NoSelectionContent="Select item to view">
         <uwpkit:MasterDetailsView.ItemTemplate>
             <DataTemplate x:DataType="model:Contact">
                 <RelativePanel>
@@ -38,6 +39,58 @@
                 </RelativePanel>
             </DataTemplate>
         </uwpkit:MasterDetailsView.ItemTemplate>
+
+        <uwpkit:MasterDetailsView.DetailsTemplate>
+            <DataTemplate x:DataType="model:Contact">
+                <ScrollViewer>
+                    <RelativePanel>
+
+                        <StackPanel x:Name="FirstAndLastNamePanel" 
+                                RelativePanel.AlignTopWithPanel="True" 
+                                HorizontalAlignment="Left" 
+                                Margin="20,20,20,0"
+                                Orientation="Horizontal">
+                            <TextBlock Text="{x:Bind FirstName}" FontSize="36" FontWeight="Bold" Margin="0,0,10,0"/>
+                            <TextBlock Text="{x:Bind LastName}" FontSize="36" FontWeight="Bold"/>
+                        </StackPanel>
+                        <uwpkit:ImageEx x:Name="Image" Source="{x:Bind PathToImage}" BorderThickness="1" BorderBrush="Black"                                    Stretch="Fill"
+                                    CornerRadius="20"
+                                    Margin="20"
+                                    Height="500"
+                                    Width="500"
+                                    RelativePanel.Below="FirstAndLastNamePanel"
+                                    HorizontalAlignment="Left"/>
+                        <uwpkit:HeaderedTextBlock x:Name="Email"
+                                                  Header="Email"
+                                                  FontSize="26"
+                                                  Text="{x:Bind Email}" 
+                                                  RelativePanel.Below="Image"
+                                                  HorizontalAlignment="Left"
+                                                  Margin="20,0,20,20"/>
+                        <uwpkit:HeaderedTextBlock Header="Notes"
+                                                  FontSize="26"
+                                                  Margin="20,0,20,20"
+                                                  RelativePanel.Below="Email"
+                                                  Text="{x:Bind Notes}"/>
+                    </RelativePanel>
+                </ScrollViewer>
+            </DataTemplate>
+        </uwpkit:MasterDetailsView.DetailsTemplate>
+
+        <uwpkit:MasterDetailsView.NoSelectionContentTemplate>
+            <DataTemplate>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <SymbolIcon x:Name="Symbol" Symbol="Contact" RenderTransformOrigin=".5,.5">
+                        <SymbolIcon.RenderTransform>
+                            <CompositeTransform 
+                                        ScaleX="4"
+                                        ScaleY="4"/>
+                        </SymbolIcon.RenderTransform>
+                    </SymbolIcon>
+                    <TextBlock HorizontalAlignment="Center" Text="{Binding}" FontSize="26" Margin="0,30,0,0"/>
+                </StackPanel>
+            </DataTemplate>
+        </uwpkit:MasterDetailsView.NoSelectionContentTemplate>
     </uwpkit:MasterDetailsView>
     <!--<Grid>
         <Grid.RowDefinitions>
