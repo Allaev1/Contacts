@@ -13,5 +13,6 @@ namespace Contacts.Models
         public string Email;
         public string Notes;
         public Uri PathToImage;
+        public string ID;
     }
 }

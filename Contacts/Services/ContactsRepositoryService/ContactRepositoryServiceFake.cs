@@ -4,20 +4,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Contacts.Models;
+using Contacts.Message;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Contacts.Services.ContactsRepositoryService
 {
     //Temporary implementation of IContactRepositoryService cause it operates with fake data
     public class ContactRepositoryServiceFake : IContactRepositoryService
     {
-        public List<Contact> GetAll()
+        List<Contact> _contacts;
+
+        public async Task<List<Contact>> GetAllAsync()
         {
-            return ReadContacts();
+            return await ReadContacts();
         }
 
-        private List<Contact> ReadContacts()
+        public async Task DeleteAsync(string id)
         {
-            return new List<Contact>
+            _contacts.Remove(_contacts.Find((a) => a.ID == id));
+
+            OperationResultMessage message = new OperationResultMessage() { Operation = CRUD.Delete };
+            Messenger.Default.Send(message);
+
+            await Task.CompletedTask;
+        }
+
+        #region 
+        private Task<List<Contact>> ReadContacts()
+        {
+            return Task.Run(() => _contacts = new List<Contact>
             {
                 new Contact{FirstName="Илон",LastName="Маск",Email="Ilon.mask@mail.com",
                     Notes ="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pharetra dictum nibh vel ornare. Donec sem urna, rhoncus sed cursus ac, aliquet at nisl. Pellentesque cursus et lacus vel porta. Morbi iaculis efficitur volutpat. Curabitur sit amet cursus nisl, ac suscipit mauris. Nulla a tellus a odio tincidunt maximus. Maecenas non eros lacus. Donec aliquam libero nec ex ullamcorper, in lobortis nibh dapibus. Mauris vehicula, tellus quis congue tincidunt, neque massa auctor ante, ut laoreet felis nisi id tellus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc sed dapibus quam, in viverra arcu. Vivamus ut metus non magna viverra porttitor a ultrices dui.",
@@ -37,8 +52,8 @@ namespace Contacts.Services.ContactsRepositoryService
                 new Contact{FirstName="Килиан",LastName="Мёрфи",Email="Cilian.murphy@mail.com",
                     Notes ="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pharetra dictum nibh vel ornare. Donec sem urna, rhoncus sed cursus ac, aliquet at nisl. Pellentesque cursus et lacus vel porta. Morbi iaculis efficitur volutpat. Curabitur sit amet cursus nisl, ac suscipit mauris. Nulla a tellus a odio tincidunt maximus. Maecenas non eros lacus. Donec aliquam libero nec ex ullamcorper, in lobortis nibh dapibus. Mauris vehicula, tellus quis congue tincidunt, neque massa auctor ante, ut laoreet felis nisi id tellus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc sed dapibus quam, in viverra arcu. Vivamus ut metus non magna viverra porttitor a ultrices dui.",
                     PathToImage =new Uri("https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Cillian_Murphy_2014_cropped.jpg/1200px-Cillian_Murphy_2014_cropped.jpg")}
-            };
+            });
         }
-
+        #endregion
     }
 }

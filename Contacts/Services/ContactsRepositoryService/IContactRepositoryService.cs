@@ -12,6 +12,8 @@ namespace Contacts.Services.ContactsRepositoryService
     /// </summary>
     public interface IContactRepositoryService
     {
-        List<Contact> GetAll();
+        Task<List<Contact>> GetAllAsync();
+
+        Task DeleteAsync(string id);
     }
 }
