@@ -11,9 +11,33 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <uwpkit:MasterDetailsView ItemsSource="{x:Bind ViewModel.Contacts}">
-        <DataTemplate>
-            
-        </DataTemplate>
+        <uwpkit:MasterDetailsView.ItemTemplate>
+            <DataTemplate x:DataType="model:Contact">
+                <RelativePanel>
+                    <uwpkit:ImageEx x:Name="thumbnail" Width="90" Height="90"
+                                       RelativePanel.AlignVerticalCenterWithPanel="True"
+                                       Source="{x:Bind PathToImage}"
+                                       Stretch="UniformToFill"
+                                       IsCacheEnabled="True"
+                                       PlaceholderSource="/Assets/ImageExPlaceholder.jpg"
+                                       PlaceholderStretch="UniformToFill"
+                                       CornerRadius="48"/>
+                    <TextBlock x:Name="name" Text="{x:Bind FirstName}" FontSize="18" FontWeight="Bold"
+                                       RelativePanel.RightOf="thumbnail"
+                                       RelativePanel.AlignTopWith="thumbnail"
+                                       Margin="16,0,0,0"/>
+                    <TextBlock Text="{x:Bind LastName}" FontSize="18" Margin="10,0,0,0" FontWeight="Bold"
+                               RelativePanel.Below="name"
+                               RelativePanel.AlignTopWith="name"
+                               RelativePanel.RightOf="name"/>
+                    <TextBlock Text="{x:Bind Email}"
+                               Margin="16,0,0,0"
+                               RelativePanel.RightOf="thumbnail"
+                               RelativePanel.Below="name"
+                               />
+                </RelativePanel>
+            </DataTemplate>
+        </uwpkit:MasterDetailsView.ItemTemplate>
     </uwpkit:MasterDetailsView>
     <!--<Grid>
         <Grid.RowDefinitions>
