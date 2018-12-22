@@ -24,13 +24,9 @@ namespace Contacts.ViewModels
             NavigationViewItem selectedItem = (NavigationViewItem)args.SelectedItem;
 
             var tag = selectedItem.Tag;
+            var typeString = "Contacts.Views." + tag.ToString();
 
-            switch (selectedItem.Tag)
-            {
-                case "MasterDetailPage":
-                    navigationService.Navigate(typeof(MasterDetailPage));
-                    break;
-            }
+            navigationService.Navigate(Type.GetType(typeString));
         }
     }
 }

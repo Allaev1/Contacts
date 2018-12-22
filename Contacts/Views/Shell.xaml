@@ -11,7 +11,7 @@
     <NavigationView x:Name="MyNavView" SelectionChanged="{x:Bind ViewModel.OnSelectionChanged}">
         <NavigationView.MenuItems>
             <NavigationViewItem Icon="Contact" Content="Contact" Tag="MasterDetailPage"/>
-            <NavigationViewItem Icon="Favorite" Content="Favorites" Tag="StartPage"/>
+            <NavigationViewItem Icon="Favorite" Content="Favorites" Tag="FavoritesPage"/>
         </NavigationView.MenuItems>
         <Frame x:Name="RootFrame"/>
     </NavigationView>
