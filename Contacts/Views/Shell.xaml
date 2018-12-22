@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <NavigationView x:Name="MyNavView" SelectionChanged="{x:Bind ViewModel.OnSelectionChanged}">
+    <NavigationView x:Name="MyNavView" IsBackButtonVisible="Collapsed" SelectionChanged="{x:Bind ViewModel.OnSelectionChanged}" PaneDisplayMode="Top">
         <NavigationView.MenuItems>
             <NavigationViewItem Icon="Contact" Content="Contact" Tag="MasterDetailPage"/>
             <NavigationViewItem Icon="Favorite" Content="Favorites" Tag="FavoritesPage"/>
