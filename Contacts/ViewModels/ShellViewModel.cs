@@ -13,27 +13,20 @@ namespace Contacts.ViewModels
 {
     public class ShellViewModel : ViewModelBase
     {
+        #region Fields
         INavigationService navigationService;
+        #endregion
+
+        #region Constructor
         public ShellViewModel()
         {
             navigationService = WindowWrapper.Current().NavigationServices.FirstOrDefault();
         }
-
-        #region Bindable properties
-        public List<NavigationViewItem> Items
-        {
-            get
-            {
-                return new List<NavigationViewItem>()
-                {
-                    new NavigationViewItem() { Content="Contacts",Tag="MasterDetailPage"},
-                    new NavigationViewItem() { Content="Favorites",Tag="FavoritesPage" }
-                };
-            }
-        }
         #endregion
 
         #region Commands
+
+        #region Navigation command
         DelegateCommand<NavigationView> _navigateTo;
         public DelegateCommand<NavigationView> NavigateTo
         {
@@ -45,10 +38,17 @@ namespace Contacts.ViewModels
             NavigationViewItem selectedItem = (NavigationViewItem)navigationView.SelectedItem;
 
             var tag = selectedItem.Tag;
-            var typeString = "Contacts.Views." + tag.ToString();
-
-            navigationService.Navigate(Type.GetType(typeString));
+            string typeString;
+            if (tag == null)
+                navigationService.Navigate(typeof(SettingsPage));
+            else
+            {
+                typeString = "Contacts.Views." + tag.ToString();
+                navigationService.Navigate(Type.GetType(typeString));
+            }
         }
+        #endregion
+
         #endregion
     }
 }
