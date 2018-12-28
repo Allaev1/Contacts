@@ -5,14 +5,25 @@
     xmlns:local="using:Contacts.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <NavigationView x:Name="MyNavView" IsBackButtonVisible="Collapsed" SelectionChanged="{x:Bind ViewModel.OnSelectionChanged}" PaneDisplayMode="Top">
-        <NavigationView.MenuItems>
-            <NavigationViewItem Icon="Contact" Content="Contact" Tag="MasterDetailPage"/>
-            <NavigationViewItem Icon="Favorite" Content="Favorites" Tag="FavoritesPage"/>
-        </NavigationView.MenuItems>
+    <NavigationView x:Name="MyNavView" MenuItemsSource="{x:Bind ViewModel.Items}" IsBackButtonVisible="Collapsed" PaneDisplayMode="Top">
+        <interactivity:Interaction.Behaviors>
+            <core:EventTriggerBehavior EventName="SelectionChanged">
+                <core:EventTriggerBehavior.Actions>
+                    <core:InvokeCommandAction Command="{x:Bind ViewModel.NavigateTo}"
+                                              CommandParameter="{x:Bind MyNavView}"/>
+                </core:EventTriggerBehavior.Actions>
+            </core:EventTriggerBehavior>
+        </interactivity:Interaction.Behaviors>
+        <!--<NavigationView.MenuItems>
+            <NavigationViewItem Content="Contacts" Tag="MasterDetailPage" Icon="Contact"/>
+            <NavigationViewItem Content="Favorites" Tag="FavoritesPage" Icon="Favorite"/>
+        </NavigationView.MenuItems>-->
+
         <Frame x:Name="RootFrame"/>
     </NavigationView>
 </Page>

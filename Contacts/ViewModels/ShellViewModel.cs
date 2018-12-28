@@ -19,14 +19,36 @@ namespace Contacts.ViewModels
             navigationService = WindowWrapper.Current().NavigationServices.FirstOrDefault();
         }
 
-        public void OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        #region Bindable properties
+        public List<NavigationViewItem> Items
         {
-            NavigationViewItem selectedItem = (NavigationViewItem)args.SelectedItem;
+            get
+            {
+                return new List<NavigationViewItem>()
+                {
+                    new NavigationViewItem() { Content="Contacts",Tag="MasterDetailPage"},
+                    new NavigationViewItem() { Content="Favorites",Tag="FavoritesPage" }
+                };
+            }
+        }
+        #endregion
+
+        #region Commands
+        DelegateCommand<NavigationView> _navigateTo;
+        public DelegateCommand<NavigationView> NavigateTo
+        {
+            get { return _navigateTo ?? new DelegateCommand<NavigationView>(ExecuteNavigateTo); }
+        }
+
+        private void ExecuteNavigateTo(NavigationView navigationView)
+        {
+            NavigationViewItem selectedItem = (NavigationViewItem)navigationView.SelectedItem;
 
             var tag = selectedItem.Tag;
             var typeString = "Contacts.Views." + tag.ToString();
 
             navigationService.Navigate(Type.GetType(typeString));
         }
+        #endregion
     }
 }
