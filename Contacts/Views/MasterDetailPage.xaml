@@ -28,7 +28,7 @@
             <uwpkit:MasterDetailsView.ItemTemplate>
                 <DataTemplate x:DataType="model:Contact">
                     <RelativePanel>
-                        <uwpkit:ImageEx x:Name="thumbnail" Width="90" Height="90"
+                        <uwpkit:ImageEx Margin="0,10,0,10" x:Name="thumbnail" Width="60" Height="60"
                                        RelativePanel.AlignVerticalCenterWithPanel="True"
                                        Source="{x:Bind PathToImage}"
                                        Stretch="UniformToFill"
@@ -36,8 +36,8 @@
                         <TextBlock x:Name="name" Text="{x:Bind FirstName}" FontSize="18" FontWeight="Bold"
                                        RelativePanel.RightOf="thumbnail"
                                        RelativePanel.AlignTopWith="thumbnail"
-                                       Margin="16,0,0,0"/>
-                        <TextBlock Text="{x:Bind LastName}" FontSize="18" Margin="10,0,0,0" FontWeight="Bold"
+                                       Margin="16,10,0,0"/>
+                        <TextBlock Text="{x:Bind LastName}" FontSize="18" Margin="10,10,0,0" FontWeight="Bold"
                                RelativePanel.Below="name"
                                RelativePanel.AlignTopWith="name"
                                RelativePanel.RightOf="name"/>
