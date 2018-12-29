@@ -55,8 +55,8 @@ namespace Contacts.ViewModels
             {
                 typeString = "Contacts.Views." + tag.ToString();
                 navigationService.Navigate(Type.GetType(typeString));
+                Header = selectedItem.Content.ToString();
             }
-            Header = selectedItem.Content.ToString();
         }
         #endregion
 
