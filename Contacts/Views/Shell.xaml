@@ -10,7 +10,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <NavigationView x:Name="MyNavView" IsBackButtonVisible="Collapsed" PaneDisplayMode="Top">
+    <NavigationView x:Name="MyNavView" IsBackButtonVisible="Collapsed" PaneDisplayMode="Top" Header="{x:Bind ViewModel.Header,Mode=TwoWay}">
         <interactivity:Interaction.Behaviors>
             <core:EventTriggerBehavior EventName="SelectionChanged">
                 <core:EventTriggerBehavior.Actions>
@@ -19,12 +19,12 @@
                 </core:EventTriggerBehavior.Actions>
             </core:EventTriggerBehavior>
         </interactivity:Interaction.Behaviors>
-        
+
         <NavigationView.MenuItems>
             <NavigationViewItem Content="Contacts" Tag="MasterDetailPage" Icon="Contact"/>
             <NavigationViewItem Content="Favorites" Tag="FavoritesPage" Icon="Favorite"/>
         </NavigationView.MenuItems>
 
-        <Frame x:Name="RootFrame"/>
+        <Frame x:Name="RootFrame" Margin="0,10,0,0"/>
     </NavigationView>
 </Page>

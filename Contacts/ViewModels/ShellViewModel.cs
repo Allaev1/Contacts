@@ -17,10 +17,20 @@ namespace Contacts.ViewModels
         INavigationService navigationService;
         #endregion
 
+        #region Bindable properties
+        string _header;
+        public string Header
+        {
+            set { Set(ref _header, value); }
+            get { return _header; }
+        }
+        #endregion
+
         #region Constructor
         public ShellViewModel()
         {
             navigationService = WindowWrapper.Current().NavigationServices.FirstOrDefault();
+            Header = "Contacts";
         }
         #endregion
 
@@ -46,6 +56,7 @@ namespace Contacts.ViewModels
                 typeString = "Contacts.Views." + tag.ToString();
                 navigationService.Navigate(Type.GetType(typeString));
             }
+            Header = selectedItem.Content.ToString();
         }
         #endregion
 
