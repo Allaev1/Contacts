@@ -30,7 +30,6 @@ namespace Contacts.Views
         {
             this.InitializeComponent();
             ContentFrame = RootFrame;
-            _viewModel = new ShellViewModel();
         }
 
         public Frame ContentFrame { set; get; }
@@ -38,7 +37,7 @@ namespace Contacts.Views
         ShellViewModel _viewModel;
         public ShellViewModel ViewModel
         {
-            get { return _viewModel; }
+            get { return new ShellViewModel(); }
         }
     }
 }

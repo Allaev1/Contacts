@@ -28,13 +28,13 @@
             </DataTemplate>
         </NavigationView.MenuItemTemplate>
 
-        <interactivity:Interaction.Behaviors>
+        <!--<interactivity:Interaction.Behaviors>
             <core:EventTriggerBehavior EventName="SelectionChanged">
                 <core:EventTriggerBehavior.Actions>
                     <core:InvokeCommandAction Command="{x:Bind ViewModel.NavigateTo}"/>
                 </core:EventTriggerBehavior.Actions>
             </core:EventTriggerBehavior>
-        </interactivity:Interaction.Behaviors>
+        </interactivity:Interaction.Behaviors>-->
 
         <!--<NavigationView.MenuItems>
             <NavigationViewItem Content="Contacts" Tag="MasterDetailPage" Icon="Contact"/>
