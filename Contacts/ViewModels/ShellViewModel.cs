@@ -4,10 +4,16 @@ using System.Linq;
 using System.Text;
 using Template10.Services.NavigationService;
 using System.Threading.Tasks;
+using Contacts.Models;
 using Windows.UI.Xaml.Controls;
 using Contacts.Views;
 using Template10.Common;
 using Template10.Mvvm;
+using System.Collections.ObjectModel;
+using Windows.UI.Xaml;
+using GalaSoft.MvvmLight.Command;
+using System.Runtime.CompilerServices;
+using System.ComponentModel;
 
 namespace Contacts.ViewModels
 {
@@ -24,12 +30,37 @@ namespace Contacts.ViewModels
             set { Set(ref _header, value); }
             get { return _header; }
         }
+
+        public ObservableCollection<MenuItem> Items
+        {
+            get
+            {
+                return new ObservableCollection<MenuItem>()
+                {
+                    new MenuItem(){Content="Contacts",Symbol=Symbol.Contact,PageType=typeof(MasterDetailPage)},
+                    new MenuItem(){Content="Favorites",Symbol=Symbol.Favorite,PageType=typeof(FavoritesPage)}
+                };
+            }
+        }
+
+        MenuItem _selectedItem;
+        public MenuItem SelectedItem
+        {
+            set
+            {
+                Set(ref _selectedItem, value);
+                Type pageType = SelectedItem.PageType;
+                navigationService.Navigate(pageType);
+            }
+            get { return _selectedItem; }
+        }
         #endregion
 
         #region Constructor
         public ShellViewModel()
         {
             navigationService = WindowWrapper.Current().NavigationServices.FirstOrDefault();
+            _navigateTo = new DelegateCommand<object>(ExecuteNavigateTo);
             Header = "Contacts";
         }
         #endregion
@@ -37,25 +68,22 @@ namespace Contacts.ViewModels
         #region Commands
 
         #region Navigation command
-        DelegateCommand<NavigationView> _navigateTo;
-        public DelegateCommand<NavigationView> NavigateTo
+        DelegateCommand<object> _navigateTo;
+        public DelegateCommand<object> NavigateTo
         {
-            get { return _navigateTo ?? new DelegateCommand<NavigationView>(ExecuteNavigateTo); }
+            get { return _navigateTo ?? new DelegateCommand<object>(ExecuteNavigateTo); }
         }
 
-        private void ExecuteNavigateTo(NavigationView navigationView)
+        private void ExecuteNavigateTo(object item)
         {
-            NavigationViewItem selectedItem = (NavigationViewItem)navigationView.SelectedItem;
+            Type pageType = SelectedItem.PageType;
 
-            var tag = selectedItem.Tag;
-            string typeString;
-            if (tag == null)
+            if (pageType == null)
                 navigationService.Navigate(typeof(SettingsPage));
             else
             {
-                typeString = "Contacts.Views." + tag.ToString();
-                navigationService.Navigate(Type.GetType(typeString));
-                Header = selectedItem.Content.ToString();
+                navigationService.Navigate(pageType);
+                Header = SelectedItem.Content.ToString();
             }
         }
         #endregion

@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Contacts.Views"
+    xmlns:model="using:Contacts.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
@@ -10,20 +11,34 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <NavigationView x:Name="MyNavView" IsBackButtonVisible="Collapsed" PaneDisplayMode="Top" Header="{x:Bind ViewModel.Header,Mode=TwoWay}">
-        <interactivity:Interaction.Behaviors>
+    <NavigationView x:Name="MyNavView"
+                    MenuItemsSource="{x:Bind ViewModel.Items}"
+                    IsBackButtonVisible="Collapsed" 
+                    SelectedItem="{x:Bind ViewModel.SelectedItem,Mode=TwoWay}"
+                    PaneDisplayMode="Top" 
+                    Header="{x:Bind ViewModel.Header,Mode=TwoWay}"
+                    IsSettingsVisible="False">
+        <NavigationView.MenuItemTemplate>
+            <DataTemplate x:DataType="model:MenuItem">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Symbol="{x:Bind Symbol}" Margin="0,0,10,0"/>
+                    <TextBlock Text="{x:Bind Content}"/>
+                </StackPanel>
+            </DataTemplate>
+        </NavigationView.MenuItemTemplate>
+        
+        <!--<interactivity:Interaction.Behaviors>
             <core:EventTriggerBehavior EventName="SelectionChanged">
                 <core:EventTriggerBehavior.Actions>
-                    <core:InvokeCommandAction Command="{x:Bind ViewModel.NavigateTo}"
-                                              CommandParameter="{x:Bind MyNavView}"/>
+                    <core:InvokeCommandAction Command="{x:Bind ViewModel.NavigateTo}"/>
                 </core:EventTriggerBehavior.Actions>
             </core:EventTriggerBehavior>
-        </interactivity:Interaction.Behaviors>
+        </interactivity:Interaction.Behaviors>-->
 
-        <NavigationView.MenuItems>
+        <!--<NavigationView.MenuItems>
             <NavigationViewItem Content="Contacts" Tag="MasterDetailPage" Icon="Contact"/>
             <NavigationViewItem Content="Favorites" Tag="FavoritesPage" Icon="Favorite"/>
-        </NavigationView.MenuItems>
+        </NavigationView.MenuItems>-->
 
         <Frame x:Name="RootFrame" Margin="0,10,0,0"/>
     </NavigationView>
