@@ -60,7 +60,7 @@ namespace Contacts.ViewModels
         public ShellViewModel()
         {
             navigationService = WindowWrapper.Current().NavigationServices.FirstOrDefault();
-            _navigateTo = new DelegateCommand<object>(ExecuteNavigateTo);
+            //_navigateTo = new DelegateCommand<object>(ExecuteNavigateTo);
             Header = "Contacts";
         }
         #endregion
@@ -68,24 +68,24 @@ namespace Contacts.ViewModels
         #region Commands
 
         #region Navigation command
-        DelegateCommand<object> _navigateTo;
-        public DelegateCommand<object> NavigateTo
-        {
-            get { return _navigateTo ?? new DelegateCommand<object>(ExecuteNavigateTo); }
-        }
+        //DelegateCommand<object> _navigateTo;
+        //public DelegateCommand<object> NavigateTo
+        //{
+        //    get { return _navigateTo ?? new DelegateCommand<object>(ExecuteNavigateTo); }
+        //}
 
-        private void ExecuteNavigateTo(object item)
-        {
-            Type pageType = null;
+        //private void ExecuteNavigateTo(object item) 
+        //{   
+        //    Type pageType = null;      
 
-            if (pageType == null)
-                navigationService.Navigate(typeof(SettingsPage));
-            else
-            {
-                navigationService.Navigate(pageType);
-                Header = SelectedItem.Content.ToString();
-            }
-        }
+        //    if (pageType == null)
+        //        navigationService.Navigate(typeof(SettingsPage));
+        //    else
+        //    {
+        //        navigationService.Navigate(pageType);
+        //        Header = SelectedItem.Content.ToString();
+        //    }
+        //}
         #endregion
 
         #endregion

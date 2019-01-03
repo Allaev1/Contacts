@@ -29,9 +29,10 @@
         </NavigationView.MenuItemTemplate>
 
         <!--<interactivity:Interaction.Behaviors>
-            <core:EventTriggerBehavior EventName="SelectionChanged">
+            <core:EventTriggerBehavior EventName="SelectionChanged" SourceObject="{x:Bind MyNavView}">
                 <core:EventTriggerBehavior.Actions>
-                    <core:InvokeCommandAction Command="{x:Bind ViewModel.NavigateTo}"/>
+                    <core:InvokeCommandAction Command="{x:Bind ViewModel.NavigateTo}"
+                                              CommandParameter="{x:Bind MyNavView.SelectedItem}"/>
                 </core:EventTriggerBehavior.Actions>
             </core:EventTriggerBehavior>
         </interactivity:Interaction.Behaviors>-->
@@ -43,4 +44,5 @@
 
         <Frame x:Name="RootFrame" Margin="0,10,0,0"/>
     </NavigationView>
+    
 </Page>
