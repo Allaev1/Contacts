@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Controls;
 namespace Contacts.Models
 {
     /// <summary>
-    /// Menus` item 
+    /// Represent data for menus` item 
     /// </summary>
     public class MenuItem
     {

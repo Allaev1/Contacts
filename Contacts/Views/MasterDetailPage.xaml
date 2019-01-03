@@ -16,7 +16,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <controls:PageHeader x:Name="AppBar">
+        <controls:PageHeader>
             <controls:PageHeader.PrimaryCommands>
                 <AppBarButton Label="Delete" Icon="Delete" HorizontalAlignment="Right" Command="{x:Bind ViewModel.DeleteContact}"/>
             </controls:PageHeader.PrimaryCommands>

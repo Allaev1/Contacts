@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Contacts.Views"
     xmlns:model="using:Contacts.Models"
+    xmlns:i="using:GalaSoft.MvvmLight.Threading"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
@@ -26,14 +27,14 @@
                 </StackPanel>
             </DataTemplate>
         </NavigationView.MenuItemTemplate>
-        
-        <!--<interactivity:Interaction.Behaviors>
+
+        <interactivity:Interaction.Behaviors>
             <core:EventTriggerBehavior EventName="SelectionChanged">
                 <core:EventTriggerBehavior.Actions>
                     <core:InvokeCommandAction Command="{x:Bind ViewModel.NavigateTo}"/>
                 </core:EventTriggerBehavior.Actions>
             </core:EventTriggerBehavior>
-        </interactivity:Interaction.Behaviors>-->
+        </interactivity:Interaction.Behaviors>
 
         <!--<NavigationView.MenuItems>
             <NavigationViewItem Content="Contacts" Tag="MasterDetailPage" Icon="Contact"/>

@@ -76,7 +76,7 @@ namespace Contacts.ViewModels
 
         private void ExecuteNavigateTo(object item)
         {
-            Type pageType = SelectedItem.PageType;
+            Type pageType = null;
 
             if (pageType == null)
                 navigationService.Navigate(typeof(SettingsPage));
