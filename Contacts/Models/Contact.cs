@@ -8,11 +8,11 @@ namespace Contacts.Models
 {
     public class Contact
     {
-        public string FirstName;
-        public string LastName;
-        public string Email;
-        public string Notes;
-        public Uri PathToImage;
-        public string ID;
+        public string FirstName { set; get; }
+        public string LastName { set; get; }
+        public string Email { set; get; }
+        public string Notes { set; get; }
+        public Uri PathToImage { set; get; }
+        public string ID { set; get; }
     }
 }
