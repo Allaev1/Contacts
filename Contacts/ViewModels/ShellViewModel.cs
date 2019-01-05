@@ -64,15 +64,15 @@ namespace Contacts.ViewModels
     /// </summary>
     public class NavigationMenuItem
     {
-        public object Content;
+        public object Content { set; get; }
         /// <summary>
         /// Symbol that shown next to content
         /// </summary>
-        public Symbol Symbol;
+        public Symbol Symbol { set; get; }
         /// <summary>
         /// Page to that make navigation after item was tapped
         /// </summary>
-        public Type PageType;
+        public Type PageType { set; get; }
     }
     #endregion
 }
