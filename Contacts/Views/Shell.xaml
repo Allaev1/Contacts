@@ -9,13 +9,13 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <NavigationView x:Name="MyNavView"
-                    MenuItemsSource="{x:Bind ViewModel.Items}"
+                    MenuItemsSource="{x:Bind ViewModel.NavigationMenuItems}"
                     IsBackButtonVisible="Collapsed" 
                     SelectedItem="{x:Bind ViewModel.SelectedItem,Mode=TwoWay}"
                     Header="{x:Bind ViewModel.Header,Mode=TwoWay}"
                     IsSettingsVisible="False">
         <NavigationView.MenuItemTemplate>
-            <DataTemplate x:DataType="screenObject:MenuItem">
+            <DataTemplate x:DataType="screenObject:NavigationMenuItem">
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Symbol="{x:Bind Symbol}" Margin="0,0,10,0"/>
                     <TextBlock Text="{x:Bind Content}"/>
