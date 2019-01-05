@@ -19,17 +19,17 @@ namespace Contacts.ViewModels
         public ShellViewModel()
         {
             navigationService = WindowWrapper.Current().NavigationServices.FirstOrDefault();
-            Header = "Contacts";
+            //Header = "Contacts";
         }
         #endregion
 
         #region Bindable properties
-        string _header;
-        public string Header
-        {
-            set { Set(ref _header, value); }
-            get { return _header; }
-        }
+        //string _header;
+        //public string Header
+        //{
+        //    set { Set(ref _header, value); }
+        //    get { return _header; }
+        //}
 
         public ObservableCollection<NavigationMenuItem> NavigationMenuItems
         {
@@ -50,6 +50,7 @@ namespace Contacts.ViewModels
             {
                 Set(ref _selectedItem, value);
                 Type pageType = SelectedItem.PageType;
+                //Header = SelectedItem.Content.ToString();
                 navigationService.Navigate(pageType);
             }
             get { return _selectedItem; }
