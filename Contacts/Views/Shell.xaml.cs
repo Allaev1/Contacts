@@ -34,7 +34,7 @@ namespace Contacts.Views
 
         public Frame ContentFrame { set; get; }
 
-        ShellViewModel _viewModel;
+        //ShellViewModel _viewModel;
         public ShellViewModel ViewModel
         {
             get { return new ShellViewModel(); }

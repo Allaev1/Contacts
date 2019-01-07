@@ -21,6 +21,9 @@ using Contacts.Views;
 using GalaSoft.MvvmLight.Ioc;
 using Contacts.ViewModels;
 using Contacts.Services.ContactsRepositoryService;
+using Windows.ApplicationModel.Core;
+using Windows.UI.ViewManagement;
+using Windows.UI;
 
 namespace Contacts
 {
@@ -66,6 +69,11 @@ namespace Contacts
             SimpleIoc.Default.Register<MasterDetailPageViewModel>();
 
             navigationService.Navigate(typeof(MasterDetailPage));
+
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = false;
+            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.BackgroundColor = Colors.Black;
+            titleBar.ButtonBackgroundColor = Colors.Black;
 
             return Task.CompletedTask;
         }
