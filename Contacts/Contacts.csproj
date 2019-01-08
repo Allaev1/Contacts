@@ -95,6 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\DataAccess.cs" />
     <Compile Include="Message\Message.cs" />
     <Compile Include="Services\ContactsRepositoryService\ContactDBService.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
@@ -121,6 +122,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="Contacts_TemporaryKey.pfx" />
+    <Content Include="DataBase.db" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />
@@ -166,6 +168,9 @@
     </PackageReference>
     <PackageReference Include="MvvmLight">
       <Version>5.4.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="sqlite-net-pcl">
+      <Version>1.5.231</Version>
     </PackageReference>
     <PackageReference Include="Template10">
       <Version>1.1.12</Version>
