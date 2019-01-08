@@ -7,20 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Page.Resources>
-        <AcrylicBrush x:Key="NavigationViewDefaultPaneBackground"
-                  BackgroundSource="HostBackdrop"
-                  TintColor="Gray"
-                  TintOpacity="0.6"
-                  FallbackColor="Black"/>
-    </Page.Resources>
-
     <NavigationView MenuItemsSource="{x:Bind ViewModel.NavigationMenuItems}"
                     IsBackButtonVisible="Collapsed" 
                     SelectedItem="{x:Bind ViewModel.SelectedItem,Mode=TwoWay}"
                     IsSettingsVisible="False"
-                    RequestedTheme="Dark"
-                    Background="{StaticResource NavigationViewDefaultPaneBackground}">
+                    RequestedTheme="Dark">
         <NavigationView.MenuItemTemplate>
             <DataTemplate x:DataType="screenObject:NavigationMenuItem">
                 <StackPanel Orientation="Horizontal">
