@@ -23,7 +23,6 @@ namespace Contacts.Models
         }
     }
 
-    [Table("Contacts")]
     public partial class Contacts
     {
         [PrimaryKey]

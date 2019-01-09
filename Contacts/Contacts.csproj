@@ -119,7 +119,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="ContactsDataBase.db" />
+    <Content Include="ContactsDatabase.db" />
     <None Include="Contacts_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

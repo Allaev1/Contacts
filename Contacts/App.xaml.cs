@@ -65,10 +65,16 @@ namespace Contacts
         /// <returns></returns>
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
+            if (null == await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDB.db"))
+            {
+                var appDb = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///ContactsDB.db"));
+                await appDb.CopyAsync(ApplicationData.Current.LocalFolder);
+            }
+
             SimpleIoc.Default.Register<IContactRepositoryService, ContactDBService>();
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<MasterDetailPageViewModel>();
-            
+
             navigationService.Navigate(typeof(MasterDetailPage));
 
             CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = false;
