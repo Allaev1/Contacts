@@ -65,9 +65,9 @@ namespace Contacts
         /// <returns></returns>
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
-            if (null == await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDB.db"))
+            if (null == await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDatabase.db"))
             {
-                var appDb = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///ContactsDB.db"));
+                var appDb = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///ContactsDatabase.db"));
                 await appDb.CopyAsync(ApplicationData.Current.LocalFolder);
             }
 
