@@ -12,7 +12,7 @@ namespace Contacts.Services.ContactsRepositoryService
     /// </summary>
     public interface IContactRepositoryService
     {
-        Task<List<Contact>> GetAllAsync();
+        Task<List<Models.Contacts>> GetAllAsync();
 
         Task DeleteAsync(string id);
     }

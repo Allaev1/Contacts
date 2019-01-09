@@ -24,6 +24,7 @@ using Contacts.Services.ContactsRepositoryService;
 using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI;
+using Windows.Storage;
 
 namespace Contacts
 {
@@ -62,12 +63,12 @@ namespace Contacts
         /// <param name="startKind"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public override Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
+        public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
-            SimpleIoc.Default.Register<IContactRepositoryService, ContactRepositoryServiceFake>();
+            SimpleIoc.Default.Register<IContactRepositoryService, ContactDBService>();
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<MasterDetailPageViewModel>();
-
+            
             navigationService.Navigate(typeof(MasterDetailPage));
 
             CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = false;
@@ -75,7 +76,7 @@ namespace Contacts
             titleBar.BackgroundColor = Colors.Black;
             titleBar.ButtonBackgroundColor = Colors.Black;
 
-            return Task.CompletedTask;
+            await Task.CompletedTask;
         }
 
         public override INavigable ResolveForPage(Page page, NavigationService navigationService)

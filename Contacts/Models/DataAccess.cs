@@ -13,8 +13,8 @@ namespace Contacts.Models
         {
             _path = path;
         }
-        
-         public void Create()
+
+        public void Create()
         {
             using (SQLiteConnection db = new SQLiteConnection(_path))
             {
@@ -22,25 +22,27 @@ namespace Contacts.Models
             }
         }
     }
+
+    [Table("Contacts")]
     public partial class Contacts
     {
         [PrimaryKey]
+        [NotNull]
         public String ID { get; set; }
-        
+
         public String FirstName { get; set; }
-        
+
         public String LastName { get; set; }
-        
+
         public String PhoneNumber { get; set; }
-        
+
         public String PathToImage { get; set; }
-        
+
         public String Email { get; set; }
-        
+
         public Int64? IsFavorite { get; set; }
-        
+
         public Int64? GroupID { get; set; }
-        
+
     }
-    
 }

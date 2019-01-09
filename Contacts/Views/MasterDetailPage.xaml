@@ -25,7 +25,7 @@
                                   ItemsSource="{x:Bind ViewModel.Contacts}"
                                   NoSelectionContent="Select item to view" Grid.Row="1">
             <uwpkit:MasterDetailsView.ItemTemplate>
-                <DataTemplate x:DataType="model:Contact">
+                <DataTemplate x:DataType="model:Contacts">
                     <RelativePanel>
                         <uwpkit:ImageEx Margin="0,10,0,10" x:Name="thumbnail" Width="60" Height="60"
                                        RelativePanel.AlignVerticalCenterWithPanel="True"
@@ -50,7 +50,7 @@
             </uwpkit:MasterDetailsView.ItemTemplate>
 
             <uwpkit:MasterDetailsView.DetailsTemplate>
-                <DataTemplate x:DataType="model:Contact">
+                <DataTemplate x:DataType="model:Contacts">
                     <ScrollViewer>
                         <RelativePanel>
                             <StackPanel x:Name="FirstAndLastNamePanel" 
@@ -75,11 +75,11 @@
                                                   RelativePanel.Below="Image"
                                                   HorizontalAlignment="Left"
                                                   Margin="20,0,20,20"/>
-                            <uwpkit:HeaderedTextBlock Header="Notes"
+                            <uwpkit:HeaderedTextBlock Header="Phone number"
                                                   FontSize="26"
                                                   Margin="20,0,20,20"
                                                   RelativePanel.Below="Email"
-                                                  Text="{x:Bind Notes}"/>
+                                                  Text="{x:Bind PhoneNumber}"/>
                         </RelativePanel>
                     </ScrollViewer>
                 </DataTemplate>

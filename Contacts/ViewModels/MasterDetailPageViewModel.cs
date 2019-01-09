@@ -17,8 +17,8 @@ namespace Contacts.ViewModels
     {
         #region Fields
         IContactRepositoryService _contactRepository;
-        ObservableCollection<Contact> _contacts;
-        Contact _contact;
+        ObservableCollection<Models.Contacts> _contacts;
+        Models.Contacts _contact;
         DelegateCommand _deleteCommand;
         #endregion
 
@@ -34,7 +34,7 @@ namespace Contacts.ViewModels
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
             var list = await _contactRepository.GetAllAsync();
-            _contacts = new ObservableCollection<Contact>(list);
+            _contacts = new ObservableCollection<Models.Contacts>(list);
 
             Messenger.Default.Register<OperationResultMessage>(this, (message) => HandlePersonsChangedMessage(message));
         }
@@ -76,13 +76,13 @@ namespace Contacts.ViewModels
         #endregion
 
         #region Bindable properties
-        public ObservableCollection<Contact> Contacts
+        public ObservableCollection<Models.Contacts> Contacts
         {
             get { return _contacts; }
             set { Set(ref _contacts, value); }
         }
 
-        public Contact SelectedContact
+        public Models.Contacts SelectedContact
         {
             get { return _contact; }
             set
