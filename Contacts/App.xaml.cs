@@ -1,19 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using Template10.Common;
 using Template10.Services.NavigationService;
 using System.Threading.Tasks;
@@ -65,7 +53,14 @@ namespace Contacts
         /// <returns></returns>
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
-            if (null == await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDatabase.db"))
+            //Code that delete database from local app data
+            //var file = await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDatabase.db");
+            //await file.DeleteAsync();
+            try
+            {
+                await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDatabase.db");
+            }
+            catch (Exception)
             {
                 var appDb = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///ContactsDatabase.db"));
                 await appDb.CopyAsync(ApplicationData.Current.LocalFolder);
@@ -75,12 +70,12 @@ namespace Contacts
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<MasterDetailPageViewModel>();
 
-            navigationService.Navigate(typeof(MasterDetailPage));
-
             CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = false;
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
             titleBar.BackgroundColor = Colors.Black;
             titleBar.ButtonBackgroundColor = Colors.Black;
+
+            navigationService.Navigate(typeof(MasterDetailPage));
 
             await Task.CompletedTask;
         }
