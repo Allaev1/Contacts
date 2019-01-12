@@ -23,7 +23,7 @@ namespace Contacts.Services.ContactsRepositoryService
             connection.Table<Models.Contacts>().Delete(a => a.ID == id);
             _contacts.Remove(SelectedContact);
 
-            var message = new OperationResultMessage(){ Operation = CRUD.Delete };
+            var message = new OperationResultMessage() { Operation = CRUD.Delete };
             Messenger.Default.Send<OperationResultMessage>(message);
 
             await Task.CompletedTask;
@@ -33,7 +33,7 @@ namespace Contacts.Services.ContactsRepositoryService
         {
             if (_contacts == null)
             {
-                dbFile = await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDatabase.db");
+                dbFile = await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDataBase.db");
                 connection = new SQLiteConnection(dbFile.Path);
                 return _contacts = await ReadAsync();
             }

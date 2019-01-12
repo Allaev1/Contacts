@@ -54,15 +54,15 @@ namespace Contacts
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
             //Code that delete database from local app data
-            //var file = await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDatabase.db");
+            //StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDatabase.db");
             //await file.DeleteAsync();
             try
             {
-                await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDatabase.db");
+                await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDataBase.db");
             }
             catch (Exception)
             {
-                var appDb = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///ContactsDatabase.db"));
+                var appDb = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///ContactsDataBase.db"));
                 await appDb.CopyAsync(ApplicationData.Current.LocalFolder);
             }
 
@@ -83,7 +83,7 @@ namespace Contacts
         public override INavigable ResolveForPage(Page page, NavigationService navigationService)
         {
             if (page is MasterDetailPage)
-                return SimpleIoc.Default.GetInstance<MasterDetailPageViewModel>();
+                return SimpleIoc.Default.GetInstanceWithoutCaching<MasterDetailPageViewModel>();
             else
                 return base.ResolveForPage(page, navigationService);
         }

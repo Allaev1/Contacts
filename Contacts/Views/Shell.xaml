@@ -11,7 +11,9 @@
                     IsBackButtonVisible="Collapsed" 
                     SelectedItem="{x:Bind ViewModel.SelectedItem,Mode=TwoWay}"
                     IsSettingsVisible="False"
-                    RequestedTheme="Dark">
+                    RequestedTheme="Dark"
+                    PaneTitle="Contacts" 
+                    FontWeight="SemiBold">
         <NavigationView.MenuItemTemplate>
             <DataTemplate x:DataType="screenObject:NavigationMenuItem">
                 <StackPanel Orientation="Horizontal">

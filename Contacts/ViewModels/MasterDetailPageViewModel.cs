@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using Contacts.Message;
 using Template10.Mvvm;
 using Contacts.Services.ContactsRepositoryService;
-using Contacts.Models;
-using Template10.Services.NavigationService;
 using GalaSoft.MvvmLight.Messaging;
 using Windows.UI.Xaml.Controls;
 using System.Collections.ObjectModel;

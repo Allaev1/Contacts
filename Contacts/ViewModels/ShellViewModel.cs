@@ -56,7 +56,6 @@ namespace Contacts.ViewModels
             get { return _selectedItem; }
         }
         #endregion
-
     }
 
     #region Screen object
