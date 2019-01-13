@@ -120,9 +120,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <Content Include="Assets\ContactsLogo.png" />
-    <Content Include="ContactsDataBase.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="ContactsDB.db" />
     <None Include="Contacts_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

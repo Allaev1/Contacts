@@ -54,15 +54,15 @@ namespace Contacts
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
             //Code that delete database from local app data
-            //StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDatabase.db");
+            //StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDB.db");
             //await file.DeleteAsync();
             try
             {
-                await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDataBase.db");
+                await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDB.db");
             }
             catch (Exception)
             {
-                var appDb = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///ContactsDataBase.db"));
+                var appDb = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///ContactsDB.db"));
                 await appDb.CopyAsync(ApplicationData.Current.LocalFolder);
             }
 

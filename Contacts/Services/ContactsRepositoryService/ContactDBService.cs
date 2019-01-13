@@ -33,7 +33,7 @@ namespace Contacts.Services.ContactsRepositoryService
         {
             if (_contacts == null)
             {
-                dbFile = await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDataBase.db");
+                dbFile = await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDB.db");
                 connection = new SQLiteConnection(dbFile.Path);
                 return _contacts = await ReadAsync();
             }
