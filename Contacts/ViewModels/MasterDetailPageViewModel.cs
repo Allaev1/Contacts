@@ -17,14 +17,16 @@ namespace Contacts.ViewModels
         IContactRepositoryService _contactRepository;
         ObservableCollection<Models.Contacts> _contacts;
         Models.Contacts _contact;
-        DelegateCommand _deleteCommand;
+        DelegateCommand _deleteContactCommand;
+        DelegateCommand _goToSettingsCommand;
         #endregion
 
         #region Contructors
         public MasterDetailPageViewModel(IContactRepositoryService contactRepository)
         {
             _contactRepository = contactRepository;
-            _deleteCommand = new DelegateCommand(DeleteExecute, CanDeleteExecute);
+            _deleteContactCommand = new DelegateCommand(DeleteExecute, CanDeleteExecute);
+            _goToSettingsCommand = new DelegateCommand(GoToSettingsExecute);
         }
         #endregion
 
@@ -45,12 +47,12 @@ namespace Contacts.ViewModels
         }
         #endregion
 
-        #region Commands
+        #region PrimaryCommands
 
         #region DeleteCommand
         public DelegateCommand DeleteContact
         {
-            get { return _deleteCommand ?? new DelegateCommand(DeleteExecute, CanDeleteExecute); }
+            get { return _deleteContactCommand ?? new DelegateCommand(DeleteExecute, CanDeleteExecute); }
         }
 
         private bool CanDeleteExecute() => this.SelectedContact == null ? false : true;
@@ -68,6 +70,22 @@ namespace Contacts.ViewModels
             if (result != ContentDialogResult.Primary) return;
 
             await _contactRepository.DeleteAsync(SelectedContact.ID);
+        }
+        #endregion
+
+        #endregion
+
+        #region SecondaryCommands 
+
+        #region GoToSetting
+        public DelegateCommand GoToSettings
+        {
+            get { return _goToSettingsCommand ?? new DelegateCommand(GoToSettingsExecute); }
+        }
+
+        private void GoToSettingsExecute()
+        {
+            NavigationService.Navigate(typeof(Views.SettingsPage));
         }
         #endregion
 

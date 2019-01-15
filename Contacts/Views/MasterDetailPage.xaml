@@ -19,6 +19,10 @@
             <controls:PageHeader.PrimaryCommands>
                 <AppBarButton Label="Delete" Icon="Delete" HorizontalAlignment="Left" IsCompact="True" Command="{x:Bind ViewModel.DeleteContact}"/>
             </controls:PageHeader.PrimaryCommands>
+            
+            <controls:PageHeader.SecondaryCommands>
+                <AppBarButton Label="Settings" Command="{x:Bind ViewModel.GoToSettings}"/>
+            </controls:PageHeader.SecondaryCommands>
         </controls:PageHeader>
 
         <uwpkit:MasterDetailsView SelectedItem="{x:Bind ViewModel.SelectedContact,Mode=TwoWay}" 

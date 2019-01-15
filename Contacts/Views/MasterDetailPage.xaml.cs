@@ -26,6 +26,7 @@ namespace Contacts.Views
         public MasterDetailPage()
         {
             this.InitializeComponent();
+            NavigationCacheMode = NavigationCacheMode.Required;
             DataContext = ViewModel;
         }
 

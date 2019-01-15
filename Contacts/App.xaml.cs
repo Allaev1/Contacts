@@ -21,7 +21,6 @@ namespace Contacts
     /// </summary>
     sealed partial class App : BootStrapper
     {
-        INavigationService navigationService;
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -40,7 +39,7 @@ namespace Contacts
         {
             Shell shell = new Shell();
 
-            navigationService = NavigationServiceFactory(BackButton.Attach, ExistingContent.Include, shell.ContentFrame);
+            NavigationServiceFactory(BackButton.Attach, ExistingContent.Include, shell.ContentFrame);
 
             return shell;
         }
@@ -75,7 +74,7 @@ namespace Contacts
             titleBar.BackgroundColor = Colors.Black;
             titleBar.ButtonBackgroundColor = Colors.Black;
 
-            navigationService.Navigate(typeof(MasterDetailPage));
+            NavigationService.Navigate(typeof(MasterDetailPage));
 
             await Task.CompletedTask;
         }
