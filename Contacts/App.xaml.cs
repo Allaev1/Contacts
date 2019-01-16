@@ -79,12 +79,16 @@ namespace Contacts
             await Task.CompletedTask;
         }
 
-        public override INavigable ResolveForPage(Page page, NavigationService navigationService)
-        {
-            if (page is MasterDetailPage)
-                return SimpleIoc.Default.GetInstanceWithoutCaching<MasterDetailPageViewModel>();
-            else
-                return base.ResolveForPage(page, navigationService);
-        }
+        //Comment ResolveForPage in cases when you take off responosbility of getting ViewModels 
+        //from App.xaml.cs
+        //For example if you setting ViewModel in the Views` constructor and using NavigationCacheMode property
+
+        //public override INavigable ResolveForPage(Page page, NavigationService navigationService)
+        //{
+        //    if (page is MasterDetailPage)
+        //        return SimpleIoc.Default.GetInstanceWithoutCaching<MasterDetailPageViewModel>();
+        //    else
+        //        return base.ResolveForPage(page, navigationService);
+        //}
     }
 }
