@@ -28,11 +28,7 @@ namespace Contacts.ViewModels
         //on the applicable View
         public MasterDetailPageViewModel(IContactRepositoryService contactRepository = null)
         {
-            if (contactRepository == null)
-                _contactRepository = new ContactDBService();
-            else
-                _contactRepository = contactRepository;
-
+            _contactRepository = (contactRepository == null ? new ContactDBService() : contactRepository);
             _deleteContactCommand = new DelegateCommand(DeleteExecute, CanDeleteExecute);
             _goToSettingsCommand = new DelegateCommand(GoToSettingsExecute);
         }
