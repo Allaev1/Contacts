@@ -22,24 +22,20 @@ namespace Contacts.ViewModels
         #endregion
 
         #region Contructors
-        //public MasterDetailPageViewModel(IContactRepositoryService contactRepository)
-        //{
-        //    _contactRepository = contactRepository;
-        //    _deleteContactCommand = new DelegateCommand(DeleteExecute, CanDeleteExecute);
-        //    _goToSettingsCommand = new DelegateCommand(GoToSettingsExecute);
-        //}
 
-        #region
         //Use in case when you use aggregation 
         //NOTE: Do not forget to use NavigationCacheMode prop 
         //on the applicable View
-        public MasterDetailPageViewModel()
+        public MasterDetailPageViewModel(IContactRepositoryService contactRepository = null)
         {
-            _contactRepository = new ContactDBService();
+            if (contactRepository == null)
+                _contactRepository = new ContactDBService();
+            else
+                _contactRepository = contactRepository;
+
             _deleteContactCommand = new DelegateCommand(DeleteExecute, CanDeleteExecute);
             _goToSettingsCommand = new DelegateCommand(GoToSettingsExecute);
         }
-        #endregion
 
         #endregion
 
