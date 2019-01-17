@@ -25,7 +25,7 @@
             </controls:PageHeader.SecondaryCommands>
         </controls:PageHeader>
 
-        <uwpkit:MasterDetailsView SelectedItem="{x:Bind ViewModel.SelectedContact,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+        <uwpkit:MasterDetailsView SelectedItem="{x:Bind ViewModel.SelectedContact,Mode=TwoWay}" 
                                   ItemsSource="{x:Bind ViewModel.Contacts}"
                                   NoSelectionContent="Select item to view" Grid.Row="1">
             <uwpkit:MasterDetailsView.ItemTemplate>
