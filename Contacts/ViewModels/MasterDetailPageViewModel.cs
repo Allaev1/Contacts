@@ -23,9 +23,9 @@ namespace Contacts.ViewModels
 
         #region Contructors
 
-        //Use in case when you use aggregation 
+        //You can use this constructor either for aggregation and composition
         //NOTE: Do not forget to use NavigationCacheMode prop 
-        //on the applicable View
+        //on the applicable View if you use aggregation
         public MasterDetailPageViewModel(IContactRepositoryService contactRepository = null)
         {
             _contactRepository = (contactRepository == null ? new ContactDBService() : contactRepository);
