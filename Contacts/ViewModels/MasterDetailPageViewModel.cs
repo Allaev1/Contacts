@@ -23,12 +23,9 @@ namespace Contacts.ViewModels
 
         #region Contructors
 
-        //You can use this constructor either for aggregation and composition
-        //NOTE: Do not forget to use NavigationCacheMode prop 
-        //on the applicable View if you use aggregation
-        public MasterDetailPageViewModel(IContactRepositoryService contactRepository = null)
+        public MasterDetailPageViewModel(IContactRepositoryService contactRepository)
         {
-            _contactRepository = (contactRepository == null ? new ContactDBService() : contactRepository);
+            _contactRepository = contactRepository;
             _deleteContactCommand = new DelegateCommand(DeleteExecute, CanDeleteExecute);
             _goToSettingsCommand = new DelegateCommand(GoToSettingsExecute);
         }
@@ -108,6 +105,15 @@ namespace Contacts.ViewModels
             get { return _contact; }
             set
             {
+                if(value==null)
+                {
+                    ContentDialog contentDialog = new ContentDialog()
+                    {
+                        Title="Attention",
+                        Content="NULL!",
+                        PrimaryButtonText="OK"
+                    };
+                }
                 Set(ref _contact, value);
                 DeleteContact.RaiseCanExecuteChanged();
             }
