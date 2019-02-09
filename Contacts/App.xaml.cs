@@ -65,9 +65,9 @@ namespace Contacts
                 await appDb.CopyAsync(ApplicationData.Current.LocalFolder);
             }
 
-            SimpleIoc.Default.Register<IContactRepositoryService, ContactDBService>();
-            SimpleIoc.Default.Register<ShellViewModel>();
-            SimpleIoc.Default.Register<MasterDetailPageViewModel>();
+            //SimpleIoc.Default.Register<IContactRepositoryService, ContactDBService>();
+            //SimpleIoc.Default.Register<ShellViewModel>();
+            //SimpleIoc.Default.Register<MasterDetailPageViewModel>();
 
             CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = false;
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;

@@ -23,9 +23,9 @@ namespace Contacts.ViewModels
 
         #region Contructors
 
-        public MasterDetailPageViewModel(IContactRepositoryService contactRepository)
+        public MasterDetailPageViewModel(/*IContactRepositoryService contactRepository*/)
         {
-            _contactRepository = contactRepository;
+            _contactRepository = new ContactDBService();
             _deleteContactCommand = new DelegateCommand(DeleteExecute, CanDeleteExecute);
             _goToSettingsCommand = new DelegateCommand(GoToSettingsExecute);
         }
@@ -73,6 +73,18 @@ namespace Contacts.ViewModels
 
             await _contactRepository.DeleteAsync(SelectedContact.ID);
         }
+        #endregion
+
+        #region AddCommand
+        DelegateCommand _addContact;
+        public DelegateCommand AddContact
+        {
+            get { return _addContact ?? new DelegateCommand(AddExecute); }
+        }
+
+        private void AddExecute() =>
+            NavigationService.Navigate(typeof(Views.AddEditDialogPage));
+
         #endregion
 
         #endregion
