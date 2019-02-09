@@ -13,6 +13,7 @@ using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI;
 using Windows.Storage;
+using Template10.Controls;
 
 namespace Contacts
 {
@@ -41,7 +42,10 @@ namespace Contacts
 
             NavigationServiceFactory(BackButton.Attach, ExistingContent.Include, shell.ContentFrame);
 
-            return shell;
+            return new ModalDialog()
+            {
+                Content = shell
+            };
         }
 
         /// <summary>
@@ -83,12 +87,14 @@ namespace Contacts
         //from App.xaml.cs
         //For example if you setting ViewModel in the Views` constructor and using NavigationCacheMode property
 
-        //public override INavigable ResolveForPage(Page page, NavigationService navigationService)
-        //{
-        //    if (page is MasterDetailPage)
-        //        return SimpleIoc.Default.GetInstanceWithoutCaching<MasterDetailPageViewModel>();
-        //    else
-        //        return base.ResolveForPage(page, navigationService);
-        //}
+        public override INavigable ResolveForPage(Page page, NavigationService navigationService)
+        {
+            if(App.Current.ShowShellBackButton == false)
+            {
+                App.Current.ShowShellBackButton = true;
+            }
+
+            return base.ResolveForPage(page, navigationService);
+        }
     }
 }
