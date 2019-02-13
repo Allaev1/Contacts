@@ -98,6 +98,7 @@
     <Compile Include="Models\DataAccess.cs" />
     <Compile Include="Message\Message.cs" />
     <Compile Include="Services\ContactsRepositoryService\ContactDBService.cs" />
+    <Compile Include="ViewModels\AddEditPageViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\AddEditPage.xaml.cs">
       <DependentUpon>AddEditPage.xaml</DependentUpon>
