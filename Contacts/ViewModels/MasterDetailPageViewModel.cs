@@ -83,7 +83,7 @@ namespace Contacts.ViewModels
         }
 
         private void AddExecute() =>
-            NavigationService.Navigate(typeof(Views.AddEditDialogPage));
+            NavigationService.Navigate(typeof(Views.AddEditPage));
 
         #endregion
 
