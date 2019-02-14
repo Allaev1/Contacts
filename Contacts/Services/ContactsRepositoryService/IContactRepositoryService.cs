@@ -10,6 +10,8 @@ namespace Contacts.Services.ContactsRepositoryService
     {
         Task<List<Models.Contacts>> GetAllAsync();
 
+        Task AddAsync(Models.Contacts contact);
+
         Task DeleteAsync(string id);
     }
 }

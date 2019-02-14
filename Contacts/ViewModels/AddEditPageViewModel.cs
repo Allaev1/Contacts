@@ -61,7 +61,21 @@ namespace Contacts.ViewModels
         #endregion
 
         #region Commands
+        public async void GoBackUnsaved() =>
+            await NavigationService.NavigateAsync(typeof(Views.MasterDetailPage));
 
+        public async void GoBackSaved()
+        {
+            currentContact.FirstName = TemporaryContact.FirstName;
+            currentContact.LastName = TemporaryContact.LastName;
+            currentContact.IsFavorite = TemporaryContact.IsFavorite;
+            currentContact.PhoneNumber = TemporaryContact.PhoneNumber;
+            currentContact.Email = TemporaryContact.Email;
+
+            await repositoryService.AddAsync(currentContact);
+
+            NavigationService.Navigate(typeof(Views.MasterDetailPage));
+        }
         #endregion
     }
 }

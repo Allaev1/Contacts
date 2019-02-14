@@ -17,6 +17,13 @@ namespace Contacts.Services.ContactsRepositoryService
         #endregion
 
         #region Interface implementation
+        public Task AddAsync(Models.Contacts contact)
+        {
+            connection.Table<Models.Contacts>().Connection.Insert(contact);
+
+            return Task.CompletedTask;
+        }
+
         public async Task DeleteAsync(string id)
         {
             Models.Contacts SelectedContact = _contacts.Find(a => a.ID == id);
