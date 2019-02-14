@@ -183,6 +183,9 @@
     <PackageReference Include="Template10">
       <Version>1.1.12</Version>
     </PackageReference>
+    <PackageReference Include="Template10-Validation">
+      <Version>1.0.2</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
