@@ -74,7 +74,7 @@ namespace Contacts.ViewModels
 
             await repositoryService.AddAsync(currentContact);
 
-            NavigationService.Navigate(typeof(Views.MasterDetailPage));
+            NavigationService.Navigate(typeof(Views.MasterDetailPage)); 
         }
         #endregion
     }
