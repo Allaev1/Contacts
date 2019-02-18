@@ -11,13 +11,22 @@ using Contacts.Models;
 
 namespace Contacts.ViewModels
 {
-    class AddEditPageViewModel : ViewModelBase
+    public class AddEditPageViewModel : ViewModelBase
     {
         #region Fields
         IContactRepositoryService repositoryService;
         Models.Contacts currentContact;
-        ProxyContact TemporaryContact;
+        ProxyContact _temporaryContact;
         #endregion
+
+        public ProxyContact TemporaryContact
+        {
+            set { Set(ref _temporaryContact, value); }
+            get
+            {
+                return _temporaryContact;
+            }
+        }
 
         #region Constructors
         public AddEditPageViewModel()
@@ -49,8 +58,7 @@ namespace Contacts.ViewModels
                     if (string.IsNullOrEmpty(u.LastName))
                         u.Properties[nameof(u.LastName)].Errors.Add("Lastname is required");
                     else if (u.LastName.Length < 3)
-                        u.Properties[nameof(u.LastName)].Errors.Add("Lastname must consist of minimum 2 characters");
-
+                        u.Properties[nameof(u.LastName)].Errors.Add("Lastname must consist of minimum 3 characters");
                 },
             };
             TemporaryContact = temporary;

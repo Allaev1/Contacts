@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Contacts.ViewModels;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -25,6 +26,14 @@ namespace Contacts.Views
         public AddEditPage()
         {
             this.InitializeComponent();
+            DataContext = new AddEditPageViewModel();
+
+        }
+
+        private AddEditPageViewModel _viewModel;
+        public AddEditPageViewModel ViewModel
+        {
+            get { return _viewModel ?? (_viewModel = (AddEditPageViewModel)DataContext); }
         }
     }
 }
