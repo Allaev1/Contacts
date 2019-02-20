@@ -14,14 +14,32 @@ namespace Contacts.Services.ContactsRepositoryService
         List<Models.Contacts> _contacts;
         StorageFile dbFile;
         SQLiteConnection connection;
+        static ContactDBService _instance = new ContactDBService();
+        #endregion
+
+        #region Contstructors
+        private ContactDBService()
+        {
+            
+        }
+        #endregion
+
+        #region Properties
+        public static ContactDBService Instance
+        {
+            get { return _instance; }
+        }
         #endregion
 
         #region Interface implementation
-        public Task AddAsync(Models.Contacts contact)
+        public async Task AddAsync(Models.Contacts contact)
         {
+            dbFile = await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDB.db");
+            connection = new SQLiteConnection(dbFile.Path);
+
             connection.Table<Models.Contacts>().Connection.Insert(contact);
 
-            return Task.CompletedTask;
+            _contacts = await ReadAsync();
         }
 
         public async Task DeleteAsync(string id)
@@ -48,6 +66,7 @@ namespace Contacts.Services.ContactsRepositoryService
                 return _contacts;
         }
         #endregion
+
 
         #region Read
         public async Task<List<Models.Contacts>> ReadAsync()

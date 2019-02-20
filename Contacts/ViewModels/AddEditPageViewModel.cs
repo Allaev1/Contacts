@@ -17,21 +17,22 @@ namespace Contacts.ViewModels
         IContactRepositoryService repositoryService;
         Models.Contacts currentContact;
         ProxyContact _temporaryContact;
+        DelegateCommand _goBackSaved;
+        DelegateCommand _goBackUnsaved;
         #endregion
 
         public ProxyContact TemporaryContact
         {
             set { Set(ref _temporaryContact, value); }
-            get
-            {
-                return _temporaryContact;
-            }
+            get { return _temporaryContact; }
         }
 
         #region Constructors
         public AddEditPageViewModel()
         {
-            repositoryService = new ContactDBService();
+            repositoryService = ContactDBService.Instance;
+            _goBackSaved = new DelegateCommand(GoBackSavedExecute);
+            _goBackUnsaved = new DelegateCommand(GoBackUnsavedExecute);
         }
         #endregion
 
@@ -69,10 +70,14 @@ namespace Contacts.ViewModels
         #endregion
 
         #region Commands
-        public async void GoBackUnsaved() =>
-            await NavigationService.NavigateAsync(typeof(Views.MasterDetailPage));
 
-        public async void GoBackSaved()
+        #region Save
+        public DelegateCommand GoBackSaved
+        {
+            get { return _goBackSaved ?? new DelegateCommand(GoBackSavedExecute); }
+        }
+
+        public async void GoBackSavedExecute()
         {
             currentContact.FirstName = TemporaryContact.FirstName;
             currentContact.LastName = TemporaryContact.LastName;
@@ -82,8 +87,20 @@ namespace Contacts.ViewModels
 
             await repositoryService.AddAsync(currentContact);
 
-            NavigationService.Navigate(typeof(Views.MasterDetailPage)); 
+            NavigationService.Navigate(typeof(Views.MasterDetailPage));
         }
+        #endregion
+
+        #region Unsave
+        public DelegateCommand GoBackUnSaved
+        {
+            get { return _goBackUnsaved ?? new DelegateCommand(GoBackSavedExecute); }
+        }
+
+        public async void GoBackUnsavedExecute() =>
+            await NavigationService.NavigateAsync(typeof(Views.MasterDetailPage));
+        #endregion
+
         #endregion
     }
 }

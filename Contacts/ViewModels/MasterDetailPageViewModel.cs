@@ -25,7 +25,7 @@ namespace Contacts.ViewModels
 
         public MasterDetailPageViewModel(/*IContactRepositoryService contactRepository*/)
         {
-            _contactRepository = new ContactDBService();
+            _contactRepository = ContactDBService.Instance;
             _deleteContactCommand = new DelegateCommand(DeleteExecute, CanDeleteExecute);
             _goToSettingsCommand = new DelegateCommand(GoToSettingsExecute);
         }

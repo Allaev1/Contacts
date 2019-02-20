@@ -87,14 +87,9 @@ namespace Contacts
         //from App.xaml.cs
         //For example if you setting ViewModel in the Views` constructor and using NavigationCacheMode property
 
-        public override INavigable ResolveForPage(Page page, NavigationService navigationService)
-        {
-            if(App.Current.ShowShellBackButton == false)
-            {
-                App.Current.ShowShellBackButton = true;
-            }
-
-            return base.ResolveForPage(page, navigationService);
-        }
+        //public override INavigable ResolveForPage(Page page, NavigationService navigationService)
+        //{
+        //    return base.ResolveForPage(page, navigationService);
+        //}
     }
 }
