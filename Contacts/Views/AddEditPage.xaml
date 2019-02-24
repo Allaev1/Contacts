@@ -20,18 +20,34 @@
     </Page.Resources>
 
     <Grid>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
         <RelativePanel Margin="15" DataContext="{x:Bind ViewModel.TemporaryContact}">
-            <toolkit:ImageEx x:Name="ContactsImage" CornerRadius="300"
+            <PersonPicture x:Name="ContactsImage"
+                         Width="300" 
+                         Height="300"/>
+            <!--<toolkit:ImageEx x:Name="ContactsImage" CornerRadius="300"
                          Width="300" 
                          Height="300"
                          BorderBrush="White"
-                         BorderThickness="1"/>
-            <validation:ControlWrapper PropertyName="FirstName" x:Name="FirstNameCR" RelativePanel.Below="ContactsImage">
+                         BorderThickness="1">
+            </toolkit:ImageEx>-->
+            <Button x:Name="AddButton"
+                    Grid.Column="1"
+                    Content="Add image"
+                    Margin="10"
+                    RelativePanel.Below="ContactsImage"
+                    RelativePanel.AlignHorizontalCenterWith="ContactsImage"
+                    Command="{x:Bind ViewModel.AddImage}"/>
+            <validation:ControlWrapper PropertyName="FirstName" x:Name="FirstNameCR" RelativePanel.Below="AddButton">
                 <TextBox Header="First Name" 
                      PlaceholderText="Bekzod"
                      Text="{Binding FirstName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
@@ -52,11 +68,12 @@
                      Text="{Binding Email,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
             </validation:ControlWrapper>
         </RelativePanel>
-        
+
         <StackPanel Grid.Row="1" Orientation="Horizontal" RelativePanel.AlignBottomWithPanel="True">
             <Button Content="Save" Width="160" Margin="10" Command="{x:Bind ViewModel.GoBackSaved}"
                     IsEnabled="{x:Bind ViewModel.TemporaryContact.IsValid,Mode=OneWay}"/>
             <Button Content="Cancel" Width="160" Margin="10" Command="{x:Bind ViewModel.GoBackUnSaved}"/>
         </StackPanel>
+
     </Grid>
 </Page>

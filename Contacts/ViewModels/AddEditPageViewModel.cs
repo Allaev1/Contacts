@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Navigation;
 using Contacts.Services.ContactsRepositoryService;
 using Contacts.ProxyModels;
 using Contacts.Models;
+using Windows.Storage.Pickers;
 
 namespace Contacts.ViewModels
 {
@@ -19,13 +20,16 @@ namespace Contacts.ViewModels
         ProxyContact _temporaryContact;
         DelegateCommand _goBackSaved;
         DelegateCommand _goBackUnsaved;
+        DelegateCommand _addImage;
         #endregion
 
+        #region Bindable properties
         public ProxyContact TemporaryContact
         {
             set { Set(ref _temporaryContact, value); }
             get { return _temporaryContact; }
         }
+        #endregion
 
         #region Constructors
         public AddEditPageViewModel()
@@ -33,6 +37,7 @@ namespace Contacts.ViewModels
             repositoryService = ContactDBService.Instance;
             _goBackSaved = new DelegateCommand(GoBackSavedExecute);
             _goBackUnsaved = new DelegateCommand(GoBackUnsavedExecute);
+            _addImage = new DelegateCommand(AddImageExecute);
         }
         #endregion
 
@@ -71,7 +76,7 @@ namespace Contacts.ViewModels
 
         #region Commands
 
-        #region Save
+        #region Save contact
         public DelegateCommand GoBackSaved
         {
             get { return _goBackSaved ?? new DelegateCommand(GoBackSavedExecute); }
@@ -99,6 +104,27 @@ namespace Contacts.ViewModels
 
         public async void GoBackUnsavedExecute() =>
             await NavigationService.NavigateAsync(typeof(Views.MasterDetailPage));
+        #endregion
+
+        #region Pick Image
+        public DelegateCommand AddImage
+        {
+            get { return _addImage ?? new DelegateCommand(AddImageExecute); }
+        }
+
+        private async void AddImageExecute()
+        {
+            var picker = new FileOpenPicker();
+            picker.ViewMode = PickerViewMode.List;
+
+            picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            picker.FileTypeFilter.Add(".jpg");
+            picker.FileTypeFilter.Add(".jpeg");
+            picker.FileTypeFilter.Add(".png");
+
+            await picker.PickSingleFileAsync();
+        }
+
         #endregion
 
         #endregion
