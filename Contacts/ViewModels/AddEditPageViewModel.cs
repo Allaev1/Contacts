@@ -9,6 +9,16 @@ using Contacts.Services.ContactsRepositoryService;
 using Contacts.ProxyModels;
 using Contacts.Models;
 using Windows.Storage.Pickers;
+using Windows.ApplicationModel.Contacts;
+using System.IO;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.Graphics.Imaging;
+using Windows.Storage;
+using Windows.UI.Xaml.Media;
+using Windows.Storage.Streams;
+using System.Drawing;
+using Windows.UI.Xaml.Controls;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace Contacts.ViewModels
 {
@@ -21,6 +31,7 @@ namespace Contacts.ViewModels
         DelegateCommand _goBackSaved;
         DelegateCommand _goBackUnsaved;
         DelegateCommand _addImage;
+        Uri _pathToImage;
         #endregion
 
         #region Bindable properties
@@ -28,6 +39,12 @@ namespace Contacts.ViewModels
         {
             set { Set(ref _temporaryContact, value); }
             get { return _temporaryContact; }
+        }
+
+        public Uri PathToImage
+        {
+            set { Set(ref _pathToImage, value); }
+            get { return _pathToImage; }
         }
         #endregion
 
@@ -115,14 +132,35 @@ namespace Contacts.ViewModels
         private async void AddImageExecute()
         {
             var picker = new FileOpenPicker();
-            picker.ViewMode = PickerViewMode.List;
-
-            picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            picker.SuggestedStartLocation = PickerLocationId.Desktop;
             picker.FileTypeFilter.Add(".jpg");
-            picker.FileTypeFilter.Add(".jpeg");
             picker.FileTypeFilter.Add(".png");
+            picker.FileTypeFilter.Add(".jpeg");
 
-            await picker.PickSingleFileAsync();
+            StorageFile image = await picker.PickSingleFileAsync();
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+
+            if (image != null)
+            {
+                byte[] imageBytes = null;
+                using (var stream = await image.OpenReadAsync())
+                {
+                    imageBytes = new byte[stream.Size];
+                    using (var reader = new DataReader(stream))
+                    {
+                        await reader.LoadAsync((uint)stream.Size);
+                        reader.ReadBytes(imageBytes);
+                    }
+                }
+
+                StorageFile ImageBytes = await storageFolder.CreateFileAsync(currentContact.ID);
+
+                await FileIO.WriteBytesAsync(ImageBytes, imageBytes);
+
+                //StorageFile storageFile = await storageFolder.GetFileAsync(currentContact.ID); //Проверка наличия фаила в локальном хранилище
+
+                PathToImage = new Uri(image.Path);
+            }
         }
 
         #endregion

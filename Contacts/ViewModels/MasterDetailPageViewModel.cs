@@ -8,10 +8,12 @@ using GalaSoft.MvvmLight.Messaging;
 using Windows.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Data;
+using Windows.Storage;
 
 namespace Contacts.ViewModels
 {
-    public class MasterDetailPageViewModel : ViewModelBase
+    public class MasterDetailPageViewModel : ViewModelBase, IValueConverter
     {
         #region Fields
         IContactRepositoryService _contactRepository;
@@ -117,13 +119,13 @@ namespace Contacts.ViewModels
             get { return _contact; }
             set
             {
-                if(value==null)
+                if (value == null)
                 {
                     ContentDialog contentDialog = new ContentDialog()
                     {
-                        Title="Attention",
-                        Content="NULL!",
-                        PrimaryButtonText="OK"
+                        Title = "Attention",
+                        Content = "NULL!",
+                        PrimaryButtonText = "OK"
                     };
                 }
                 Set(ref _contact, value);
@@ -141,6 +143,22 @@ namespace Contacts.ViewModels
                     Contacts.Remove(SelectedContact);
                     break;
             }
+        }
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            string imageName = (string)value;
+
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+
+            var a = localFolder.GetFileAsync(imageName);
+
+            return localFolder.GetFileAsync(imageName);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

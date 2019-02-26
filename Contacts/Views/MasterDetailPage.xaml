@@ -6,8 +6,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:Contacts.Models"
     xmlns:uwpkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:local="using:Contacts.ViewModels"
     xmlns:controls="using:Template10.Controls"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <local:MasterDetailPageViewModel x:Key="PathConverter"/>
+    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -34,7 +39,7 @@
                     <RelativePanel>
                         <uwpkit:ImageEx Margin="0,10,0,10" x:Name="thumbnail" Width="60" Height="60"
                                        RelativePanel.AlignVerticalCenterWithPanel="True"
-                                       Source="{x:Bind PathToImage}"
+                                       Source="{x:Bind ID,Converter={StaticResource PathConverter}}"
                                        Stretch="UniformToFill"
                                        CornerRadius="48"/>
                         <TextBlock x:Name="name" Text="{x:Bind FirstName}" FontSize="18" FontWeight="Bold"
