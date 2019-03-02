@@ -32,6 +32,7 @@ namespace Contacts.ViewModels
         DelegateCommand _goBackUnsaved;
         DelegateCommand _addImage;
         object _image;
+        StorageFile ImageBytes;
         #endregion
 
         #region Bindable properties
@@ -131,17 +132,19 @@ namespace Contacts.ViewModels
 
         private async void AddImageExecute()
         {
+            //Настройка FileOpenPicker
             var picker = new FileOpenPicker();
             picker.SuggestedStartLocation = PickerLocationId.Desktop;
             picker.FileTypeFilter.Add(".jpg");
             picker.FileTypeFilter.Add(".png");
             picker.FileTypeFilter.Add(".jpeg");
 
-            StorageFile image = await picker.PickSingleFileAsync();
-            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            StorageFile image = await picker.PickSingleFileAsync(); // Выбранная фотография
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder; //Локальное хранилище
 
             if (image != null)
             {
+                //конвертирование файла в массив байтов
                 byte[] imageBytes = null;
                 using (var stream = await image.OpenReadAsync())
                 {
@@ -153,13 +156,11 @@ namespace Contacts.ViewModels
                     }
                 }
 
-                StorageFile ImageBytes;
-
                 try
                 {
                     ImageBytes = await storageFolder.CreateFileAsync(currentContact.ID);
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     var file = await storageFolder.GetFileAsync(currentContact.ID);
                     await file.DeleteAsync();
@@ -171,6 +172,7 @@ namespace Contacts.ViewModels
 
                 //StorageFile storageFile = await storageFolder.GetFileAsync(currentContact.ID); //Проверка наличия фаила в локальном хранилище
 
+                //конвертирование массива байтов в фотографию
                 using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
                 {
                     using (DataWriter writer = new DataWriter(stream.GetOutputStreamAt(0)))
@@ -178,9 +180,9 @@ namespace Contacts.ViewModels
                         writer.WriteBytes(imageBytes);
                         await writer.StoreAsync();
                     }
-                    var image1 = new BitmapImage();
-                    await image1.SetSourceAsync(stream);
-                    Image = image1;
+                    var convertedImage = new BitmapImage();
+                    await convertedImage.SetSourceAsync(stream);
+                    Image = convertedImage;
                 }
 
             }
