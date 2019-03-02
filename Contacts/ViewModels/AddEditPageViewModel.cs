@@ -31,7 +31,7 @@ namespace Contacts.ViewModels
         DelegateCommand _goBackSaved;
         DelegateCommand _goBackUnsaved;
         DelegateCommand _addImage;
-        Uri _pathToImage;
+        object _image;
         #endregion
 
         #region Bindable properties
@@ -41,10 +41,10 @@ namespace Contacts.ViewModels
             get { return _temporaryContact; }
         }
 
-        public Uri PathToImage
+        public object Image
         {
-            set { Set(ref _pathToImage, value); }
-            get { return _pathToImage; }
+            set { Set(ref _image, value); }
+            get { return _image; }
         }
         #endregion
 
@@ -153,13 +153,36 @@ namespace Contacts.ViewModels
                     }
                 }
 
-                StorageFile ImageBytes = await storageFolder.CreateFileAsync(currentContact.ID);
+                StorageFile ImageBytes;
+
+                try
+                {
+                    ImageBytes = await storageFolder.CreateFileAsync(currentContact.ID);
+                }
+                catch(Exception)
+                {
+                    var file = await storageFolder.GetFileAsync(currentContact.ID);
+                    await file.DeleteAsync();
+
+                    ImageBytes = await storageFolder.CreateFileAsync(currentContact.ID);
+                }
 
                 await FileIO.WriteBytesAsync(ImageBytes, imageBytes);
 
                 //StorageFile storageFile = await storageFolder.GetFileAsync(currentContact.ID); //Проверка наличия фаила в локальном хранилище
 
-                PathToImage = new Uri(image.Path);
+                using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
+                {
+                    using (DataWriter writer = new DataWriter(stream.GetOutputStreamAt(0)))
+                    {
+                        writer.WriteBytes(imageBytes);
+                        await writer.StoreAsync();
+                    }
+                    var image1 = new BitmapImage();
+                    await image1.SetSourceAsync(stream);
+                    Image = image1;
+                }
+
             }
         }
 
