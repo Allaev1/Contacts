@@ -33,6 +33,7 @@ namespace Contacts.ViewModels
         DelegateCommand _addImage;
         object _image;
         StorageFile ImageBytes;
+        byte[] imageBytes = null;
         #endregion
 
         #region Bindable properties
@@ -108,6 +109,8 @@ namespace Contacts.ViewModels
             currentContact.PhoneNumber = TemporaryContact.PhoneNumber;
             currentContact.Email = TemporaryContact.Email;
 
+            await FileIO.WriteBytesAsync(ImageBytes, imageBytes); //Записываем массив байтов фотографий в изолированное хранилище
+
             await repositoryService.AddAsync(currentContact);
 
             NavigationService.Navigate(typeof(Views.MasterDetailPage));
@@ -145,7 +148,6 @@ namespace Contacts.ViewModels
             if (image != null)
             {
                 //конвертирование файла в массив байтов
-                byte[] imageBytes = null;
                 using (var stream = await image.OpenReadAsync())
                 {
                     imageBytes = new byte[stream.Size];
@@ -167,8 +169,6 @@ namespace Contacts.ViewModels
 
                     ImageBytes = await storageFolder.CreateFileAsync(currentContact.ID);
                 }
-
-                await FileIO.WriteBytesAsync(ImageBytes, imageBytes);
 
                 //StorageFile storageFile = await storageFolder.GetFileAsync(currentContact.ID); //Проверка наличия фаила в локальном хранилище
 
