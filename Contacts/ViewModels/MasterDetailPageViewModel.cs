@@ -19,19 +19,24 @@ namespace Contacts.ViewModels
     {
         #region Fields
         IContactRepositoryService _contactRepository;
+
         ObservableCollection<Models.Contacts> _contacts;
         Models.Contacts _contact;
+
         DelegateCommand _deleteContactCommand;
         DelegateCommand _goToSettingsCommand;
+        DelegateCommand _editContactCommand;
+        DelegateCommand _addContact;
         #endregion
 
         #region Contructors
 
-        public MasterDetailPageViewModel(/*IContactRepositoryService contactRepository*/)
+        public MasterDetailPageViewModel()
         {
             _contactRepository = ContactDBService.Instance;
             _deleteContactCommand = new DelegateCommand(DeleteExecute, CanDeleteExecute);
             _goToSettingsCommand = new DelegateCommand(GoToSettingsExecute);
+
         }
 
         #endregion
@@ -54,7 +59,6 @@ namespace Contacts.ViewModels
         #endregion
 
         #region PrimaryCommands
-
         #region DeleteCommand
         public DelegateCommand DeleteContact
         {
@@ -65,6 +69,13 @@ namespace Contacts.ViewModels
 
         private async void DeleteExecute()
         {
+            await ShowDialog();
+
+            await _contactRepository.DeleteAsync(SelectedContact.ID);
+        }
+
+        private async Task ShowDialog()
+        {
             ContentDialog OkCancelDialog = new ContentDialog()
             {
                 Title = $"Deleting {SelectedContact.FirstName} {SelectedContact.LastName}!",
@@ -73,14 +84,12 @@ namespace Contacts.ViewModels
                 SecondaryButtonText = "Cancel"
             };
             ContentDialogResult result = await OkCancelDialog.ShowAsync();
-            if (result != ContentDialogResult.Primary) return;
 
-            await _contactRepository.DeleteAsync(SelectedContact.ID);
+            if (result != ContentDialogResult.Primary) return;
         }
         #endregion
 
         #region AddCommand
-        DelegateCommand _addContact;
         public DelegateCommand AddContact
         {
             get { return _addContact ?? new DelegateCommand(AddExecute); }
@@ -89,6 +98,17 @@ namespace Contacts.ViewModels
         private void AddExecute() =>
             NavigationService.Navigate(typeof(Views.AddEditPage));
 
+        #endregion
+
+        #region EditCommand
+        public DelegateCommand EditContact
+        {
+            get { return _editContactCommand ?? new DelegateCommand(ExecuteEdit, CanExecuteDelete); }
+        }
+
+        private bool CanExecuteDelete() => this.SelectedContact == null ? false : true;
+
+        private void ExecuteEdit() => NavigationService.Navigate(typeof(Views.AddEditPage), SelectedContact);
         #endregion
 
         #endregion
@@ -101,10 +121,7 @@ namespace Contacts.ViewModels
             get { return _goToSettingsCommand ?? new DelegateCommand(GoToSettingsExecute); }
         }
 
-        private void GoToSettingsExecute()
-        {
-            NavigationService.Navigate(typeof(Views.SettingsPage));
-        }
+        private void GoToSettingsExecute() => NavigationService.Navigate(typeof(Views.SettingsPage));
         #endregion
 
         #endregion
@@ -121,17 +138,9 @@ namespace Contacts.ViewModels
             get { return _contact; }
             set
             {
-                if (value == null)
-                {
-                    ContentDialog contentDialog = new ContentDialog()
-                    {
-                        Title = "Attention",
-                        Content = "NULL!",
-                        PrimaryButtonText = "OK"
-                    };
-                }
                 Set(ref _contact, value);
                 DeleteContact.RaiseCanExecuteChanged();
+                EditContact.RaiseCanExecuteChanged();
             }
         }
         #endregion

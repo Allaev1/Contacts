@@ -26,14 +26,13 @@ namespace Contacts.ViewModels
     {
         #region Fields
         IContactRepositoryService repositoryService;
+
         Models.Contacts currentContact;
         ProxyContact _temporaryContact;
+
         DelegateCommand _goBackSaved;
         DelegateCommand _goBackUnsaved;
         DelegateCommand _addImage;
-        object _image;
-        StorageFile ImageBytes;
-        byte[] imageBytes = null;
         #endregion
 
         #region Bindable properties
@@ -41,12 +40,6 @@ namespace Contacts.ViewModels
         {
             set { Set(ref _temporaryContact, value); }
             get { return _temporaryContact; }
-        }
-
-        public object Image
-        {
-            set { Set(ref _image, value); }
-            get { return _image; }
         }
         #endregion
 
@@ -56,7 +49,6 @@ namespace Contacts.ViewModels
             repositoryService = ContactDBService.Instance;
             _goBackSaved = new DelegateCommand(GoBackSavedExecute);
             _goBackUnsaved = new DelegateCommand(GoBackUnsavedExecute);
-            _addImage = new DelegateCommand(AddImageExecute);
         }
         #endregion
 
@@ -109,8 +101,6 @@ namespace Contacts.ViewModels
             currentContact.PhoneNumber = TemporaryContact.PhoneNumber;
             currentContact.Email = TemporaryContact.Email;
 
-            await FileIO.WriteBytesAsync(ImageBytes, imageBytes); //Записываем массив байтов фотографий в изолированное хранилище
-
             await repositoryService.AddAsync(currentContact);
 
             NavigationService.Navigate(typeof(Views.MasterDetailPage));
@@ -135,59 +125,8 @@ namespace Contacts.ViewModels
 
         private async void AddImageExecute()
         {
-            //Настройка FileOpenPicker
-            var picker = new FileOpenPicker();
-            picker.SuggestedStartLocation = PickerLocationId.Desktop;
-            picker.FileTypeFilter.Add(".jpg");
-            picker.FileTypeFilter.Add(".png");
-            picker.FileTypeFilter.Add(".jpeg");
-
-            StorageFile image = await picker.PickSingleFileAsync(); // Выбранная фотография
-            StorageFolder storageFolder = ApplicationData.Current.LocalFolder; //Локальное хранилище
-
-            if (image != null)
-            {
-                //конвертирование файла в массив байтов
-                using (var stream = await image.OpenReadAsync())
-                {
-                    imageBytes = new byte[stream.Size];
-                    using (var reader = new DataReader(stream))
-                    {
-                        await reader.LoadAsync((uint)stream.Size);
-                        reader.ReadBytes(imageBytes);
-                    }
-                }
-
-                try
-                {
-                    ImageBytes = await storageFolder.CreateFileAsync(currentContact.ID);
-                }
-                catch (Exception)
-                {
-                    var file = await storageFolder.GetFileAsync(currentContact.ID);
-                    await file.DeleteAsync();
-
-                    ImageBytes = await storageFolder.CreateFileAsync(currentContact.ID);
-                }
-
-                //StorageFile storageFile = await storageFolder.GetFileAsync(currentContact.ID); //Проверка наличия фаила в локальном хранилище
-
-                //конвертирование массива байтов в фотографию
-                using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
-                {
-                    using (DataWriter writer = new DataWriter(stream.GetOutputStreamAt(0)))
-                    {
-                        writer.WriteBytes(imageBytes);
-                        await writer.StoreAsync();
-                    }
-                    var convertedImage = new BitmapImage();
-                    await convertedImage.SetSourceAsync(stream);
-                    Image = convertedImage;
-                }
-
-            }
+            await Task.CompletedTask;
         }
-
         #endregion
 
         #endregion

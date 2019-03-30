@@ -19,18 +19,10 @@ namespace Contacts.ViewModels
         public ShellViewModel()
         {
             navigationService = WindowWrapper.Current().NavigationServices.FirstOrDefault();
-            //Header = "Contacts";
         }
         #endregion
 
         #region Bindable properties
-        //string _header;
-        //public string Header
-        //{
-        //    set { Set(ref _header, value); }
-        //    get { return _header; }
-        //}
-
         public ObservableCollection<NavigationMenuItem> NavigationMenuItems
         {
             get
