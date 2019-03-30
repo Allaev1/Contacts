@@ -5,6 +5,7 @@ using SQLite;
 using Windows.Storage;
 using Contacts.Message;
 using GalaSoft.MvvmLight.Messaging;
+using Contacts.Models;
 
 namespace Contacts.Services.ContactsRepositoryService
 {
@@ -64,6 +65,21 @@ namespace Contacts.Services.ContactsRepositoryService
             }
             else
                 return _contacts;
+        }
+
+        public Task UpdateAsync(Models.Contacts contact)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Models.Contacts>> GetAllFavoritesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Models.Contacts> GetByIdAsync(string id)
+        {
+            throw new NotImplementedException();
         }
         #endregion
 

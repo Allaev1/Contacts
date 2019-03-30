@@ -10,10 +10,6 @@
     xmlns:controls="using:Template10.Controls"
     mc:Ignorable="d">
 
-    <Page.Resources>
-        <local:MasterDetailPageViewModel x:Key="PathConverter"/>
-    </Page.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -22,8 +18,9 @@
 
         <controls:PageHeader Text="Contacts">
             <controls:PageHeader.PrimaryCommands>
-                <AppBarButton Label="Delete" Icon="Delete" HorizontalAlignment="Left" IsCompact="True" Command="{x:Bind ViewModel.DeleteContact}"/>
+                <AppBarButton Label="Delete" Icon="Delete" Command="{x:Bind ViewModel.DeleteContact}"/>
                 <AppBarButton Label="Add" Icon="Add" Command="{x:Bind ViewModel.AddContact}"/>
+                <AppBarButton Label="Edit" Icon="Edit"/>
             </controls:PageHeader.PrimaryCommands>
             
             <controls:PageHeader.SecondaryCommands>
@@ -39,7 +36,6 @@
                     <RelativePanel>
                         <uwpkit:ImageEx Margin="0,10,0,10" x:Name="thumbnail" Width="60" Height="60"
                                        RelativePanel.AlignVerticalCenterWithPanel="True"
-                                       Source="{x:Bind ID,Converter={StaticResource PathConverter}}"
                                        Stretch="UniformToFill"
                                        CornerRadius="48"/>
                         <TextBlock x:Name="name" Text="{x:Bind FirstName}" FontSize="18" FontWeight="Bold"
