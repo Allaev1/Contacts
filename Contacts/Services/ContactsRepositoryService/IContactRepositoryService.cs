@@ -13,5 +13,11 @@ namespace Contacts.Services.ContactsRepositoryService
         Task AddAsync(Models.Contacts contact);
 
         Task DeleteAsync(string id);
+
+        Task UpdateAsync(Models.Contacts contact);
+
+        Task<List<Models.Contacts>> GetAllFavoritesAsync();
+
+        Task<Models.Contacts> GetByIdAsync(string id);
     }
 }

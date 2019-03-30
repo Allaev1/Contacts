@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace Contacts.ViewModels
 {
-    public class MasterDetailPageViewModel : ViewModelBase, IValueConverter
+    public class MasterDetailPageViewModel : ViewModelBase
     {
         #region Fields
         IContactRepositoryService _contactRepository;
@@ -145,45 +145,6 @@ namespace Contacts.ViewModels
                     Contacts.Remove(SelectedContact);
                     break;
             }
-        }
-
-        public object Convert(object value, Type targetType, object parameter, string language)
-        {
-            string imageName = (string)value;
-
-            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-
-            var imageInByte = localFolder.GetFileAsync(imageName);
-
-            return new object();
-
-            //byte[] imageBytes = null;
-            //using (var stream = imageInByte.OpenReadAsync().GetResults())
-            //{
-            //    imageBytes = new byte[stream.Size];
-            //    using (var reader = new DataReader(stream))
-            //    {
-            //        reader.LoadAsync((uint)stream.Size).GetResults();
-            //        reader.ReadBytes(imageBytes);
-            //    }
-            //}
-
-            //using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
-            //{
-            //    using (DataWriter writer = new DataWriter(stream.GetOutputStreamAt(0)))
-            //    {
-            //        writer.WriteBytes(new byte[10]);
-            //        writer.StoreAsync().GetResults();
-            //    }
-            //    var convertedImage = new BitmapImage();
-            //    convertedImage.SetSourceAsync(stream).GetResults();
-            //    return convertedImage;
-            //}
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            throw new NotImplementedException();
         }
         #endregion
     }
