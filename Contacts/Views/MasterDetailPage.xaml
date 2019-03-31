@@ -20,7 +20,7 @@
             <controls:PageHeader.PrimaryCommands>
                 <AppBarButton Label="Delete" Icon="Delete" Command="{x:Bind ViewModel.DeleteContact}"/>
                 <AppBarButton Label="Add" Icon="Add" Command="{x:Bind ViewModel.AddContact}"/>
-                <AppBarButton Label="Edit" Icon="Edit"/>
+                <AppBarButton Label="Edit" Icon="Edit" Command="{x:Bind ViewModel.EditContact}"/>
             </controls:PageHeader.PrimaryCommands>
             
             <controls:PageHeader.SecondaryCommands>

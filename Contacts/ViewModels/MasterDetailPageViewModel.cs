@@ -36,7 +36,7 @@ namespace Contacts.ViewModels
             _contactRepository = ContactDBService.Instance;
             _deleteContactCommand = new DelegateCommand(DeleteExecute, CanDeleteExecute);
             _goToSettingsCommand = new DelegateCommand(GoToSettingsExecute);
-
+            _editContactCommand = new DelegateCommand(ExecuteEdit, CanEditExecute);
         }
 
         #endregion
@@ -69,12 +69,14 @@ namespace Contacts.ViewModels
 
         private async void DeleteExecute()
         {
-            await ShowDialog();
+            ContentDialogResult result = await GetDialogResult();
+
+            if (result != ContentDialogResult.Primary) return;
 
             await _contactRepository.DeleteAsync(SelectedContact.ID);
         }
 
-        private async Task ShowDialog()
+        private async Task<ContentDialogResult> GetDialogResult()
         {
             ContentDialog OkCancelDialog = new ContentDialog()
             {
@@ -83,9 +85,7 @@ namespace Contacts.ViewModels
                 PrimaryButtonText = "Ok",
                 SecondaryButtonText = "Cancel"
             };
-            ContentDialogResult result = await OkCancelDialog.ShowAsync();
-
-            if (result != ContentDialogResult.Primary) return;
+            return await OkCancelDialog.ShowAsync();
         }
         #endregion
 
@@ -103,12 +103,12 @@ namespace Contacts.ViewModels
         #region EditCommand
         public DelegateCommand EditContact
         {
-            get { return _editContactCommand ?? new DelegateCommand(ExecuteEdit, CanExecuteDelete); }
+            get { return _editContactCommand ?? new DelegateCommand(ExecuteEdit, CanEditExecute); }
         }
 
-        private bool CanExecuteDelete() => this.SelectedContact == null ? false : true;
+        private bool CanEditExecute() => this.SelectedContact == null ? false : true;
 
-        private void ExecuteEdit() => NavigationService.Navigate(typeof(Views.AddEditPage), SelectedContact);
+        private async void ExecuteEdit() => await NavigationService.NavigateAsync(typeof(Views.AddEditPage), SelectedContact);
         #endregion
 
         #endregion

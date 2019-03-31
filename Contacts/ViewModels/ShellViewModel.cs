@@ -42,7 +42,6 @@ namespace Contacts.ViewModels
             {
                 Set(ref _selectedItem, value);
                 Type pageType = SelectedItem.PageType;
-                //Header = SelectedItem.Content.ToString();
                 navigationService.Navigate(pageType);
             }
             get { return _selectedItem; }

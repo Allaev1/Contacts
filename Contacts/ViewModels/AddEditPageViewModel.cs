@@ -19,6 +19,7 @@ using Windows.Storage.Streams;
 using System.Drawing;
 using Windows.UI.Xaml.Controls;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Template10.Services.NavigationService;
 
 namespace Contacts.ViewModels
 {
@@ -28,18 +29,23 @@ namespace Contacts.ViewModels
         IContactRepositoryService repositoryService;
 
         Models.Contacts currentContact;
-        ProxyContact _temporaryContact;
+        ProxyContact _tempContact;
 
         DelegateCommand _goBackSaved;
         DelegateCommand _goBackUnsaved;
         DelegateCommand _addImage;
+
+        bool isDone = true; // Показывает закончен ли процесс добавления или редактирование 
+
+        enum States { Edit, Add };
+        States currentState;
         #endregion
 
         #region Bindable properties
-        public ProxyContact TemporaryContact
+        public ProxyContact TempContact
         {
-            set { Set(ref _temporaryContact, value); }
-            get { return _temporaryContact; }
+            set { Set(ref _tempContact, value); }
+            get { return _tempContact; }
         }
         #endregion
 
@@ -55,7 +61,27 @@ namespace Contacts.ViewModels
         #region Navigation events
         public override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
-            currentContact = parameter == null ? new Models.Contacts() { ID = Guid.NewGuid().ToString() } : null;
+            //1.Если процесс редактирования или добавления не был завершен то продолжить его
+            if (isDone ||
+                parameter == null && currentState == States.Edit ||
+                parameter != null && currentState == States.Add)
+            {
+                isDone = false; //Для каждой новой операций флаг опускается
+                SetTempPerson(parameter);
+            }
+
+            if (parameter == null)
+                currentState = States.Add;
+            else
+                currentState = States.Edit;
+
+            return Task.CompletedTask;
+        }
+
+        private void SetTempPerson(object contact)
+        {
+            currentContact = contact == null ?
+                new Models.Contacts() { ID = Guid.NewGuid().ToString() } : contact as Models.Contacts;
 
             //TODO: Можно ли вместо создания нового прокси-контакта
             //присвоить занчение полю TemporaryContact (Проверить)
@@ -78,10 +104,8 @@ namespace Contacts.ViewModels
                         u.Properties[nameof(u.LastName)].Errors.Add("Lastname must consist of minimum 3 characters");
                 },
             };
-            TemporaryContact = temporary;
-            TemporaryContact.Validate();
-
-            return Task.CompletedTask;
+            TempContact = temporary;
+            TempContact.Validate();
         }
         #endregion
 
@@ -95,13 +119,15 @@ namespace Contacts.ViewModels
 
         public async void GoBackSavedExecute()
         {
-            currentContact.FirstName = TemporaryContact.FirstName;
-            currentContact.LastName = TemporaryContact.LastName;
-            currentContact.IsFavorite = TemporaryContact.IsFavorite;
-            currentContact.PhoneNumber = TemporaryContact.PhoneNumber;
-            currentContact.Email = TemporaryContact.Email;
+            currentContact.FirstName = TempContact.FirstName;
+            currentContact.LastName = TempContact.LastName;
+            currentContact.IsFavorite = TempContact.IsFavorite;
+            currentContact.PhoneNumber = TempContact.PhoneNumber;
+            currentContact.Email = TempContact.Email;
 
             await repositoryService.AddAsync(currentContact);
+
+            isDone = true;
 
             NavigationService.Navigate(typeof(Views.MasterDetailPage));
         }
@@ -113,8 +139,11 @@ namespace Contacts.ViewModels
             get { return _goBackUnsaved ?? new DelegateCommand(GoBackSavedExecute); }
         }
 
-        public async void GoBackUnsavedExecute() =>
+        public async void GoBackUnsavedExecute()
+        {
+            isDone = true;
             await NavigationService.NavigateAsync(typeof(Views.MasterDetailPage));
+        }
         #endregion
 
         #region Pick Image
