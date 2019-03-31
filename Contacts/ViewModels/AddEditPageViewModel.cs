@@ -61,10 +61,9 @@ namespace Contacts.ViewModels
         #region Navigation events
         public override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
-            //1.Если процесс редактирования или добавления не был завершен то продолжить его
-            if (isDone ||
-                parameter == null && currentState == States.Edit ||
-                parameter != null && currentState == States.Add)
+            if (isDone
+                || parameter == null && currentState == States.Edit
+                || parameter != null && currentState == States.Add)
             {
                 isDone = false; //Для каждой новой операций флаг опускается
                 SetTempPerson(parameter);
@@ -125,7 +124,10 @@ namespace Contacts.ViewModels
             currentContact.PhoneNumber = TempContact.PhoneNumber;
             currentContact.Email = TempContact.Email;
 
-            await repositoryService.AddAsync(currentContact);
+            if (currentState == States.Add)
+                await repositoryService.AddAsync(currentContact);
+            else if (currentState == States.Edit)
+                await repositoryService.UpdateAsync(currentContact);
 
             isDone = true;
 

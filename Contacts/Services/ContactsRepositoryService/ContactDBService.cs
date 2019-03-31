@@ -6,6 +6,7 @@ using Windows.Storage;
 using Contacts.Message;
 using GalaSoft.MvvmLight.Messaging;
 using Contacts.Models;
+using System.Linq;
 
 namespace Contacts.Services.ContactsRepositoryService
 {
@@ -21,7 +22,7 @@ namespace Contacts.Services.ContactsRepositoryService
         #region Contstructors
         private ContactDBService()
         {
-            
+
         }
         #endregion
 
@@ -67,9 +68,21 @@ namespace Contacts.Services.ContactsRepositoryService
                 return _contacts;
         }
 
-        public Task UpdateAsync(Models.Contacts contact)
+        public async Task UpdateAsync(Models.Contacts contact)
         {
-            throw new NotImplementedException();
+            string editedContactId = contact.ID;
+
+            connection.Table<Models.Contacts>().Delete(a => a.ID == editedContactId);
+
+            _contacts.Remove(_contacts.FirstOrDefault(a => a.ID == editedContactId));
+            _contacts.Add(contact);
+
+            connection.Table<Models.Contacts>().Connection.Insert(contact);
+
+            var message = new OperationResultMessage() { Operation = CRUD.Edit };
+            Messenger.Default.Send<OperationResultMessage>(message);
+
+            await Task.CompletedTask;
         }
 
         public Task<List<Models.Contacts>> GetAllFavoritesAsync()
