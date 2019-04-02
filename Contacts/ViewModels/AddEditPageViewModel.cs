@@ -39,7 +39,7 @@ namespace Contacts.ViewModels
 
         enum States { Edit, Add };
         States currentState;
-        #endregion
+        #endregion`
 
         #region Bindable properties
         public ProxyContact TempContact
