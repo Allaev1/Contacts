@@ -30,6 +30,7 @@ namespace Contacts.ViewModels
 
         Models.Contacts currentContact;
         ProxyContact _tempContact;
+        BitmapImage _image;
 
         DelegateCommand _goBackSaved;
         DelegateCommand _goBackUnsaved;
@@ -46,6 +47,12 @@ namespace Contacts.ViewModels
         {
             set { Set(ref _tempContact, value); }
             get { return _tempContact; }
+        }
+
+        public BitmapImage Image
+        {
+            set { Set(ref _image, value); }
+            get { return _image; }
         }
         #endregion
 
@@ -75,36 +82,6 @@ namespace Contacts.ViewModels
                 currentState = States.Edit;
 
             return Task.CompletedTask;
-        }
-
-        private void SetTempPerson(object contact)
-        {
-            currentContact = contact == null ?
-                new Models.Contacts() { ID = Guid.NewGuid().ToString() } : contact as Models.Contacts;
-
-            //TODO: Можно ли вместо создания нового прокси-контакта
-            //присвоить занчение полю TemporaryContact (Проверить)
-            var temporary = new ProxyContact(currentContact)
-            {
-                FirstName = currentContact.FirstName,
-                LastName = currentContact.LastName,
-                IsFavorite = currentContact.IsFavorite,
-                Email = currentContact.Email,
-                PhoneNumber = currentContact.PhoneNumber,
-                GroupID = currentContact.GroupID,
-                Validator = i =>
-                {
-                    var u = i as ProxyContact;
-                    if (string.IsNullOrEmpty(u.FirstName))
-                        u.Properties[nameof(u.FirstName)].Errors.Add("Firstname is required");
-                    if (string.IsNullOrEmpty(u.LastName))
-                        u.Properties[nameof(u.LastName)].Errors.Add("Lastname is required");
-                    else if (u.LastName.Length < 3)
-                        u.Properties[nameof(u.LastName)].Errors.Add("Lastname must consist of minimum 3 characters");
-                },
-            };
-            TempContact = temporary;
-            TempContact.Validate();
         }
         #endregion
 
@@ -160,6 +137,38 @@ namespace Contacts.ViewModels
         }
         #endregion
 
+        #endregion
+
+        #region Private method
+        private void SetTempPerson(object contact)
+        {
+            currentContact = contact == null ?
+                new Models.Contacts() { ID = Guid.NewGuid().ToString() } : contact as Models.Contacts;
+
+            //TODO: Можно ли вместо создания нового прокси-контакта
+            //присвоить занчение полю TemporaryContact (Проверить)
+            var temporary = new ProxyContact(currentContact)
+            {
+                FirstName = currentContact.FirstName,
+                LastName = currentContact.LastName,
+                IsFavorite = currentContact.IsFavorite,
+                Email = currentContact.Email,
+                PhoneNumber = currentContact.PhoneNumber,
+                GroupID = currentContact.GroupID,
+                Validator = i =>
+                {
+                    var u = i as ProxyContact;
+                    if (string.IsNullOrEmpty(u.FirstName))
+                        u.Properties[nameof(u.FirstName)].Errors.Add("Firstname is required");
+                    if (string.IsNullOrEmpty(u.LastName))
+                        u.Properties[nameof(u.LastName)].Errors.Add("Lastname is required");
+                    else if (u.LastName.Length < 3)
+                        u.Properties[nameof(u.LastName)].Errors.Add("Lastname must consist of minimum 3 characters");
+                },
+            };
+            TempContact = temporary;
+            TempContact.Validate();
+        }
         #endregion
     }
 }
