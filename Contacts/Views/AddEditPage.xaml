@@ -35,13 +35,15 @@
                          Width="300" 
                          Height="300"
                          BorderBrush="White"
-                         BorderThickness="1"/>
+                         BorderThickness="1"
+                         Source="{x:Bind ViewModel.Image,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
             <Button x:Name="AddButton"
                     Grid.Column="1"
-                    Content="Add image"
+                    Content="Browse..."
                     Margin="10"
                     RelativePanel.Below="ContactsImage"
-                    RelativePanel.AlignHorizontalCenterWith="ContactsImage"/>
+                    RelativePanel.AlignHorizontalCenterWith="ContactsImage"
+                    Command="{x:Bind ViewModel.AddImage}"/>
             <validation:ControlWrapper PropertyName="FirstName" x:Name="FirstNameCR" RelativePanel.Below="AddButton">
                 <TextBox Header="First Name" 
                      PlaceholderText="Bekzod"

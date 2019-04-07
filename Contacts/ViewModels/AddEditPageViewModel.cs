@@ -1,25 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Template10.Mvvm;
 using Windows.UI.Xaml.Navigation;
+using Windows.Storage.Pickers;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.Storage;
+using Contacts.Services.FileStoringService;
 using Contacts.Services.ContactsRepositoryService;
 using Contacts.ProxyModels;
-using Contacts.Models;
-using Windows.Storage.Pickers;
-using Windows.ApplicationModel.Contacts;
-using System.IO;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.Graphics.Imaging;
-using Windows.Storage;
-using Windows.UI.Xaml.Media;
-using Windows.Storage.Streams;
-using System.Drawing;
-using Windows.UI.Xaml.Controls;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Template10.Services.NavigationService;
+using Template10.Mvvm;
 
 namespace Contacts.ViewModels
 {
@@ -27,10 +16,13 @@ namespace Contacts.ViewModels
     {
         #region Fields
         IContactRepositoryService repositoryService;
+        IFileStoringService storingService;
 
         Models.Contacts currentContact;
         ProxyContact _tempContact;
         BitmapImage _image;
+
+        StorageFile imageFile;
 
         DelegateCommand _goBackSaved;
         DelegateCommand _goBackUnsaved;
@@ -60,6 +52,7 @@ namespace Contacts.ViewModels
         public AddEditPageViewModel()
         {
             repositoryService = ContactDBService.Instance;
+            storingService = new FileStoringService();
             _goBackSaved = new DelegateCommand(GoBackSavedExecute);
             _goBackUnsaved = new DelegateCommand(GoBackUnsavedExecute);
         }
@@ -133,13 +126,30 @@ namespace Contacts.ViewModels
 
         private async void AddImageExecute()
         {
-            await Task.CompletedTask;
+            if ((imageFile = await GetImageAsync()) == null) return;
+
+            await storingService.SaveToTempStorageAsync(imageFile, currentContact.ID);
+
+            imageFile = 
+                await storingService.GetFileAsync(ApplicationData.Current.TemporaryFolder, currentContact.ID);
+
+            Image = new BitmapImage(new Uri(imageFile.Path));
         }
         #endregion
 
         #endregion
 
         #region Private method
+        private async Task<StorageFile> GetImageAsync()
+        {
+            FileOpenPicker picker = new FileOpenPicker();
+            picker.FileTypeFilter.Add(".jpg");
+            picker.FileTypeFilter.Add(".jpeg");
+            picker.FileTypeFilter.Add(".png");
+
+            return await picker.PickSingleFileAsync();
+        }
+
         private void SetTempPerson(object contact)
         {
             currentContact = contact == null ?
