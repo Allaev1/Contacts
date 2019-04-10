@@ -16,20 +16,12 @@ namespace Contacts.Services.ContactsRepositoryService
         List<Models.Contacts> _contacts;
         StorageFile dbFile;
         SQLiteConnection connection;
-        static ContactDBService _instance = new ContactDBService();
         #endregion
 
         #region Contstructors
-        private ContactDBService()
+        public ContactDBService()
         {
 
-        }
-        #endregion
-
-        #region Properties
-        public static ContactDBService Instance
-        {
-            get { return _instance; }
         }
         #endregion
 

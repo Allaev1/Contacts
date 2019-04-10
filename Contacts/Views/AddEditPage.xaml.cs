@@ -26,8 +26,6 @@ namespace Contacts.Views
         public AddEditPage()
         {
             this.InitializeComponent();
-            NavigationCacheMode = NavigationCacheMode.Required;
-            DataContext = new AddEditPageViewModel();
         }
 
         private AddEditPageViewModel _viewModel;

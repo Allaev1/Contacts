@@ -36,7 +36,7 @@
                          Height="300"
                          BorderBrush="White"
                          BorderThickness="1"
-                         Source="{x:Bind ViewModel.Image,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                         Source="{x:Bind ViewModel.Image,Mode=TwoWay}"/>
             <Button x:Name="AddButton"
                     Grid.Column="1"
                     Content="Browse..."

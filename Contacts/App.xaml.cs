@@ -1,19 +1,21 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Template10.Common;
-using Template10.Services.NavigationService;
-using System.Threading.Tasks;
-using Contacts.Views;
-using GalaSoft.MvvmLight.Ioc;
-using Contacts.ViewModels;
-using Contacts.Services.ContactsRepositoryService;
 using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI;
+using Windows.ApplicationModel;
 using Windows.Storage;
+using Template10.Common;
 using Template10.Controls;
+using GalaSoft.MvvmLight.Ioc;
+using Contacts.Views;
+using Contacts.Services.ContactsRepositoryService;
+using Contacts.Services.FileStoringService;
+using Contacts.ViewModels;
+using Template10.Services.NavigationService;
+using Windows.UI.Xaml.Controls;
 
 namespace Contacts
 {
@@ -59,19 +61,17 @@ namespace Contacts
             //Code that delete database from local app data
             //StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDB.db");
             //await file.DeleteAsync();
-            try
-            {
-                await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDB.db");
-            }
-            catch (Exception)
+            if (null == await ApplicationData.Current.LocalFolder.TryGetItemAsync("ContactsDB.db"))
             {
                 var appDb = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///ContactsDB.db"));
                 await appDb.CopyAsync(ApplicationData.Current.LocalFolder);
             }
 
-            //SimpleIoc.Default.Register<IContactRepositoryService, ContactDBService>();
-            //SimpleIoc.Default.Register<ShellViewModel>();
-            //SimpleIoc.Default.Register<MasterDetailPageViewModel>();
+            SimpleIoc.Default.Register<IFileStoringService, FileStoringService>();
+            SimpleIoc.Default.Register<IContactRepositoryService, ContactDBService>();
+            SimpleIoc.Default.Register<AddEditPageViewModel>();
+            SimpleIoc.Default.Register<ShellViewModel>();
+            SimpleIoc.Default.Register<MasterDetailPageViewModel>();
 
             CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = false;
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
@@ -83,13 +83,19 @@ namespace Contacts
             await Task.CompletedTask;
         }
 
-        //Comment ResolveForPage in cases when you take off responosbility of getting ViewModels 
-        //from App.xaml.cs
-        //For example if you setting ViewModel in the Views` constructor and using NavigationCacheMode property
+        public async override Task OnSuspendingAsync(object s, SuspendingEventArgs e, bool prelaunchActivated)
+        {
+            await ApplicationData.Current.ClearAsync(ApplicationDataLocality.Temporary);
+        }
 
-        //public override INavigable ResolveForPage(Page page, NavigationService navigationService)
-        //{
-        //    return base.ResolveForPage(page, navigationService);
-        //}
+        public override INavigable ResolveForPage(Page page, NavigationService navigationService)
+        {
+            if (page is MasterDetailPage)
+                return SimpleIoc.Default.GetInstance<MasterDetailPageViewModel>();
+            else if (page is AddEditPage)
+                return SimpleIoc.Default.GetInstance<AddEditPageViewModel>();
+            else
+                return base.ResolveForPage(page, navigationService);
+        }
     }
 }

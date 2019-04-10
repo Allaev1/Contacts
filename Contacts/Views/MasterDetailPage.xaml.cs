@@ -15,8 +15,6 @@ namespace Contacts.Views
         public MasterDetailPage()
         {
             this.InitializeComponent();
-            NavigationCacheMode = NavigationCacheMode.Enabled; //Use this property if you put responsibility of caching on view
-            DataContext = new MasterDetailPageViewModel();
         }
 
         MasterDetailPageViewModel _viewModel;

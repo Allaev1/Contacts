@@ -49,10 +49,10 @@ namespace Contacts.ViewModels
         #endregion
 
         #region Constructors
-        public AddEditPageViewModel()
+        public AddEditPageViewModel(IFileStoringService fileStoringService,IContactRepositoryService contactRepositoryService)
         {
-            repositoryService = ContactDBService.Instance;
-            storingService = new FileStoringService();
+            repositoryService = contactRepositoryService;
+            storingService = fileStoringService;
             _goBackSaved = new DelegateCommand(GoBackSavedExecute);
             _goBackUnsaved = new DelegateCommand(GoBackUnsavedExecute);
         }
@@ -128,10 +128,11 @@ namespace Contacts.ViewModels
         {
             if ((imageFile = await GetImageAsync()) == null) return;
 
-            await storingService.SaveToTempStorageAsync(imageFile, currentContact.ID);
+            await storingService.SaveToTempStorageAsync(imageFile, imageFile.Name);
 
-            imageFile = 
-                await storingService.GetFileAsync(ApplicationData.Current.TemporaryFolder, currentContact.ID);
+            imageFile = await storingService.GetFileAsync
+                (ApplicationData.Current.TemporaryFolder,
+                imageFile.Name);
 
             Image = new BitmapImage(new Uri(imageFile.Path));
         }

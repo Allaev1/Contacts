@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
+using Contacts.Services.FileStoringService;
 
 namespace Contacts.ViewModels
 {
@@ -31,9 +32,9 @@ namespace Contacts.ViewModels
 
         #region Contructors
 
-        public MasterDetailPageViewModel()
+        public MasterDetailPageViewModel(IFileStoringService fileStoringService, IContactRepositoryService contactRepositoryService)
         {
-            _contactRepository = ContactDBService.Instance;
+            _contactRepository = contactRepositoryService;
             _deleteContactCommand = new DelegateCommand(DeleteExecute, CanDeleteExecute);
             _goToSettingsCommand = new DelegateCommand(GoToSettingsExecute);
             _editContactCommand = new DelegateCommand(ExecuteEdit, CanEditExecute);
