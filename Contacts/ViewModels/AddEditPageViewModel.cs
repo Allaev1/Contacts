@@ -49,7 +49,7 @@ namespace Contacts.ViewModels
         #endregion
 
         #region Constructors
-        public AddEditPageViewModel(IFileStoringService fileStoringService,IContactRepositoryService contactRepositoryService)
+        public AddEditPageViewModel(IFileStoringService fileStoringService, IContactRepositoryService contactRepositoryService)
         {
             repositoryService = contactRepositoryService;
             storingService = fileStoringService;
@@ -59,7 +59,7 @@ namespace Contacts.ViewModels
         #endregion
 
         #region Navigation events
-        public override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
+        public async override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
             if (isDone
                 || parameter == null && currentState == States.Edit
@@ -67,6 +67,9 @@ namespace Contacts.ViewModels
             {
                 isDone = false; //Для каждой новой операций флаг опускается
                 SetTempPerson(parameter);
+                Image = new BitmapImage(new Uri
+                    ((await storingService.GetFileAsync
+                    (ApplicationData.Current.LocalFolder, currentContact.ID)).Path));
             }
 
             if (parameter == null)
@@ -74,7 +77,7 @@ namespace Contacts.ViewModels
             else
                 currentState = States.Edit;
 
-            return Task.CompletedTask;
+            await Task.CompletedTask;
         }
         #endregion
 
@@ -100,6 +103,9 @@ namespace Contacts.ViewModels
                 await repositoryService.UpdateAsync(currentContact);
 
             isDone = true;
+
+            if (imageFile != null)
+                await storingService.SaveToLocalStorageAsync(imageFile, currentContact.ID);
 
             NavigationService.Navigate(typeof(Views.MasterDetailPage));
         }

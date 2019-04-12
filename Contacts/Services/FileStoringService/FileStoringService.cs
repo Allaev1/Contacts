@@ -30,23 +30,43 @@ namespace Contacts.Services.FileStoringService
 
         public async Task<StorageFile> GetFileAsync(StorageFolder parentFolder, string fileName)
         {
-            StorageFile expectedFile = await parentFolder.GetFileAsync(fileName);
+            StorageFile stubFile;
+            StorageFile expectedFile;
 
-            return expectedFile;
+            if (await ApplicationData.Current.TemporaryFolder.TryGetItemAsync(fileName) != null)
+                return expectedFile = await parentFolder.GetFileAsync(fileName);
+            else if (await ApplicationData.Current.LocalFolder.TryGetItemAsync(fileName) == null)
+                return stubFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync("stub");
+            else
+                return expectedFile = await parentFolder.GetFileAsync(fileName);
         }
 
-        public async Task SaveToLocalStorageAsync(StorageFile file, string fileName)
+        public async Task SaveToLocalStorageAsync(StorageFile fileToSave, string fileName)
         {
-            await file.CopyAsync(ApplicationData.Current.LocalFolder, fileName);
+            if (await IsFileExist(ApplicationData.Current.LocalFolder, fileName))
+            {
+                StorageFile fileToDelete = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName);
+
+                await fileToDelete.DeleteAsync();
+
+                await fileToSave.CopyAsync(ApplicationData.Current.LocalFolder, fileName);
+            }
+            else
+            {
+                StorageFile fileToMove= await ApplicationData.Current.TemporaryFolder.GetFileAsync(fileToSave.Name); 
+
+                await fileToMove.MoveAsync(ApplicationData.Current.LocalFolder, fileName);
+            }
+
         }
 
         public async Task SaveToTempStorageAsync(StorageFile fileToSave, string fileName)
         {
             if (await IsFileExist(ApplicationData.Current.TemporaryFolder, fileName))
             {
-                StorageFile storageFile = await ApplicationData.Current.TemporaryFolder.GetFileAsync(fileName);
+                StorageFile fileToDelete = await ApplicationData.Current.TemporaryFolder.GetFileAsync(fileName);
 
-                await storageFile.DeleteAsync();
+                await fileToDelete.DeleteAsync();
             }
 
             await fileToSave.CopyAsync(ApplicationData.Current.TemporaryFolder, fileName);

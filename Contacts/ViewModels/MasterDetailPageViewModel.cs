@@ -20,6 +20,7 @@ namespace Contacts.ViewModels
     {
         #region Fields
         IContactRepositoryService _contactRepository;
+        IFileStoringService _storingService;
 
         ObservableCollection<Models.Contacts> _contacts;
         Models.Contacts _contact;
@@ -35,6 +36,7 @@ namespace Contacts.ViewModels
         public MasterDetailPageViewModel(IFileStoringService fileStoringService, IContactRepositoryService contactRepositoryService)
         {
             _contactRepository = contactRepositoryService;
+            _storingService = fileStoringService;
             _deleteContactCommand = new DelegateCommand(DeleteExecute, CanDeleteExecute);
             _goToSettingsCommand = new DelegateCommand(GoToSettingsExecute);
             _editContactCommand = new DelegateCommand(ExecuteEdit, CanEditExecute);
@@ -60,6 +62,7 @@ namespace Contacts.ViewModels
         #endregion
 
         #region PrimaryCommands
+
         #region DeleteCommand
         public DelegateCommand DeleteContact
         {
@@ -73,6 +76,11 @@ namespace Contacts.ViewModels
             ContentDialogResult result = await GetDialogResult();
 
             if (result != ContentDialogResult.Primary) return;
+
+            StorageFile fileToDelete = await _storingService.GetFileAsync
+                (ApplicationData.Current.LocalFolder, SelectedContact.ID);
+
+            await _storingService.DeleteFromLocalStorageAsync(fileToDelete);
 
             await _contactRepository.DeleteAsync(SelectedContact.ID);
         }
