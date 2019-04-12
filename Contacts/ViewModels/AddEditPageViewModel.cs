@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Contacts.ProxyModels;
+using Contacts.Services.ContactsRepositoryService;
+using Contacts.Services.FileStoringService;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Windows.UI.Xaml.Navigation;
+using Template10.Mvvm;
+using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.Storage;
-using Contacts.Services.FileStoringService;
-using Contacts.Services.ContactsRepositoryService;
-using Contacts.ProxyModels;
-using Template10.Mvvm;
+using Windows.UI.Xaml.Navigation;
 
 namespace Contacts.ViewModels
 {
@@ -132,6 +132,8 @@ namespace Contacts.ViewModels
 
         private async void AddImageExecute()
         {
+            Image = null;
+
             if ((imageFile = await GetImageAsync()) == null) return;
 
             await storingService.SaveToTempStorageAsync(imageFile, imageFile.Name);

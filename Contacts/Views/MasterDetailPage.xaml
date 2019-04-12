@@ -8,8 +8,11 @@
     xmlns:uwpkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:local="using:Contacts.ViewModels"
     xmlns:controls="using:Template10.Controls"
+    xmlns:imageConverter="using:Contacts.Services.Converters"
     mc:Ignorable="d">
-
+    <Page.Resources>
+        <imageConverter:ToImageConverter x:Key="ImageConverter"/>
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -67,7 +70,7 @@
                                 <TextBlock Text="{x:Bind FirstName}" FontSize="36" FontWeight="Bold" Margin="0,0,10,0"/>
                                 <TextBlock Text="{x:Bind LastName}" FontSize="36" FontWeight="Bold"/>
                             </StackPanel>
-                            <uwpkit:ImageEx x:Name="Image" Source="{x:Bind PathToImage}" BorderThickness="1" BorderBrush="Black"                                    Stretch="Fill"
+                            <uwpkit:ImageEx x:Name="Image" Source="{x:Bind Converter={StaticResource ImageConverter}}" BorderThickness="1" BorderBrush="Black"                                    Stretch="Fill"
                                     CornerRadius="20"
                                     Margin="20"
                                     Height="360"

@@ -99,6 +99,7 @@
     <Compile Include="Message\Message.cs" />
     <Compile Include="ProxyModels\ProxyContact.cs" />
     <Compile Include="Services\ContactsRepositoryService\ContactDBService.cs" />
+    <Compile Include="Services\Converters\ToImageConverter.cs" />
     <Compile Include="Services\FileStoringService\FileStoringService.cs" />
     <Compile Include="Services\FileStoringService\IFileStoringService.cs" />
     <Compile Include="ViewModels\AddEditPageViewModel.cs" />
