@@ -30,13 +30,13 @@ namespace Contacts.Services.FileStoringService
 
         public async Task<StorageFile> GetFileAsync(StorageFolder parentFolder, string fileName)
         {
-            StorageFile stubFile;
+            StorageFile nullFile;
             StorageFile expectedFile;
 
             if (await ApplicationData.Current.TemporaryFolder.TryGetItemAsync(fileName) != null)
                 return expectedFile = await parentFolder.GetFileAsync(fileName);
             else if (await ApplicationData.Current.LocalFolder.TryGetItemAsync(fileName) == null)
-                return stubFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync("stub");
+                return nullFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync("stub");
             else
                 return expectedFile = await parentFolder.GetFileAsync(fileName);
         }
