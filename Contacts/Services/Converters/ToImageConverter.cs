@@ -17,9 +17,10 @@ namespace Contacts.Services.Converters
         {
             string contactId = value.ToString();
 
-            StorageFile imageFile = await ApplicationData.Current.LocalFolder.GetItemAsync(contactId).GetResults() as StorageFile;
+            //StorageFile imageFile = await ApplicationData.Current.LocalFolder.GetItemAsync(contactId).GetResults() as StorageFile;
 
-            return new BitmapImage(new Uri(imageFile.Path));
+            //return new BitmapImage(new Uri(imageFile.Path));
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
