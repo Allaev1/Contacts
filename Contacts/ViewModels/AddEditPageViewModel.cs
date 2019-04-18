@@ -21,13 +21,16 @@ namespace Contacts.ViewModels
         Models.Contacts currentContact;
         ProxyContact _tempContact;
         BitmapImage _image;
+        WriteableBitmap _writeableImage;
 
         StorageFile imageFile;
 
         DelegateCommand _goBackSaved;
         DelegateCommand _goBackUnsaved;
         DelegateCommand _addImage;
+        DelegateCommand _removeImage;
 
+        bool isImageNull = true; // Указывает заплонен Image или нет
         bool isDone = true; // Показывает закончен ли процесс добавления или редактирование 
 
         enum States { Edit, Add };
@@ -55,6 +58,7 @@ namespace Contacts.ViewModels
             storingService = fileStoringService;
             _goBackSaved = new DelegateCommand(GoBackSavedExecute);
             _goBackUnsaved = new DelegateCommand(GoBackUnsavedExecute);
+            _removeImage = new DelegateCommand(RemoveImageExecute, CanRemoveImageExecute);
         }
         #endregion
 
@@ -78,6 +82,12 @@ namespace Contacts.ViewModels
                 currentState = States.Edit;
 
             await Task.CompletedTask;
+        }
+
+        public async override Task OnNavigatedFromAsync(IDictionary<string, object> pageState, bool suspending)
+        {
+            if(isDone)
+                await ApplicationData.Current.ClearAsync(ApplicationDataLocality.Temporary);
         }
         #endregion
 
@@ -103,6 +113,7 @@ namespace Contacts.ViewModels
                 await repositoryService.UpdateAsync(currentContact);
 
             isDone = true;
+            isImageNull = true;
 
             if (imageFile != null)
                 await storingService.SaveToLocalStorageAsync(imageFile, currentContact.ID);
@@ -120,6 +131,7 @@ namespace Contacts.ViewModels
         public async void GoBackUnsavedExecute()
         {
             isDone = true;
+            isImageNull = true;
             await NavigationService.NavigateAsync(typeof(Views.MasterDetailPage));
         }
         #endregion
@@ -132,8 +144,6 @@ namespace Contacts.ViewModels
 
         private async void AddImageExecute()
         {
-            Image = null;
-
             if ((imageFile = await GetImageAsync()) == null) return;
 
             await storingService.SaveToTempStorageAsync(imageFile, imageFile.Name);
@@ -143,6 +153,36 @@ namespace Contacts.ViewModels
                 imageFile.Name);
 
             Image = new BitmapImage(new Uri(imageFile.Path));
+
+            isImageNull = false;
+
+            RemoveImage.RaiseCanExecuteChanged();
+        }
+        #endregion
+
+        #region Remove Image
+        public DelegateCommand RemoveImage
+        {
+            get { return _removeImage ?? new DelegateCommand(RemoveImageExecute, CanRemoveImageExecute); }
+        }
+
+        private bool CanRemoveImageExecute()
+        {
+            if (isImageNull)
+                return false;
+            else
+                return true;
+        }
+
+        private async void RemoveImageExecute()
+        {
+            Image = null;
+
+            await imageFile.DeleteAsync();
+
+            isImageNull = true;
+
+            RemoveImage.RaiseCanExecuteChanged();
         }
         #endregion
 

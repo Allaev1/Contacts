@@ -25,11 +25,6 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
         <RelativePanel Margin="15" DataContext="{x:Bind ViewModel.TempContact}">
             <toolkit:ImageEx x:Name="ContactsImage" CornerRadius="300"
                          Width="300" 
@@ -37,21 +32,24 @@
                          BorderBrush="White"
                          BorderThickness="1"
                          Source="{x:Bind ViewModel.Image,Mode=TwoWay}"/>
-            <Button x:Name="AddButton"
-                    Grid.Column="1"
+            <StackPanel x:Name="AddEditButtonsSP" 
+                        Orientation="Horizontal"
+                        RelativePanel.Below="ContactsImage"
+                        RelativePanel.AlignHorizontalCenterWith="ContactsImage">
+                <Button x:Name="AddButton"
                     Content="Browse..."
                     Margin="10"
-                    RelativePanel.Below="ContactsImage"
-                    RelativePanel.AlignHorizontalCenterWith="ContactsImage"
                     Command="{x:Bind ViewModel.AddImage}"/>
-            <validation:ControlWrapper PropertyName="FirstName" x:Name="FirstNameCR" RelativePanel.Below="AddButton">
+                <Button x:Name="EditButton" Content="Remove" Margin="10" Command="{x:Bind ViewModel.RemoveImage}"/>
+            </StackPanel>
+            <validation:ControlWrapper PropertyName="FirstName" x:Name="FirstNameCR" RelativePanel.Below="AddEditButtonsSP">
                 <TextBox Header="First Name" 
-                     PlaceholderText="Bekzod"
+                     PlaceholderText="FirstName"
                      Text="{Binding FirstName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
             </validation:ControlWrapper>
             <validation:ControlWrapper PropertyName="LastName" x:Name="LastNameCR" RelativePanel.Below="FirstNameCR">
                 <TextBox Header="Last Name"
-                     PlaceholderText="Allaev"
+                     PlaceholderText="LastName"
                      Text="{Binding LastName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
             </validation:ControlWrapper>
             <validation:ControlWrapper PropertyName="PhoneNumber" x:Name="PhoneNumberCR" RelativePanel.Below="LastNameCR">

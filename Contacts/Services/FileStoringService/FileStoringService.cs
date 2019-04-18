@@ -16,7 +16,7 @@ namespace Contacts.Services.FileStoringService
         #region Declarations
         StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
         #endregion
-        public bool HasPhoto { get; set; }
+
         #region Implementation of IFileStoringService
         public async Task DeleteFromLocalStorageAsync(StorageFile file)
         {
@@ -28,7 +28,9 @@ namespace Contacts.Services.FileStoringService
             await file.DeleteAsync();
         }
 
-        public async Task<StorageFile> GetFileAsync(StorageFolder parentFolder, string fileName)
+#nullable enable
+        public async Task<StorageFile> GetFileAsync(StorageFolder parentFolder,
+                                                     string fileName)
         {
             StorageFile nullFile;
             StorageFile expectedFile;
@@ -36,7 +38,7 @@ namespace Contacts.Services.FileStoringService
             if (await ApplicationData.Current.TemporaryFolder.TryGetItemAsync(fileName) != null)
                 return expectedFile = await parentFolder.GetFileAsync(fileName);
             else if (await ApplicationData.Current.LocalFolder.TryGetItemAsync(fileName) == null)
-                return nullFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync("stub");
+                return nullFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync("Stub");
             else
                 return expectedFile = await parentFolder.GetFileAsync(fileName);
         }
@@ -53,7 +55,7 @@ namespace Contacts.Services.FileStoringService
             }
             else
             {
-                StorageFile fileToMove= await ApplicationData.Current.TemporaryFolder.GetFileAsync(fileToSave.Name); 
+                StorageFile fileToMove = await ApplicationData.Current.TemporaryFolder.GetFileAsync(fileToSave.Name);
 
                 await fileToMove.MoveAsync(ApplicationData.Current.LocalFolder, fileName);
             }

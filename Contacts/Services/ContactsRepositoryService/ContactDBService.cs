@@ -88,7 +88,6 @@ namespace Contacts.Services.ContactsRepositoryService
         }
         #endregion
 
-
         #region Read
         public async Task<List<Models.Contacts>> ReadAsync()
         {
