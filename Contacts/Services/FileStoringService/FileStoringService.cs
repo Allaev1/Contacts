@@ -30,12 +30,12 @@ namespace Contacts.Services.FileStoringService
         }
 
 #nullable enable
-        //TODD: Как только сделаешь так чтобы метод GetFileAsync возвращал null 
+        //TODD: Как только сделаешь так чтобы метод GetFileAsync мог возвращать null 
         //сделай рефакторинг кода AddEditPageViewModel(обработчик события покадание формы)
         public async Task<StorageFile?> GetFileAsync(StorageFolder parentFolder,
                                                      string fileName)
         {
-            StorageFile nullFile;
+            StorageFile nullFile; //файл который нечего не содержит нужен для того чтобы метод не возвращал null
             StorageFile expectedFile;
 
             if (await ApplicationData.Current.TemporaryFolder.TryGetItemAsync(fileName) != null)
