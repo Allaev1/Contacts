@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -31,6 +32,6 @@ namespace Contacts.Services.FileStoringService
         /// <param name="fileName">
         /// Имя файла
         /// </param>
-        Task<StorageFile> GetFileAsync(StorageFolder parentFolder, string fileName);
+        Task<StorageFile?> GetFileAsync(StorageFolder parentFolder, string fileName);
     }
 }

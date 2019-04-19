@@ -11,7 +11,7 @@
     xmlns:imageConverter="using:Contacts.Services.Converters"
     mc:Ignorable="d">
     <Page.Resources>
-        <imageConverter:ToImageConverter x:Key="ImageConverter"/>
+        <imageConverter:IdToImageConverter x:Key="IdToImageConverter"/>
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -41,6 +41,7 @@
                         <uwpkit:ImageEx Margin="0,10,0,10" x:Name="thumbnail" Width="60" Height="60"
                                        RelativePanel.AlignVerticalCenterWithPanel="True"
                                        Stretch="UniformToFill"
+                                       Source="{x:Bind Converter={StaticResource IdToImageConverter}}"
                                        CornerRadius="48"/>
                         <TextBlock x:Name="name" Text="{x:Bind FirstName}" FontSize="18" FontWeight="Bold"
                                        RelativePanel.RightOf="thumbnail"
@@ -62,7 +63,7 @@
             <uwpkit:MasterDetailsView.DetailsTemplate>
                 <DataTemplate x:DataType="model:Contacts">
                     <ScrollViewer>
-                        <RelativePanel>
+                        <RelativePanel Background="Cornsilk">
                             <StackPanel x:Name="FirstAndLastNamePanel" 
                                 RelativePanel.AlignTopWithPanel="True" 
                                 HorizontalAlignment="Left" 
@@ -71,7 +72,12 @@
                                 <TextBlock Text="{x:Bind FirstName}" FontSize="36" FontWeight="Bold" Margin="0,0,10,0"/>
                                 <TextBlock Text="{x:Bind LastName}" FontSize="36" FontWeight="Bold"/>
                             </StackPanel>
-                            <uwpkit:ImageEx x:Name="Image" Source="{x:Bind Converter={StaticResource ImageConverter}}" BorderThickness="1" BorderBrush="Black"                                    Stretch="Fill"
+                            <uwpkit:ImageEx x:Name="Image" 
+                                    Source="{x:Bind Converter={StaticResource IdToImageConverter}}" 
+                                    BorderThickness="0.5" 
+                                    BorderBrush="White"       
+                                    VerticalContentAlignment="Center"                                            
+                                    Stretch="Uniform"
                                     CornerRadius="20"
                                     Margin="20"
                                     Height="360"
@@ -97,7 +103,7 @@
 
             <uwpkit:MasterDetailsView.NoSelectionContentTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel Background="Cornsilk" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <SymbolIcon x:Name="Symbol" Symbol="Contact" RenderTransformOrigin=".5,.5">
                             <SymbolIcon.RenderTransform>
                                 <CompositeTransform 

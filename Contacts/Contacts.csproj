@@ -101,7 +101,7 @@
     <Compile Include="Message\Message.cs" />
     <Compile Include="ProxyModels\ProxyContact.cs" />
     <Compile Include="Services\ContactsRepositoryService\ContactDBService.cs" />
-    <Compile Include="Services\Converters\ToImageConverter.cs" />
+    <Compile Include="Services\Converters\IdToImageConverter.cs" />
     <Compile Include="Services\FileStoringService\FileStoringService.cs" />
     <Compile Include="Services\FileStoringService\IFileStoringService.cs" />
     <Compile Include="ViewModels\AddEditPageViewModel.cs" />
@@ -129,6 +129,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="Assets\contactImagePlaceHolder.png" />
     <Content Include="Assets\ContactsLogo.png" />
     <Content Include="ContactsDB.db" />
     <None Include="Contacts_TemporaryKey.pfx" />
@@ -184,6 +185,9 @@
     </PackageReference>
     <PackageReference Include="sqlite-net-pcl">
       <Version>1.5.231</Version>
+    </PackageReference>
+    <PackageReference Include="System.Threading.Tasks.Extensions">
+      <Version>4.5.2</Version>
     </PackageReference>
     <PackageReference Include="Template10">
       <Version>1.1.12</Version>

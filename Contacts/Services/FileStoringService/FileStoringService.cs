@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Foundation;
 
 namespace Contacts.Services.FileStoringService
 {
@@ -29,7 +30,9 @@ namespace Contacts.Services.FileStoringService
         }
 
 #nullable enable
-        public async Task<StorageFile> GetFileAsync(StorageFolder parentFolder,
+        //TODD: Как только сделаешь так чтобы метод GetFileAsync возвращал null 
+        //сделай рефакторинг кода AddEditPageViewModel(обработчик события покадание формы)
+        public async Task<StorageFile?> GetFileAsync(StorageFolder parentFolder,
                                                      string fileName)
         {
             StorageFile nullFile;
