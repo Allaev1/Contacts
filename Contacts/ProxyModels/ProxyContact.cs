@@ -16,7 +16,7 @@ namespace Contacts.ProxyModels
             FirstName = contact.FirstName;
             LastName = contact.LastName;
             PhoneNumber = contact.PhoneNumber;
-            //PathToImage = contact.PathToImage;
+            PathToImage = contact.PathToImage;
             Email = contact.Email;
             IsFavorite = contact.IsFavorite;
             GroupID = contact.GroupID;
@@ -29,7 +29,7 @@ namespace Contacts.ProxyModels
 
         public String PhoneNumber { get { return Read<string>(); } set { Write(value); } }
 
-        //public String PathToImage { get { return Read<string>(); } set { Write(value); } }
+        public String PathToImage { get { return Read<string>(); } set { Write(value); } }
 
         public String Email { get { return Read<string>(); } set { Write(value); } }
 

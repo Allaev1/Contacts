@@ -89,6 +89,7 @@ namespace Contacts.ViewModels
             if(isDone)
                 await ApplicationData.Current.ClearAsync(ApplicationDataLocality.Temporary);
         }
+
         #endregion
 
         #region Commands
