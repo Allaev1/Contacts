@@ -32,7 +32,7 @@ namespace Contacts.Services.FileStoringService
 #nullable enable
         //TODD: Как только сделаешь так чтобы метод GetFileAsync мог возвращать null 
         //сделай рефакторинг кода AddEditPageViewModel(обработчик события покадание формы)
-        public async Task<StorageFile?> GetFileAsync(StorageFolder parentFolder,
+        public async Task<StorageFile> GetFileAsync(StorageFolder parentFolder,
                                                      string fileName)
         {
             StorageFile nullFile; //файл который нечего не содержит нужен для того чтобы метод не возвращал null
@@ -50,11 +50,13 @@ namespace Contacts.Services.FileStoringService
         {
             if (await IsFileExist(ApplicationData.Current.LocalFolder, fileName))
             {
-                StorageFile fileToDelete = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName);
+                //StorageFile fileToDelete = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName);
 
-                await fileToDelete.DeleteAsync();
+                //await fileToDelete.DeleteAsync();
 
-                await fileToSave.CopyAsync(ApplicationData.Current.LocalFolder, fileName);
+                StorageFile fileToReplace = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName);
+
+                await fileToSave.CopyAndReplaceAsync(fileToReplace);
             }
             else
             {
@@ -63,6 +65,15 @@ namespace Contacts.Services.FileStoringService
                 await fileToMove.MoveAsync(ApplicationData.Current.LocalFolder, fileName);
             }
 
+        }
+
+        public async Task<StorageFile> SaveToLocalStorageAndGetFileAsync(StorageFile fileToSave,string fileName)
+        {
+            await SaveToLocalStorageAsync(fileToSave, fileName);
+
+            StorageFile fileForReturn = await GetFileAsync(ApplicationData.Current.LocalFolder, fileName);
+
+            return fileForReturn;
         }
 
         public async Task SaveToTempStorageAsync(StorageFile fileToSave, string fileName)

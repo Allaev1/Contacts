@@ -30,7 +30,6 @@ namespace Contacts.ViewModels
         DelegateCommand _addImage;
         DelegateCommand _removeImage;
 
-        bool isImageNull = true; // Указывает заплонен Image или нет
         bool isDone = true; // Показывает закончен ли процесс добавления или редактирование 
 
         enum States { Edit, Add };
@@ -46,8 +45,18 @@ namespace Contacts.ViewModels
 
         public BitmapImage Image
         {
-            set { Set(ref _image, value); }
+            set
+            {
+                Set(ref _image, value);
+                RemoveImage.RaiseCanExecuteChanged();
+            }
             get { return _image; }
+        }
+
+        public WriteableBitmap WriteableBitmap
+        {
+            set { Set(ref _writeableImage, value); }
+            get { return _writeableImage; }
         }
         #endregion
 
@@ -71,9 +80,11 @@ namespace Contacts.ViewModels
             {
                 isDone = false; //Для каждой новой операций флаг опускается
                 SetTempPerson(parameter);
-                Image = new BitmapImage(new Uri
-                    ((await storingService.GetFileAsync
-                    (ApplicationData.Current.LocalFolder, currentContact.ID)).Path));
+
+                if (TempContact.PathToImage != null)
+                    Image = new BitmapImage(new Uri(currentContact.PathToImage));
+                else
+                    Image = new BitmapImage(new Uri("ms-appx:///Assets/contactImagePlaceHolder.png"));
             }
 
             if (parameter == null)
@@ -86,7 +97,7 @@ namespace Contacts.ViewModels
 
         public async override Task OnNavigatedFromAsync(IDictionary<string, object> pageState, bool suspending)
         {
-            if(isDone)
+            if (isDone)
                 await ApplicationData.Current.ClearAsync(ApplicationDataLocality.Temporary);
         }
 
@@ -108,16 +119,27 @@ namespace Contacts.ViewModels
             currentContact.PhoneNumber = TempContact.PhoneNumber;
             currentContact.Email = TempContact.Email;
 
+            if (imageFile != null)
+            {
+                StorageFile file = await storingService.SaveToLocalStorageAndGetFileAsync(imageFile, currentContact.ID);
+                currentContact.PathToImage = file.Path;
+            }
+            else if (TempContact.PathToImage == null & currentContact.PathToImage != null)
+            {
+                StorageFile fileToDelete =
+                    await StorageFile.GetFileFromPathAsync(currentContact.PathToImage);
+
+                await storingService.DeleteFromLocalStorageAsync(fileToDelete);
+
+                currentContact.PathToImage = null;
+            }
+
             if (currentState == States.Add)
                 await repositoryService.AddAsync(currentContact);
             else if (currentState == States.Edit)
                 await repositoryService.UpdateAsync(currentContact);
 
             isDone = true;
-            isImageNull = true;
-
-            if (imageFile != null)
-                await storingService.SaveToLocalStorageAsync(imageFile, currentContact.ID);
 
             NavigationService.Navigate(typeof(Views.MasterDetailPage));
         }
@@ -132,7 +154,6 @@ namespace Contacts.ViewModels
         public async void GoBackUnsavedExecute()
         {
             isDone = true;
-            isImageNull = true;
             await NavigationService.NavigateAsync(typeof(Views.MasterDetailPage));
         }
         #endregion
@@ -154,10 +175,6 @@ namespace Contacts.ViewModels
                 imageFile.Name);
 
             Image = new BitmapImage(new Uri(imageFile.Path));
-
-            isImageNull = false;
-
-            RemoveImage.RaiseCanExecuteChanged();
         }
         #endregion
 
@@ -169,21 +186,20 @@ namespace Contacts.ViewModels
 
         private bool CanRemoveImageExecute()
         {
-            if (isImageNull)
-                return false;
-            else
-                return true;
+            if (Image == null) return false;
+
+            else if (TempContact.PathToImage == null) return false;
+
+            else if (TempContact.PathToImage.Equals(Image.UriSource.LocalPath)) return true;
+
+            else return false;
         }
 
-        private async void RemoveImageExecute()
+        private void RemoveImageExecute()
         {
+            TempContact.PathToImage = null;
+
             Image = null;
-
-            await imageFile.DeleteAsync();
-
-            isImageNull = true;
-
-            RemoveImage.RaiseCanExecuteChanged();
         }
         #endregion
 

@@ -75,8 +75,8 @@
                             </StackPanel>
                             <uwpkit:ImageEx x:Name="Image" 
                                     Source="{x:Bind Converter={StaticResource IdToImageConverter}}" 
-                                    BorderThickness="0.5" 
-                                    BorderBrush="White"       
+                                    BorderThickness="1" 
+                                    BorderBrush="Black"       
                                     VerticalContentAlignment="Center"                                            
                                     Stretch="Uniform"
                                     CornerRadius="20"

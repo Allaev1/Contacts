@@ -32,6 +32,7 @@ namespace Contacts.Services.FileStoringService
         /// <param name="fileName">
         /// Имя файла
         /// </param>
-        Task<StorageFile?> GetFileAsync(StorageFolder parentFolder, string fileName);
+        Task<StorageFile> GetFileAsync(StorageFolder parentFolder, string fileName);
+        Task<StorageFile> SaveToLocalStorageAndGetFileAsync(StorageFile fileToSave, string fileName);
     }
 }
