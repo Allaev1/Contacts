@@ -113,26 +113,7 @@ namespace Contacts.ViewModels
 
         public async void GoBackSavedExecute()
         {
-            currentContact.FirstName = TempContact.FirstName;
-            currentContact.LastName = TempContact.LastName;
-            currentContact.IsFavorite = TempContact.IsFavorite;
-            currentContact.PhoneNumber = TempContact.PhoneNumber;
-            currentContact.Email = TempContact.Email;
-
-            if (imageFile != null)
-            {
-                StorageFile file = await storingService.SaveToLocalStorageAndGetFileAsync(imageFile, currentContact.ID);
-                currentContact.PathToImage = file.Path;
-            }
-            else if (TempContact.PathToImage == null & currentContact.PathToImage != null)
-            {
-                StorageFile fileToDelete =
-                    await StorageFile.GetFileFromPathAsync(currentContact.PathToImage);
-
-                await storingService.DeleteFromLocalStorageAsync(fileToDelete);
-
-                currentContact.PathToImage = null;
-            }
+            await SetCurrentContactAsync();
 
             if (currentState == States.Add)
                 await repositoryService.AddAsync(currentContact);
@@ -205,7 +186,7 @@ namespace Contacts.ViewModels
 
         #endregion
 
-        #region Private method
+        #region Private methods
         private async Task<StorageFile> GetImageAsync()
         {
             FileOpenPicker picker = new FileOpenPicker();
@@ -244,6 +225,47 @@ namespace Contacts.ViewModels
             };
             TempContact = temporary;
             TempContact.Validate();
+        }
+
+        private async Task SetCurrentContactAsync()
+        {
+            currentContact.FirstName = TempContact.FirstName;
+            currentContact.LastName = TempContact.LastName;
+            currentContact.IsFavorite = TempContact.IsFavorite;
+            currentContact.PhoneNumber = TempContact.PhoneNumber;
+            currentContact.Email = TempContact.Email;
+
+            await SetImageContactAsync();
+        }
+
+        private async Task SetImageContactAsync()
+        {
+            if (currentContact.PathToImage == null)
+            {
+                if (imageFile == null) return;
+
+                StorageFile file = await storingService.SaveToLocalStorageAndGetFileAsync(imageFile, currentContact.ID);
+                currentContact.PathToImage = file.Path;
+            }
+            else
+            {
+                StorageFile fileToDelete =
+                    await StorageFile.GetFileFromPathAsync(currentContact.PathToImage);
+
+                await storingService.DeleteFromLocalStorageAsync(fileToDelete);
+
+                if (TempContact.PathToImage == null)
+                    currentContact.PathToImage = null;
+                else
+                {
+                    if (imageFile == null) return;
+
+                    StorageFile newImageFile =
+                        await storingService.SaveToLocalStorageAndGetFileAsync(imageFile, currentContact.ID);
+
+                    currentContact.PathToImage = newImageFile.Path;
+                }
+            }
         }
         #endregion
     }

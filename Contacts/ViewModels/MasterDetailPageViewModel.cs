@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Contacts.Message;
-using Template10.Mvvm;
+﻿using Contacts.Message;
 using Contacts.Services.ContactsRepositoryService;
-using GalaSoft.MvvmLight.Messaging;
-using Windows.UI.Xaml.Controls;
-using System.Collections.ObjectModel;
-using Windows.UI.Xaml.Navigation;
-using Windows.UI.Xaml.Data;
-using Windows.Storage;
-using Windows.Storage.Streams;
-using Windows.UI.Xaml.Media.Imaging;
 using Contacts.Services.FileStoringService;
+using GalaSoft.MvvmLight.Messaging;
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using Template10.Mvvm;
+using Windows.Storage;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 namespace Contacts.ViewModels
 {
@@ -48,7 +46,7 @@ namespace Contacts.ViewModels
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
             var list = await _contactRepository.GetAllAsync();
-            _contacts = new ObservableCollection<Models.Contacts>(list);
+            _contacts = new ObservableCollection<Models.Contacts>(list.OrderBy(u => u.LastName));
 
             Messenger.Default.Register<OperationResultMessage>(this, (message) => HandlePersonsChangedMessage(message));
         }

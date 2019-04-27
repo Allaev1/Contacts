@@ -32,15 +32,15 @@
                          BorderBrush="Black"
                          BorderThickness="1"
                          Source="{x:Bind ViewModel.Image,Mode=TwoWay}"/>
-            <StackPanel x:Name="AddEditButtonsSP" 
+            <StackPanel x:Name="BrowseRemoveButtonsSP" 
                         Orientation="Horizontal"
                         RelativePanel.Below="ContactsImage"
                         RelativePanel.AlignHorizontalCenterWith="ContactsImage">
-                <Button x:Name="AddButton"
+                <Button x:Name="BrowseButton"
                     Content="Browse..."
                     Margin="10"
                     Command="{x:Bind ViewModel.AddImage}"/>
-                <Button x:Name="EditButton" Content="Remove from data base" Margin="10" Command="{x:Bind ViewModel.RemoveImage}"/>
+                <Button x:Name="RemoveButton" Content="Remove" Margin="10" Command="{x:Bind ViewModel.RemoveImage}"/>
             </StackPanel>
             <validation:ControlWrapper PropertyName="FirstName" x:Name="FirstNameCR" RelativePanel.Below="AddEditButtonsSP">
                 <TextBox Header="First Name" 
@@ -65,8 +65,7 @@
         </RelativePanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" RelativePanel.AlignBottomWithPanel="True">
-            <Button Content="Save" Width="160" Margin="10" Command="{x:Bind ViewModel.GoBackSaved}"
-                    IsEnabled="{x:Bind ViewModel.TempContact.IsValid,Mode=OneWay}"/>
+            <Button Content="Save" Width="160" Margin="10" Command="{x:Bind ViewModel.GoBackSaved}"/>
             <Button Content="Cancel" Width="160" Margin="10" Command="{x:Bind ViewModel.GoBackUnSaved}"/>
         </StackPanel>
 

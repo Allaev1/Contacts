@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using SQLite;
-using Windows.Storage;
-using Contacts.Message;
+﻿using Contacts.Message;
 using GalaSoft.MvvmLight.Messaging;
-using Contacts.Models;
+using SQLite;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.UI.Xaml;
 
 namespace Contacts.Services.ContactsRepositoryService
 {
-    class ContactDBService : IContactRepositoryService
+    class ContactRepositoryService : IContactRepositoryService
     {
         #region Fields
         List<Models.Contacts> _contacts;
@@ -19,18 +19,16 @@ namespace Contacts.Services.ContactsRepositoryService
         #endregion
 
         #region Contstructors
-        public ContactDBService()
+        public ContactRepositoryService()
         {
-
+            var app = Application.Current as App;
+            connection = app.DataBase;
         }
         #endregion
 
         #region Interface implementation
         public async Task AddAsync(Models.Contacts contact)
         {
-            dbFile = await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDB.db");
-            connection = new SQLiteConnection(dbFile.Path);
-
             connection.Table<Models.Contacts>().Connection.Insert(contact);
 
             _contacts = await ReadAsync();
@@ -52,8 +50,6 @@ namespace Contacts.Services.ContactsRepositoryService
         {
             if (_contacts == null)
             {
-                dbFile = await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDB.db");
-                connection = new SQLiteConnection(dbFile.Path);
                 return _contacts = await ReadAsync();
             }
             else

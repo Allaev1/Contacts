@@ -16,6 +16,7 @@ using Contacts.Services.FileStoringService;
 using Contacts.ViewModels;
 using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Controls;
+using SQLite;
 
 namespace Contacts
 {
@@ -24,6 +25,7 @@ namespace Contacts
     /// </summary>
     sealed partial class App : BootStrapper
     {
+        const string DATABASE_NAME= "ContactsDB.db";
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -31,6 +33,20 @@ namespace Contacts
         public App()
         {
             this.InitializeComponent();
+        }
+
+        private StorageFile dataBase;
+        private SQLiteConnection _dataBaseConnection;
+        public SQLiteConnection DataBase
+        {
+            get
+            {
+                if (_dataBaseConnection == null)
+                {
+                    _dataBaseConnection = new SQLiteConnection(dataBase.Path);
+                }
+                return _dataBaseConnection;
+            }
         }
 
         /// <summary>
@@ -58,17 +74,16 @@ namespace Contacts
         /// <returns></returns>
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
-            //Code that delete database from local app data
-            //StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync("ContactsDB.db");
-            //await file.DeleteAsync();
-            if (null == await ApplicationData.Current.LocalFolder.TryGetItemAsync("ContactsDB.db"))
+            if (await ApplicationData.Current.LocalFolder.TryGetItemAsync(DATABASE_NAME) == null)
             {
-                var appDb = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///ContactsDB.db"));
+                var appDb = await StorageFile.GetFileFromApplicationUriAsync(new Uri($"ms-appx:///{DATABASE_NAME}"));
                 await appDb.CopyAsync(ApplicationData.Current.LocalFolder);
             }
 
+            dataBase = await ApplicationData.Current.LocalFolder.GetFileAsync(DATABASE_NAME);
+
             SimpleIoc.Default.Register<IFileStoringService, FileStoringService>();
-            SimpleIoc.Default.Register<IContactRepositoryService, ContactDBService>();
+            SimpleIoc.Default.Register<IContactRepositoryService, ContactRepositoryService>();
             SimpleIoc.Default.Register<AddEditPageViewModel>();
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<MasterDetailPageViewModel>();

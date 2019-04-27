@@ -97,10 +97,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Message\IsDirtyMessage.cs" />
     <Compile Include="Models\DataAccess.cs" />
     <Compile Include="Message\Message.cs" />
     <Compile Include="ProxyModels\ProxyContact.cs" />
-    <Compile Include="Services\ContactsRepositoryService\ContactDBService.cs" />
+    <Compile Include="Services\ContactsRepositoryService\ContactRepositoryService.cs" />
     <Compile Include="Services\Converters\IdToImageConverter.cs" />
     <Compile Include="Services\FileStoringService\FileStoringService.cs" />
     <Compile Include="Services\FileStoringService\IFileStoringService.cs" />
