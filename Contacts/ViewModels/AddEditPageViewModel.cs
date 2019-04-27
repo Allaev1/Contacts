@@ -5,10 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Template10.Mvvm;
+using GalaSoft.MvvmLight.Messaging;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using Contacts.Message;
 
 namespace Contacts.ViewModels
 {
@@ -22,6 +24,7 @@ namespace Contacts.ViewModels
         ProxyContact _tempContact;
         BitmapImage _image;
         WriteableBitmap _writeableImage;
+        bool _isEnabled;
 
         StorageFile imageFile;
 
@@ -58,6 +61,9 @@ namespace Contacts.ViewModels
             set { Set(ref _writeableImage, value); }
             get { return _writeableImage; }
         }
+
+        public bool IsEnabled { private set { Set(ref _isEnabled, value); } get { return _isEnabled; } }
+
         #endregion
 
         #region Constructors
@@ -68,6 +74,7 @@ namespace Contacts.ViewModels
             _goBackSaved = new DelegateCommand(GoBackSavedExecute);
             _goBackUnsaved = new DelegateCommand(GoBackUnsavedExecute);
             _removeImage = new DelegateCommand(RemoveImageExecute, CanRemoveImageExecute);
+            IsEnabled = false;
         }
         #endregion
 
@@ -92,6 +99,8 @@ namespace Contacts.ViewModels
             else
                 currentState = States.Edit;
 
+            Messenger.Default.Register<IsDirtyMessage>(this, (message) => HandleIsDirtyChangedMessage(message));
+
             await Task.CompletedTask;
         }
 
@@ -99,6 +108,8 @@ namespace Contacts.ViewModels
         {
             if (isDone)
                 await ApplicationData.Current.ClearAsync(ApplicationDataLocality.Temporary);
+
+            //Messenger.Default.Unregister<IsDirtyMessage>(this);
         }
 
         #endregion
@@ -154,6 +165,8 @@ namespace Contacts.ViewModels
             imageFile = await storingService.GetFileAsync
                 (ApplicationData.Current.TemporaryFolder,
                 imageFile.Name);
+
+            TempContact.PathToImage = imageFile.Path;
 
             Image = new BitmapImage(new Uri(imageFile.Path));
         }
@@ -266,6 +279,16 @@ namespace Contacts.ViewModels
                     currentContact.PathToImage = newImageFile.Path;
                 }
             }
+        }
+        #endregion
+
+        #region Message handler
+        private void HandleIsDirtyChangedMessage(IsDirtyMessage message)
+        {
+            bool isDirty = message.IsDirty;
+
+            if (TempContact.IsValid && isDirty) IsEnabled = true;
+            else IsEnabled = false;
         }
         #endregion
     }

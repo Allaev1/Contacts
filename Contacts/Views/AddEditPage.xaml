@@ -42,7 +42,7 @@
                     Command="{x:Bind ViewModel.AddImage}"/>
                 <Button x:Name="RemoveButton" Content="Remove" Margin="10" Command="{x:Bind ViewModel.RemoveImage}"/>
             </StackPanel>
-            <validation:ControlWrapper PropertyName="FirstName" x:Name="FirstNameCR" RelativePanel.Below="AddEditButtonsSP">
+            <validation:ControlWrapper PropertyName="FirstName" x:Name="FirstNameCR" RelativePanel.Below="BrowseRemoveButtonsSP">
                 <TextBox Header="First Name" 
                      PlaceholderText="FirstName"
                      Text="{Binding FirstName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
@@ -65,7 +65,8 @@
         </RelativePanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" RelativePanel.AlignBottomWithPanel="True">
-            <Button Content="Save" Width="160" Margin="10" Command="{x:Bind ViewModel.GoBackSaved}"/>
+            <Button Content="Save" Width="160" Margin="10" Command="{x:Bind ViewModel.GoBackSaved}"
+                    IsEnabled="{x:Bind ViewModel.IsEnabled,Mode=OneWay}"/>
             <Button Content="Cancel" Width="160" Margin="10" Command="{x:Bind ViewModel.GoBackUnSaved}"/>
         </StackPanel>
 
