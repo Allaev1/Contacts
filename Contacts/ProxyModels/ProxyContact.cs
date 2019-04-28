@@ -69,6 +69,7 @@ namespace Contacts.ProxyModels
                     else isDirty = true;
                     break;
                 case "PhoneNumber":
+                    if (PhoneNumber == "") PhoneNumber = null;
                     if (originalContact.PhoneNumber == PhoneNumber) isDirty = false;
                     else isDirty = true;
                     break;
@@ -77,6 +78,7 @@ namespace Contacts.ProxyModels
                     else isDirty = true;
                     break;
                 case "Email":
+                    if (Email == "") Email = null;
                     if (originalContact.Email == Email) isDirty = false;
                     else isDirty = true;
                     break;
