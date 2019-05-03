@@ -14,39 +14,25 @@ namespace Contacts.Services.FileStoringService
     /// </summary>
     public class FileStoringService : IFileStoringService
     {
-        #region Declarations
-        StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
-        #endregion
-
-        #region Implementation of IFileStoringService
-        public async Task DeleteFromLocalStorageAsync(StorageFile file)
+        public async Task SaveToStorage(StorageFolder parentFolder, StorageFile file, string fileName)
         {
-            await file.DeleteAsync();
+            if (parentFolder.Name == "LocalState")
+                await ToLocalStorageAsync(file, fileName);
+            else if (parentFolder.Name == "TempState")
+                await ToTempStorageAsync(file, fileName);
         }
 
-        public async Task DeleteFromTempStorageAsync(StorageFile file)
-        {
-            await file.DeleteAsync();
-        }
-
-#nullable enable
-        //TODD: Как только сделаешь так чтобы метод GetFileAsync мог возвращать null 
-        //сделай рефакторинг кода AddEditPageViewModel(обработчик события покадание формы)
-        public async Task<StorageFile> GetFileAsync(StorageFolder parentFolder,
-                                                     string fileName)
-        {
-            StorageFile nullFile; //файл который нечего не содержит нужен для того чтобы метод не возвращал null
-            StorageFile expectedFile;
-
-            if (await ApplicationData.Current.TemporaryFolder.TryGetItemAsync(fileName) != null)
-                return expectedFile = await parentFolder.GetFileAsync(fileName);
-            else if (await ApplicationData.Current.LocalFolder.TryGetItemAsync(fileName) == null)
-                return nullFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync("Stub");
-            else
-                return expectedFile = await parentFolder.GetFileAsync(fileName);
-        }
-
-        public async Task SaveToLocalStorageAsync(StorageFile fileToSave, string fileName)
+        #region Private methods
+        /// <summary>
+        /// Сохраняет файл в локальное хранилище
+        /// </summary>
+        /// <param name="fileToSave">
+        /// Файл который нужно сохранить
+        /// </param>
+        /// <param name="fileName">
+        /// Имя которое присваевается файлу при сохранение
+        /// </param>
+        private async Task ToLocalStorageAsync(StorageFile fileToSave, string fileName)
         {
             if (await IsFileExist(ApplicationData.Current.LocalFolder, fileName))
             {
@@ -67,16 +53,16 @@ namespace Contacts.Services.FileStoringService
 
         }
 
-        public async Task<StorageFile> SaveToLocalStorageAndGetFileAsync(StorageFile fileToSave,string fileName)
-        {
-            await SaveToLocalStorageAsync(fileToSave, fileName);
-
-            StorageFile fileForReturn = await GetFileAsync(ApplicationData.Current.LocalFolder, fileName);
-
-            return fileForReturn;
-        }
-
-        public async Task SaveToTempStorageAsync(StorageFile fileToSave, string fileName)
+        /// <summary>
+        /// Сохраняет файл во временное хранилище
+        /// </summary>
+        /// <param name="fileToSave">
+        /// Файл который нужно сохранить
+        /// </param>
+        /// <param name="fileName">
+        /// Имя которое присваевается файлу при сохранение
+        /// </param>
+        private async Task ToTempStorageAsync(StorageFile fileToSave, string fileName)
         {
             if (await IsFileExist(ApplicationData.Current.TemporaryFolder, fileName))
             {
@@ -87,9 +73,7 @@ namespace Contacts.Services.FileStoringService
 
             await fileToSave.CopyAsync(ApplicationData.Current.TemporaryFolder, fileName);
         }
-        #endregion
 
-        #region Private methods
         private async Task<bool> IsFileExist(StorageFolder parentFolder, string fileName)
         {
             if (null == await parentFolder.TryGetItemAsync(fileName))

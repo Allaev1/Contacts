@@ -75,10 +75,10 @@ namespace Contacts.ViewModels
 
             if (result != ContentDialogResult.Primary) return;
 
-            StorageFile imageFileToDelete = await _storingService.GetFileAsync
-                (ApplicationData.Current.LocalFolder, SelectedContact.ID);
+            StorageFile imageFileToDelete = await ApplicationData.Current.LocalFolder.TryGetItemAsync(SelectedContact.ID) as StorageFile;
 
-            await _storingService.DeleteFromLocalStorageAsync(imageFileToDelete);
+            if (imageFileToDelete != null)
+                await imageFileToDelete.DeleteAsync();
 
             await _contactRepository.DeleteAsync(SelectedContact.ID);
         }

@@ -160,11 +160,9 @@ namespace Contacts.ViewModels
         {
             if ((imageFile = await GetImageAsync()) == null) return;
 
-            await storingService.SaveToTempStorageAsync(imageFile, imageFile.Name);
+            await storingService.SaveToStorage(ApplicationData.Current.TemporaryFolder, imageFile, imageFile.Name);
 
-            imageFile = await storingService.GetFileAsync
-                (ApplicationData.Current.TemporaryFolder,
-                imageFile.Name);
+            imageFile = await ApplicationData.Current.TemporaryFolder.GetFileAsync(imageFile.Name);
 
             TempContact.PathToImage = imageFile.Path;
 
@@ -257,7 +255,10 @@ namespace Contacts.ViewModels
             {
                 if (imageFile == null) return;
 
-                StorageFile file = await storingService.SaveToLocalStorageAndGetFileAsync(imageFile, currentContact.ID);
+                await storingService.SaveToStorage(ApplicationData.Current.LocalFolder, imageFile, currentContact.ID);
+
+                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(currentContact.ID);
+
                 currentContact.PathToImage = file.Path;
             }
             else
@@ -265,7 +266,7 @@ namespace Contacts.ViewModels
                 StorageFile fileToDelete =
                     await StorageFile.GetFileFromPathAsync(currentContact.PathToImage);
 
-                await storingService.DeleteFromLocalStorageAsync(fileToDelete);
+                await fileToDelete.DeleteAsync();
 
                 if (TempContact.PathToImage == null)
                     currentContact.PathToImage = null;
@@ -273,8 +274,9 @@ namespace Contacts.ViewModels
                 {
                     if (imageFile == null) return;
 
-                    StorageFile newImageFile =
-                        await storingService.SaveToLocalStorageAndGetFileAsync(imageFile, currentContact.ID);
+                    await storingService.SaveToStorage(ApplicationData.Current.LocalFolder, imageFile, currentContact.ID);
+
+                    StorageFile newImageFile = await ApplicationData.Current.LocalFolder.GetFileAsync(currentContact.ID);
 
                     currentContact.PathToImage = newImageFile.Path;
                 }

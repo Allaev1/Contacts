@@ -54,7 +54,7 @@ namespace Contacts.ProxyModels
         private void CheckIsDirty(string propertyName)
         {
             bool isDirty;
-            //if (Current.Equals(originalContact))
+            //if (this.Equals(originalContact))
             //    isDirty = false;
             //else
             //    isDirty = true;

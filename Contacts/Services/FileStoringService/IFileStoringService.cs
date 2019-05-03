@@ -15,24 +15,18 @@ namespace Contacts.Services.FileStoringService
     /// </summary>
     public interface IFileStoringService
     {
-        Task SaveToLocalStorageAsync(StorageFile file, string fileName);
-
-        Task DeleteFromLocalStorageAsync(StorageFile file);
-
-        Task SaveToTempStorageAsync(StorageFile file, string fileName);
-
-        Task DeleteFromTempStorageAsync(StorageFile file);
-
         /// <summary>
-        /// Возвращает файл из хранилища
+        /// Сохраняет файл в хранилище приложения
         /// </summary>
-        /// <param name="folder">
-        /// Хранилище из которого нужно вернуть файл
+        /// <param name="parentFolder">
+        /// Хранилище в которое нужно сохранить файл 
+        /// </param>
+        /// <param name="file">
+        /// Файл который нужно сохранить
         /// </param>
         /// <param name="fileName">
-        /// Имя файла
+        /// Имя которое получает файл при сохранение
         /// </param>
-        Task<StorageFile> GetFileAsync(StorageFolder parentFolder, string fileName);
-        Task<StorageFile> SaveToLocalStorageAndGetFileAsync(StorageFile fileToSave, string fileName);
+        Task SaveToStorage(StorageFolder parentFolder, StorageFile file, string fileName);
     }
 }
