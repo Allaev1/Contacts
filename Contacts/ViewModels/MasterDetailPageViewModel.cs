@@ -23,6 +23,7 @@ namespace Contacts.ViewModels
         ObservableCollection<Models.Contacts> _contacts;
         Models.Contacts _contact;
 
+        DelegateCommand _makeFavoriteCommand;
         DelegateCommand _deleteContactCommand;
         DelegateCommand _goToSettingsCommand;
         DelegateCommand _editContactCommand;
@@ -35,11 +36,12 @@ namespace Contacts.ViewModels
         {
             _contactRepository = contactRepositoryService;
             _storingService = fileStoringService;
+            _addContact = new DelegateCommand(AddExecute);
+            _makeFavoriteCommand = new DelegateCommand(MakeFavoriteExecute, CanMakeFavoriteExcute);
             _deleteContactCommand = new DelegateCommand(DeleteExecute, CanDeleteExecute);
             _goToSettingsCommand = new DelegateCommand(GoToSettingsExecute);
             _editContactCommand = new DelegateCommand(ExecuteEdit, CanEditExecute);
         }
-
         #endregion
 
         #region Page navigation event
@@ -116,6 +118,23 @@ namespace Contacts.ViewModels
         private bool CanEditExecute() => this.SelectedContact == null ? false : true;
 
         private async void ExecuteEdit() => await NavigationService.NavigateAsync(typeof(Views.AddEditPage), SelectedContact);
+        #endregion
+
+        #region FavoriteCommand
+        public DelegateCommand MakeFavortieCommand
+        {
+            get { return _makeFavoriteCommand ?? new DelegateCommand(MakeFavoriteExecute, CanMakeFavoriteExcute); }
+        }
+
+        private bool CanMakeFavoriteExcute()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void MakeFavoriteExecute()
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
         #endregion

@@ -24,6 +24,7 @@
                 <AppBarButton Label="Delete" Icon="Delete" Command="{x:Bind ViewModel.DeleteContact}"/>
                 <AppBarButton Label="Add" Icon="Add" Command="{x:Bind ViewModel.AddContact}"/>
                 <AppBarButton Label="Edit" Icon="Edit" Command="{x:Bind ViewModel.EditContact}"/>
+                <AppBarButton Label="Favorite" Icon="Edit" Command="{x:Bind }"/>
             </controls:PageHeader.PrimaryCommands>
             
             <controls:PageHeader.SecondaryCommands>

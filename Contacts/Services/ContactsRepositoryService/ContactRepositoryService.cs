@@ -14,7 +14,6 @@ namespace Contacts.Services.ContactsRepositoryService
     {
         #region Fields
         List<Models.Contacts> _contacts;
-        StorageFile dbFile;
         SQLiteConnection connection;
         #endregion
 
@@ -73,9 +72,15 @@ namespace Contacts.Services.ContactsRepositoryService
             await Task.CompletedTask;
         }
 
-        public Task<List<Models.Contacts>> GetAllFavoritesAsync()
+        public async Task<List<Models.Contacts>> GetAllFavoritesAsync()
         {
-            throw new NotImplementedException();
+            return await Task.Run(() =>
+            {
+                List<Models.Contacts> favoriteContacts = (from contact in _contacts
+                                                          where contact.IsFavorite == 1
+                                                          select contact).ToList();
+                return favoriteContacts;
+            });
         }
 
         public Task<Models.Contacts> GetByIdAsync(string id)
