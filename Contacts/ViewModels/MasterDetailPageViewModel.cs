@@ -22,6 +22,7 @@ namespace Contacts.ViewModels
 
         ObservableCollection<Models.Contacts> _contacts;
         Models.Contacts _contact;
+        Symbol _favoriteSymbol = Symbol.Favorite;
 
         DelegateCommand _makeFavoriteCommand;
         DelegateCommand _deleteContactCommand;
@@ -82,6 +83,8 @@ namespace Contacts.ViewModels
             if (imageFileToDelete != null)
                 await imageFileToDelete.DeleteAsync();
 
+            FavoriteSymbol = Symbol.Favorite;
+
             await _contactRepository.DeleteAsync(SelectedContact.ID);
         }
 
@@ -120,20 +123,21 @@ namespace Contacts.ViewModels
         private async void ExecuteEdit() => await NavigationService.NavigateAsync(typeof(Views.AddEditPage), SelectedContact);
         #endregion
 
-        #region FavoriteCommand
-        public DelegateCommand MakeFavortieCommand
+        #region MakeFavoriteCommand
+        public DelegateCommand MakeFavortieContact
         {
             get { return _makeFavoriteCommand ?? new DelegateCommand(MakeFavoriteExecute, CanMakeFavoriteExcute); }
         }
 
-        private bool CanMakeFavoriteExcute()
-        {
-            throw new NotImplementedException();
-        }
+        private bool CanMakeFavoriteExcute() => this.SelectedContact == null ? false : true;
 
-        private void MakeFavoriteExecute()
+        private async void MakeFavoriteExecute()
         {
-            throw new NotImplementedException();
+            FavoriteSymbol = SelectedContact.IsFavorite == 1 ? Symbol.UnFavorite : Symbol.Favorite;
+
+            SelectedContact.IsFavorite = SelectedContact.IsFavorite == 1 ? 0 : 1;
+
+            await _contactRepository.UpdateAsync(SelectedContact);
         }
         #endregion
 
@@ -167,7 +171,17 @@ namespace Contacts.ViewModels
                 Set(ref _contact, value);
                 DeleteContact.RaiseCanExecuteChanged();
                 EditContact.RaiseCanExecuteChanged();
+                MakeFavortieContact.RaiseCanExecuteChanged();
+
+                if (SelectedContact != null)
+                    FavoriteSymbol = (SelectedContact.IsFavorite == 1) ? Symbol.Favorite : Symbol.UnFavorite;
             }
+        }
+
+        public Symbol FavoriteSymbol
+        {
+            get { return _favoriteSymbol; }
+            set { Set(ref _favoriteSymbol, value); }
         }
         #endregion
 
@@ -179,6 +193,9 @@ namespace Contacts.ViewModels
                 case CRUD.Delete:
                     Contacts.Remove(SelectedContact);
                     break;
+                //case CRUD.Update:
+                //    SelectedContact.IsFavorite = SelectedContact.IsFavorite == 1 ? 0 : 1;
+                //    break;
             }
         }
         #endregion

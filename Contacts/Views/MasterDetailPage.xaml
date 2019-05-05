@@ -24,9 +24,13 @@
                 <AppBarButton Label="Delete" Icon="Delete" Command="{x:Bind ViewModel.DeleteContact}"/>
                 <AppBarButton Label="Add" Icon="Add" Command="{x:Bind ViewModel.AddContact}"/>
                 <AppBarButton Label="Edit" Icon="Edit" Command="{x:Bind ViewModel.EditContact}"/>
-                <AppBarButton Label="Favorite" Icon="Edit" Command="{x:Bind }"/>
+                <AppBarButton Label="Favorite" Command="{x:Bind ViewModel.MakeFavortieContact}">
+                    <AppBarButton.Icon>
+                        <SymbolIcon Symbol="{x:Bind ViewModel.FavoriteSymbol,Mode=OneWay}"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
             </controls:PageHeader.PrimaryCommands>
-            
+
             <controls:PageHeader.SecondaryCommands>
                 <AppBarButton Label="Settings" Command="{x:Bind ViewModel.GoToSettings}"/>
             </controls:PageHeader.SecondaryCommands>

@@ -7,7 +7,7 @@ using GalaSoft.MvvmLight.Messaging;
 
 namespace Contacts.Message
 {
-    public enum CRUD { Add, Read, Edit, Delete }
+    public enum CRUD { Add, Read, Update, Delete }
 
     public class OperationResultMessage : MessageBase
     {

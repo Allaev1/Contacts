@@ -66,7 +66,7 @@ namespace Contacts.Services.ContactsRepositoryService
 
             connection.Table<Models.Contacts>().Connection.Insert(contact);
 
-            var message = new OperationResultMessage() { Operation = CRUD.Edit };
+            var message = new OperationResultMessage() { Operation = CRUD.Update };
             Messenger.Default.Send<OperationResultMessage>(message);
 
             await Task.CompletedTask;
