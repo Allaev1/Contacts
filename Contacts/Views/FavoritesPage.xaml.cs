@@ -7,6 +7,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Contacts.ViewModels;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
@@ -25,6 +26,13 @@ namespace Contacts.Views
         public FavoritesPage()
         {
             this.InitializeComponent();
+        }
+
+        private FavoritePageViewModel _viewModel;
+
+        public FavoritePageViewModel ViewModel
+        {
+            get { return _viewModel ?? (_viewModel = (FavoritePageViewModel)DataContext); }
         }
     }
 }

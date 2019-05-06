@@ -84,9 +84,10 @@ namespace Contacts
 
             SimpleIoc.Default.Register<IFileStoringService, FileStoringService>();
             SimpleIoc.Default.Register<IContactRepositoryService, ContactRepositoryService>();
-            SimpleIoc.Default.Register<AddEditPageViewModel>();
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<MasterDetailPageViewModel>();
+            SimpleIoc.Default.Register<AddEditPageViewModel>();
+            SimpleIoc.Default.Register<FavoritePageViewModel>();
 
             CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = false;
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
@@ -109,6 +110,8 @@ namespace Contacts
                 return SimpleIoc.Default.GetInstance<MasterDetailPageViewModel>();
             else if (page is AddEditPage)
                 return SimpleIoc.Default.GetInstance<AddEditPageViewModel>();
+            else if (page is FavoritesPage)
+                return SimpleIoc.Default.GetInstance<FavoritePageViewModel>();
             else
                 return base.ResolveForPage(page, navigationService);
         }

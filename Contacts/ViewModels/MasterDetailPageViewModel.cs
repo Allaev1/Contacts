@@ -3,9 +3,9 @@ using Contacts.Services.ContactsRepositoryService;
 using Contacts.Services.FileStoringService;
 using GalaSoft.MvvmLight.Messaging;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Template10.Mvvm;
 using Windows.Storage;
@@ -193,9 +193,9 @@ namespace Contacts.ViewModels
                 case CRUD.Delete:
                     Contacts.Remove(SelectedContact);
                     break;
-                //case CRUD.Update:
-                //    SelectedContact.IsFavorite = SelectedContact.IsFavorite == 1 ? 0 : 1;
-                //    break;
+                    //case CRUD.Update:
+                    //    SelectedContact.IsFavorite = SelectedContact.IsFavorite == 1 ? 0 : 1;
+                    //    break;
             }
         }
         #endregion

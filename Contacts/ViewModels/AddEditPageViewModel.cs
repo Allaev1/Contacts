@@ -107,7 +107,10 @@ namespace Contacts.ViewModels
         public async override Task OnNavigatedFromAsync(IDictionary<string, object> pageState, bool suspending)
         {
             if (isDone)
+            {
+                imageFile = null;
                 await ApplicationData.Current.ClearAsync(ApplicationDataLocality.Temporary);
+            }
 
             //Messenger.Default.Unregister<IsDirtyMessage>(this);
         }
@@ -266,13 +269,16 @@ namespace Contacts.ViewModels
                 StorageFile fileToDelete =
                     await StorageFile.GetFileFromPathAsync(currentContact.PathToImage);
 
-                await fileToDelete.DeleteAsync();
-
                 if (TempContact.PathToImage == null)
+                {
+                    await fileToDelete.DeleteAsync();
                     currentContact.PathToImage = null;
+                }
                 else
                 {
                     if (imageFile == null) return;
+
+                    await fileToDelete.DeleteAsync();
 
                     await storingService.SaveToStorage(ApplicationData.Current.LocalFolder, imageFile, currentContact.ID);
 
