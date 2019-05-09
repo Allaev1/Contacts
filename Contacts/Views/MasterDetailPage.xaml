@@ -93,7 +93,7 @@
                             <uwpkit:HeaderedTextBlock x:Name="Email"
                                                   Header="Email"
                                                   FontSize="26"
-                                                  Text="{x:Bind Email}" 
+                                                  Text="{x:Bind Email,Mode=TwoWay}" 
                                                   RelativePanel.Below="Image"
                                                   HorizontalAlignment="Left"
                                                   Margin="20,0,20,20"/>

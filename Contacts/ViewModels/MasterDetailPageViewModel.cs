@@ -49,7 +49,7 @@ namespace Contacts.ViewModels
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
             var list = await _contactRepository.GetAllAsync();
-            _contacts = new ObservableCollection<Models.Contacts>(list.OrderBy(u => u.LastName));
+            _contacts = new ObservableCollection<Models.Contacts>(list.OrderBy(u => u.ID));
 
             Messenger.Default.Register<OperationResultMessage>(this, (message) => HandlePersonsChangedMessage(message));
         }

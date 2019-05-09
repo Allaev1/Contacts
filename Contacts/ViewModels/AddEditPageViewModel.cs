@@ -25,6 +25,7 @@ namespace Contacts.ViewModels
         BitmapImage _image;
         WriteableBitmap _writeableImage;
         bool _isEnabled;
+        string _pageHeader;
 
         StorageFile imageFile;
 
@@ -45,6 +46,8 @@ namespace Contacts.ViewModels
             set { Set(ref _tempContact, value); }
             get { return _tempContact; }
         }
+
+        public string PageHeader { set; get; }
 
         public BitmapImage Image
         {
@@ -95,9 +98,15 @@ namespace Contacts.ViewModels
             }
 
             if (parameter == null)
+            {
+                PageHeader = "Adding new person";
                 currentState = States.Add;
+            }
             else
+            {
+                PageHeader = $"Editing {TempContact.FullName}";
                 currentState = States.Edit;
+            }
 
             Messenger.Default.Register<IsDirtyMessage>(this, (message) => HandleIsDirtyChangedMessage(message));
 
@@ -110,9 +119,8 @@ namespace Contacts.ViewModels
             {
                 imageFile = null;
                 await ApplicationData.Current.ClearAsync(ApplicationDataLocality.Temporary);
+                //Messenger.Default.Unregister<IsDirtyMessage>(this);
             }
-
-            //Messenger.Default.Unregister<IsDirtyMessage>(this);
         }
 
         #endregion

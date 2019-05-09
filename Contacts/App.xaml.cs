@@ -13,6 +13,7 @@ using GalaSoft.MvvmLight.Ioc;
 using Contacts.Views;
 using Contacts.Services.ContactsRepositoryService;
 using Contacts.Services.FileStoringService;
+using Contacts.Services.DialogService;
 using Contacts.ViewModels;
 using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Controls;
@@ -82,8 +83,9 @@ namespace Contacts
 
             dataBase = await ApplicationData.Current.LocalFolder.GetFileAsync(DATABASE_NAME);
 
-            SimpleIoc.Default.Register<IFileStoringService, FileStoringService>();
             SimpleIoc.Default.Register<IContactRepositoryService, ContactRepositoryService>();
+            SimpleIoc.Default.Register<IFileStoringService, FileStoringService>();
+            SimpleIoc.Default.Register<IDialogService, DialogService>();
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<MasterDetailPageViewModel>();
             SimpleIoc.Default.Register<AddEditPageViewModel>();

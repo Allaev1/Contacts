@@ -21,54 +21,59 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <RelativePanel Margin="15" DataContext="{x:Bind ViewModel.TempContact}">
-            <toolkit:ImageEx x:Name="ContactsImage" CornerRadius="300"
+        <controls:PageHeader x:Name="PageHeader" Text="{x:Bind ViewModel.PageHeader}"/>
+
+        <ScrollViewer Grid.Row="1">
+            <RelativePanel Margin="15" DataContext="{x:Bind ViewModel.TempContact}">
+                <toolkit:ImageEx x:Name="ContactsImage" CornerRadius="300"
                          Width="300" 
                          Height="300"
                          BorderBrush="Black"
                          BorderThickness="1"
                          Source="{x:Bind ViewModel.Image,Mode=TwoWay}"/>
-            <StackPanel x:Name="BrowseRemoveButtonsSP" 
+                <StackPanel x:Name="BrowseRemoveButtonsSP" 
                         Orientation="Horizontal"
                         RelativePanel.Below="ContactsImage"
                         RelativePanel.AlignHorizontalCenterWith="ContactsImage">
-                <Button x:Name="BrowseButton"
+                    <Button x:Name="BrowseButton"
                     Content="Browse..."
                     Margin="10"
                     Command="{x:Bind ViewModel.AddImage}"/>
-                <Button x:Name="RemoveButton" Content="Remove" Margin="10" Command="{x:Bind ViewModel.RemoveImage}"/>
-            </StackPanel>
-            <validation:ControlWrapper PropertyName="FirstName" x:Name="FirstNameCR" RelativePanel.Below="BrowseRemoveButtonsSP">
-                <TextBox Header="First Name" 
+                    <Button x:Name="RemoveButton" Content="Remove" Margin="10" Command="{x:Bind ViewModel.RemoveImage}"/>
+                </StackPanel>
+                <validation:ControlWrapper PropertyName="FirstName" x:Name="FirstNameCR" RelativePanel.Below="BrowseRemoveButtonsSP">
+                    <TextBox Header="First Name" 
                      PlaceholderText="FirstName"
                      Text="{Binding FirstName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-            </validation:ControlWrapper>
-            <validation:ControlWrapper PropertyName="LastName" x:Name="LastNameCR" RelativePanel.Below="FirstNameCR">
-                <TextBox Header="Last Name"
+                </validation:ControlWrapper>
+                <validation:ControlWrapper PropertyName="LastName" x:Name="LastNameCR" RelativePanel.Below="FirstNameCR">
+                    <TextBox Header="Last Name"
                      PlaceholderText="LastName"
                      Text="{Binding LastName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-            </validation:ControlWrapper>
-            <validation:ControlWrapper PropertyName="PhoneNumber" x:Name="PhoneNumberCR" RelativePanel.Below="LastNameCR">
-                <TextBox Header="Phone number"
+                </validation:ControlWrapper>
+                <validation:ControlWrapper PropertyName="PhoneNumber" x:Name="PhoneNumberCR" RelativePanel.Below="LastNameCR">
+                    <TextBox Header="Phone number"
                      PlaceholderText="+1-234-567-89-10"
                      Text="{Binding PhoneNumber,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-            </validation:ControlWrapper>
-            <validation:ControlWrapper PropertyName="Email" x:Name="EmailCR" RelativePanel.Below="PhoneNumberCR">
-                <TextBox Header="Email"
+                </validation:ControlWrapper>
+                <validation:ControlWrapper PropertyName="Email" x:Name="EmailCR" RelativePanel.Below="PhoneNumberCR">
+                    <TextBox Header="Email"
                      PlaceholderText="example@mail.com"
                      Text="{Binding Email,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-            </validation:ControlWrapper>
-        </RelativePanel>
+                </validation:ControlWrapper>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" RelativePanel.AlignBottomWithPanel="True">
+            </RelativePanel>
+        </ScrollViewer>
+        
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
             <Button Content="Save" Width="160" Margin="10" Command="{x:Bind ViewModel.GoBackSaved}"
                     IsEnabled="{x:Bind ViewModel.IsEnabled,Mode=OneWay}"/>
             <Button Content="Cancel" Width="160" Margin="10" Command="{x:Bind ViewModel.GoBackUnSaved}"/>
         </StackPanel>
-
     </Grid>
 </Page>
