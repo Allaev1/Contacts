@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Xaml.Data;
@@ -12,6 +9,12 @@ namespace Contacts.Services.Converters
 {
     public class IdToImageConverter : IValueConverter
     {
+        #region Fields
+        //WriteableBitmap contactImage; // фотография контакта id которого конвертируется
+
+        BitmapImage contactImagePlaceHolder = new BitmapImage(new Uri("ms-appx:///Assets/contactImagePlaceHolder.png")); //Фотография контакта если у него нету фотографий в локальном хранилище
+        #endregion
+
         #region Realisation of IValueConverter
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -20,16 +23,22 @@ namespace Contacts.Services.Converters
 
             string Id = contactForView.ID;
 
-            StorageFile imageFile = null; 
+            StorageFile imageFile = null;
 
-            Task<StorageFile> getImageTask = Task.Run(
+            Task<StorageFile> getImageFileTask = Task.Run(
                 async ()
                 => imageFile = await ApplicationData.Current.LocalFolder.TryGetItemAsync(Id) as StorageFile);
 
-            getImageTask.Wait();
+            getImageFileTask.Wait();
+
+            BitmapImage bitmapImage;
 
             if (imageFile != null)
-                return new BitmapImage(new Uri(imageFile.Path));
+            {
+                bitmapImage = new BitmapImage(new Uri(imageFile.Path));
+
+                return bitmapImage;
+            }
             else
                 return new BitmapImage(new Uri("ms-appx:///Assets/contactImagePlaceHolder.png"));
         }

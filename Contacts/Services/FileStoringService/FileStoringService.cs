@@ -36,10 +36,6 @@ namespace Contacts.Services.FileStoringService
         {
             if (await IsFileExist(ApplicationData.Current.LocalFolder, fileName))
             {
-                //StorageFile fileToDelete = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName);
-
-                //await fileToDelete.DeleteAsync();
-
                 StorageFile fileToReplace = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName);
 
                 await fileToSave.CopyAndReplaceAsync(fileToReplace);
@@ -50,7 +46,6 @@ namespace Contacts.Services.FileStoringService
 
                 await fileToMove.MoveAsync(ApplicationData.Current.LocalFolder, fileName);
             }
-
         }
 
         /// <summary>
@@ -64,19 +59,21 @@ namespace Contacts.Services.FileStoringService
         /// </param>
         private async Task ToTempStorageAsync(StorageFile fileToSave, string fileName)
         {
-            if (await IsFileExist(ApplicationData.Current.TemporaryFolder, fileName))
-            {
-                StorageFile fileToDelete = await ApplicationData.Current.TemporaryFolder.GetFileAsync(fileName);
+            //if (await IsFileExist(ApplicationData.Current.TemporaryFolder, fileName))
+            //{
+            //    StorageFile fileToDelete = await ApplicationData.Current.TemporaryFolder.GetFileAsync(fileName);
 
-                await fileToDelete.DeleteAsync();
-            }
+            //    await fileToSave.CopyAsync(ApplicationData.Current.TemporaryFolder, fileName, NameCollisionOption.ReplaceExisting);
+            //}
 
-            await fileToSave.CopyAsync(ApplicationData.Current.TemporaryFolder, fileName);
+            //await fileToSave.CopyAsync(ApplicationData.Current.TemporaryFolder, fileName);
+
+            await fileToSave.CopyAsync(ApplicationData.Current.TemporaryFolder, fileName, NameCollisionOption.ReplaceExisting);
         }
 
         private async Task<bool> IsFileExist(StorageFolder parentFolder, string fileName)
         {
-            if (null == await parentFolder.TryGetItemAsync(fileName))
+            if (await parentFolder.TryGetItemAsync(fileName) == null)
                 return false;
 
             return true;

@@ -274,19 +274,18 @@ namespace Contacts.ViewModels
             }
             else
             {
-                StorageFile fileToDelete =
-                    await StorageFile.GetFileFromPathAsync(currentContact.PathToImage);
-
                 if (TempContact.PathToImage == null)
                 {
+                    StorageFile fileToDelete =
+                        await StorageFile.GetFileFromPathAsync(currentContact.PathToImage);
+
                     await fileToDelete.DeleteAsync();
+
                     currentContact.PathToImage = null;
                 }
                 else
                 {
                     if (imageFile == null) return;
-
-                    await fileToDelete.DeleteAsync();
 
                     await storingService.SaveToStorage(ApplicationData.Current.LocalFolder, imageFile, currentContact.ID);
 
