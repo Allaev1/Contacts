@@ -18,7 +18,6 @@ namespace Contacts.ViewModels
         IContactRepositoryService contactRepository;
         IDialogService dialogService;
 
-        Models.Contacts _selectedContact;
         ObservableCollection<Models.Contacts> _favoriteContacts;
 
         DelegateCommand<Models.Contacts> _showContentDialog;

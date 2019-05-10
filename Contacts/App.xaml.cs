@@ -86,6 +86,7 @@ namespace Contacts
             SimpleIoc.Default.Register<IContactRepositoryService, ContactRepositoryService>();
             SimpleIoc.Default.Register<IFileStoringService, FileStoringService>();
             SimpleIoc.Default.Register<IDialogService, DialogService>();
+            SimpleIoc.Default.Register<ContactContentDialogViewModel>();
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<MasterDetailPageViewModel>();
             SimpleIoc.Default.Register<AddEditPageViewModel>();

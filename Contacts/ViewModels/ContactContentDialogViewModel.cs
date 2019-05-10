@@ -12,10 +12,10 @@ namespace Contacts.ViewModels
         IContactRepositoryService repositoryService;
         #endregion
 
-        public ContactContentDialogViewModel()
+        public ContactContentDialogViewModel(IContactRepositoryService repositoryService)
         {
             converter = new IdToImageConverter();
-            repositoryService = new ContactRepositoryService();
+            this.repositoryService = repositoryService;
         }
 
         #region Bindable properties

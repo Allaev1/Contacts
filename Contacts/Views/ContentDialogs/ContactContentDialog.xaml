@@ -24,6 +24,7 @@
                         Width="400"
                         BorderBrush="Black"
                         BorderThickness="1"
+                        Stretch="Fill"
                         Source="{x:Bind ViewModel.ContactImage}"/>
         <TextBlock Text="Phone number:" FontSize="20"/>
         <TextBlock Text="{x:Bind ViewModel.CurrentContact.PhoneNumber}"/>

@@ -1,4 +1,5 @@
 ﻿using Contacts.ViewModels;
+using GalaSoft.MvvmLight.Ioc;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,7 +24,7 @@ namespace Contacts.Views.ContentDialogs
         public ContactContentDialog()
         {
             this.InitializeComponent();
-            ViewModel = new ContactContentDialogViewModel();
+            ViewModel = SimpleIoc.Default.GetInstance<ContactContentDialogViewModel>();
         }
 
         public ContactContentDialogViewModel ViewModel { set; get; }
