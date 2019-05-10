@@ -26,8 +26,7 @@
                                  Grid.Row="1"
                                  DesiredWidth="300"
                                  IsItemClickEnabled="True"
-                                 SelectedItem="{x:Bind ViewModel.SelectedContact,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                 Tapped="{x:Bind ViewModel.ExecuteShowContentDialog}">
+                                 ItemClickCommand="{x:Bind ViewModel.ShowContentDialog}">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="model:Contacts">
                     <RelativePanel>

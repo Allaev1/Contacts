@@ -1,5 +1,7 @@
 ﻿using Windows.UI.Xaml.Media.Imaging;
 using Contacts.Services.Converters;
+using Contacts.Services.ContactsRepositoryService;
+using System.Threading.Tasks;
 
 namespace Contacts.ViewModels
 {
@@ -7,11 +9,13 @@ namespace Contacts.ViewModels
     {
         #region Fields
         IdToImageConverter converter;
+        IContactRepositoryService repositoryService;
         #endregion
 
         public ContactContentDialogViewModel()
         {
             converter = new IdToImageConverter();
+            repositoryService = new ContactRepositoryService();
         }
 
         #region Bindable properties
@@ -28,6 +32,8 @@ namespace Contacts.ViewModels
                     CurrentContact.IsFavorite = 0;
                 else
                     CurrentContact.IsFavorite = 1;
+
+                Task.Run(async () => await repositoryService.UpdateAsync(CurrentContact));
             }
             get
             {

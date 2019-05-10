@@ -21,7 +21,7 @@ namespace Contacts.ViewModels
         Models.Contacts _selectedContact;
         ObservableCollection<Models.Contacts> _favoriteContacts;
 
-        DelegateCommand _showContentDialog;
+        DelegateCommand<Models.Contacts> _showContentDialog;
         #endregion
 
         #region Constructors
@@ -29,7 +29,7 @@ namespace Contacts.ViewModels
         {
             this.contactRepository = contactRepository;
             this.dialogService = dialogService;
-            _showContentDialog = new DelegateCommand(ExecuteShowContentDialog);
+            _showContentDialog = new DelegateCommand<Models.Contacts>(ExecuteShowContentDialog);
         }
         #endregion
 
@@ -47,31 +47,27 @@ namespace Contacts.ViewModels
             set { Set(ref _favoriteContacts, value); }
             get { return _favoriteContacts; }
         }
-
-        public Models.Contacts SelectedContact
-        {
-            set { Set(ref _selectedContact, value); }
-            get { return _selectedContact; }
-        }
         #endregion
 
         #region Commands
 
         #region ShowContentDialogCommand
-        public DelegateCommand ShowContentDialog
+        public DelegateCommand<Models.Contacts> ShowContentDialog
         {
-            get { return _showContentDialog ?? new DelegateCommand(ExecuteShowContentDialog); }
+            get { return _showContentDialog ?? new DelegateCommand<Models.Contacts>(ExecuteShowContentDialog); }
         }
 
-        public async void ExecuteShowContentDialog()
+        public async void ExecuteShowContentDialog(Models.Contacts contact)
         {
-            ContentDialogResult result = await dialogService.ShowDialogAsync(SelectedContact);
+            var selectedContact = contact as Models.Contacts;
+
+            ContentDialogResult result = await dialogService.ShowDialogAsync(selectedContact);
 
             if(result == ContentDialogResult.Primary)
             {
-                if(SelectedContact.IsFavorite == 0)
+                if(selectedContact.IsFavorite == 0)
                 {
-                    FavoriteContacts.Remove(SelectedContact);
+                    FavoriteContacts.Remove(selectedContact);
                 }
             }
         }
