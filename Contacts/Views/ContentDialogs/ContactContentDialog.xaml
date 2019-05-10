@@ -9,24 +9,37 @@
     xmlns:imageConverter="using:Contacts.Services.Converters"
     mc:Ignorable="d"
     Title="{x:Bind ViewModel.ContactFullName}"
-    PrimaryButtonText="OK">
+    PrimaryButtonText="OK"
+    Background="Azure">
 
     <!--<ContentDialog.Resources>
         <imageConverter:IdToImageConverter x:Key="IdToImageConverter"/>
     </ContentDialog.Resources>-->
 
-    <StackPanel>
-        <ToggleSwitch HorizontalAlignment="Right" 
+    <RelativePanel>
+        <RelativePanel.ChildrenTransitions>
+            <TransitionCollection>
+                <ContentThemeTransition VerticalOffset="50"/>
+            </TransitionCollection>
+        </RelativePanel.ChildrenTransitions>
+        <ToggleSwitch x:Name="IsFavortieSwitcher" RelativePanel.AlignRightWithPanel="True" 
                       OffContent="IsNotFavorite" 
                       OnContent="IsFavorite"
                       IsOn="{x:Bind ViewModel.IsContactFavorite,Mode=TwoWay}"/>
-        <uwpkit:ImageEx Height="400"
+        <uwpkit:ImageEx x:Name="ContactImageEx"
+                        RelativePanel.Below="IsFavortieSwitcher"
+                        Height="400"
                         Width="400"
                         BorderBrush="Black"
                         BorderThickness="1"
-                        Stretch="Fill"
+                        Stretch="Uniform"
                         Source="{x:Bind ViewModel.ContactImage}"/>
-        <TextBlock Text="Phone number:" FontSize="20"/>
-        <TextBlock Text="{x:Bind ViewModel.CurrentContact.PhoneNumber}"/>
-    </StackPanel>
+        <TextBlock x:Name="PhoneNumberHeader" 
+                   RelativePanel.Below="ContactImageEx" 
+                   FontSize="25"
+                   Text="Phone number"/>
+        <TextBlock RelativePanel.Below="PhoneNumberHeader"
+                   FontSize="18"
+                   Text="{x:Bind ViewModel.CurrentContact.PhoneNumber}"/>
+    </RelativePanel>
 </ContentDialog>

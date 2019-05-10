@@ -25,6 +25,7 @@
         <uwpkit:AdaptiveGridView ItemsSource="{x:Bind ViewModel.FavoriteContacts}"
                                  Grid.Row="1"
                                  DesiredWidth="300"
+                                 Background="Cornsilk"
                                  IsItemClickEnabled="True"
                                  ItemClickCommand="{x:Bind ViewModel.ShowContentDialog}">
             <GridView.ItemTemplate>
