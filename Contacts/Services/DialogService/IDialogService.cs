@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
 namespace Contacts.Services.DialogService
@@ -20,6 +16,6 @@ namespace Contacts.Services.DialogService
         /// Secondary - если нажата второстепенная кнопка
         /// None - если диалоговое окно было закрыто(к примеру клавишой Esc)
         /// </returns>
-        Task<ContentDialogResult> ShowDialogAsync(Models.Contacts contactToShow); 
+        Task<ContentDialogResult> ShowDialogAsync(Models.Contacts contactToShow);
     }
 }

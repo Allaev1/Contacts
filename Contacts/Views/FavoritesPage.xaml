@@ -47,21 +47,29 @@
                                         CornerRadius="5"
                                         BorderThickness="1"
                                         BorderBrush="Black"/>
-                        <StackPanel x:Name="PhoneNumberSP"
-                                    RelativePanel.Below="ContactImageHolderEx"
-                                    Orientation="Vertical"
-                                    RelativePanel.AlignHorizontalCenterWithPanel="True"
-                                    Margin="10">
-                            <TextBlock Text="Phone number:" FontSize="18" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding PhoneNumber}" FontSize="15"/>
-                        </StackPanel>
-                        <StackPanel x:Name="EmailSP"
-                                    RelativePanel.Below="PhoneNumberSP"
-                                    Orientation="Vertical"
-                                    RelativePanel.AlignHorizontalCenterWithPanel="True">
-                            <TextBlock Text="Email:" FontSize="18" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Email}" FontSize="15"/>
-                        </StackPanel>
+                        <TextBlock x:Name="PhoneNumberHeader" 
+                                       RelativePanel.Below="ContactImageHolderEx"
+                                       RelativePanel.AlignHorizontalCenterWithPanel="True"
+                                       Text="Phone number:" 
+                                       FontSize="18" 
+                                       FontWeight="Bold"/>
+                        <TextBlock x:Name="PhoneNumberHolder"
+                                   RelativePanel.Below="PhoneNumberHeader"
+                                   RelativePanel.AlignHorizontalCenterWithPanel="True"
+                                   Text="{Binding PhoneNumber}" 
+                                   Margin="0,5,0,10"
+                                   FontSize="15"/>
+                        <TextBlock x:Name="EmailHeader" 
+                                   RelativePanel.Below="PhoneNumberHolder" 
+                                   RelativePanel.AlignHorizontalCenterWithPanel="True"
+                                   Text="Email:" 
+                                   FontSize="18" 
+                                   FontWeight="Bold"/>
+                        <TextBlock RelativePanel.Below="EmailHeader" 
+                                   RelativePanel.AlignHorizontalCenterWithPanel="True"
+                                   Text="{Binding Email}"
+                                   Margin="0,5,0,0"
+                                   FontSize="15"/>
                     </RelativePanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
