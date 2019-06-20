@@ -26,6 +26,7 @@ namespace Contacts.Views
         public AddEditPage()
         {
             this.InitializeComponent();
+            App.Current.ShowShellBackButton = false;
         }
 
         private AddEditPageViewModel _viewModel;

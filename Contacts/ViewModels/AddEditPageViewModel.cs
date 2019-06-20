@@ -119,8 +119,8 @@ namespace Contacts.ViewModels
             {
                 imageFile = null;
                 await ApplicationData.Current.ClearAsync(ApplicationDataLocality.Temporary);
-                //Messenger.Default.Unregister<IsDirtyMessage>(this);
             }
+            App.Current.ShowShellBackButton = true;
         }
 
         #endregion
