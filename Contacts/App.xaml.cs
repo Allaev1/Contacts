@@ -38,6 +38,7 @@ namespace Contacts
 
         private StorageFile dataBase;
         private SQLiteConnection _dataBaseConnection;
+        public Shell shell;
         public SQLiteConnection DataBase
         {
             get
