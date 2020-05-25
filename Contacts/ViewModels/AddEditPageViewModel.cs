@@ -11,7 +11,6 @@ using Windows.Storage.Pickers;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using Contacts.Message;
-using static Template10.Common.BootStrapper;
 
 namespace Contacts.ViewModels
 {
